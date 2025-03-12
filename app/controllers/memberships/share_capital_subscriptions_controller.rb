@@ -10,7 +10,7 @@ module Memberships
       @share_capital = Memberships::ShareCapitalSubscription.new(share_capital_params)
       if @share_capital.valid?
         @share_capital.subscribe!
-        redirect_to share_capital_url(@share_capital.find_share_capital), notice: 'Share Capital saved successfully.'
+        redirect_to share_capital_url(@share_capital.find_share_capital), notice: "Share Capital saved successfully."
       else
         render :new, status: :unprocessable_entity
       end

@@ -17,19 +17,19 @@ module Portfolios
 
     def render_csv
       # Tell Rack to stream the content
-      headers.delete('Content-Length')
+      headers.delete("Content-Length")
 
       # Don't cache anything from this generated endpoint
-      headers['Cache-Control'] = 'no-cache'
+      headers["Cache-Control"] = "no-cache"
 
       # Tell the browser this is a CSV file
-      headers['Content-Type'] = 'text/csv'
+      headers["Content-Type"] = "text/csv"
 
       # Make the file download with a specific filename
-      headers['Content-Disposition'] = 'attachment; filename="Savings Portfolio.csv"'
+      headers["Content-Disposition"] = 'attachment; filename="Savings Portfolio.csv"'
 
       # Don't buffer when going through proxy servers
-      headers['X-Accel-Buffering'] = 'no'
+      headers["X-Accel-Buffering"] = "no"
 
       # Set an Enumerator as the body
       self.response_body = csv_body
@@ -39,9 +39,9 @@ module Portfolios
 
     def csv_body
       Enumerator.new do |yielder|
-        yielder << CSV.generate_line(["#{current_office.name} - Savings Portfolio"])
+        yielder << CSV.generate_line([ "#{current_office.name} - Savings Portfolio" ])
 
-        yielder << CSV.generate_line(['Depositor', 'Saving Product'] + (@beginning_date..@ending_date).to_a.map { |a| a.strftime('%B %e, %Y') })
+        yielder << CSV.generate_line([ "Depositor", "Saving Product" ] + (@beginning_date..@ending_date).to_a.map { |a| a.strftime("%B %e, %Y") })
         @savings_accounts.each do |savings_account|
           yielder << CSV.generate_line([
             savings_account.account_owner_name,

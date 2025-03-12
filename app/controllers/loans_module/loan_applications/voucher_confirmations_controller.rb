@@ -27,7 +27,7 @@ module LoansModule
             employee: @employee
           ).find_entry
           LoansModule::TermUpdater.new(loan: @loan, effectivity_date: @entry.entry_date)
-          redirect_to loan_url(@loan), notice: 'Loan disbursed succesfully.'
+          redirect_to loan_url(@loan), notice: "Loan disbursed succesfully."
         end
       end
     end

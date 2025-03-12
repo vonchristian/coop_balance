@@ -17,9 +17,9 @@ module StoreFrontModule
         @sales_return_line_item = StoreFrontModule::LineItems::SalesReturnLineItemProcessing.new(line_item_params)
         if @sales_return_line_item.valid?
           @sales_return_line_item.process!
-          redirect_to new_store_front_module_sales_return_line_item_url, notice: 'Added to cart.'
+          redirect_to new_store_front_module_sales_return_line_item_url, notice: "Added to cart."
         else
-          redirect_to new_store_front_module_sales_return_line_item_url, alert: 'Error. Exceeded sold quantity'
+          redirect_to new_store_front_module_sales_return_line_item_url, alert: "Error. Exceeded sold quantity"
         end
       end
 

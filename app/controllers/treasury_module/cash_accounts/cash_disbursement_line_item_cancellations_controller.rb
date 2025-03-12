@@ -8,7 +8,7 @@ module TreasuryModule
           @amount.destroy
           TreasuryModule::CashAccounts::TotalCashAccountUpdater.new(cash_account: @cash_account, cart: current_cart).update_amount!
         end
-        redirect_to new_treasury_module_cash_account_cash_disbursement_line_item_url(@cash_account), notice: 'removed successfully'
+        redirect_to new_treasury_module_cash_account_cash_disbursement_line_item_url(@cash_account), notice: "removed successfully"
       end
     end
   end

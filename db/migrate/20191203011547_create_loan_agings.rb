@@ -4,7 +4,7 @@ class CreateLoanAgings < ActiveRecord::Migration[5.2]
       t.belongs_to :loan, foreign_key: true, type: :uuid
       t.belongs_to :loan_aging_group, foreign_key: true, type: :uuid
       t.datetime :date
-      
+
       t.timestamps
     end
   end

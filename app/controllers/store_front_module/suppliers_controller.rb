@@ -3,9 +3,9 @@ module StoreFrontModule
     def index
       @suppliers = if params[:search].present?
                      current_cooperative.suppliers.text_search(params[:search]).paginate(page: params[:page], per_page: 50)
-                   else
+      else
                      current_cooperative.suppliers.paginate(page: params[:page], per_page: 50)
-                   end
+      end
     end
 
     def new

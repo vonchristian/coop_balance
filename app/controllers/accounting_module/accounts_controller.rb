@@ -7,9 +7,9 @@ module AccountingModule
     def index
       @accounts = if params[:search].present?
                     type_class.text_search(params[:search]).order(:code).paginate(page: params[:page], per_page: 30)
-                  else
+      else
                     type_class.all.active.order(:code).paginate(page: params[:page], per_page: 30)
-                  end
+      end
     end
 
     def new
@@ -22,7 +22,7 @@ module AccountingModule
       authorize %i[accounting_module account]
       if @account.valid?
         @account.save!
-        redirect_to accounting_module_account_url(@account), notice: 'Account created successfully'
+        redirect_to accounting_module_account_url(@account), notice: "Account created successfully"
       else
         render :new, status: :unprocessable_entity
       end
@@ -41,7 +41,7 @@ module AccountingModule
       @account.update(update_params)
       if @account.valid?
         @account.save!
-        redirect_to accounting_module_account_settings_url(@account), notice: 'Account updated successfully.'
+        redirect_to accounting_module_account_settings_url(@account), notice: "Account updated successfully."
       else
         render :edit, status: :unprocessable_entity
       end
@@ -58,7 +58,7 @@ module AccountingModule
     end
 
     def type
-      current_cooperative.accounts.types.include?(params[:type]) ? params[:type] : 'AccountingModule::Account'
+      current_cooperative.accounts.types.include?(params[:type]) ? params[:type] : "AccountingModule::Account"
     end
 
     def type_class

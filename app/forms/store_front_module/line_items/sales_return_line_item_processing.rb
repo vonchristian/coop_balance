@@ -87,7 +87,7 @@ module StoreFrontModule
       end
 
       def quantity_is_less_than_or_equal_to_sold_quantity?
-        errors[:quantity] << 'exceeded sold quantity' if converted_quantity.to_f > sold_quantity
+        errors[:quantity] << "exceeded sold quantity" if converted_quantity.to_f > sold_quantity
       end
     end
   end

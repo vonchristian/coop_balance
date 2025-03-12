@@ -3,9 +3,9 @@ module ManagementModule
     def index
       @members = if params[:search].present?
                    current_cooperative.member_memberships.text_search(params[:search]).order(:last_name)
-                 else
+      else
                    current_cooperative.member_memberships.order(:last_name)
-                 end
+      end
     end
 
     def show

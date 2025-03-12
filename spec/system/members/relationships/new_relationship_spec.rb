@@ -15,4 +15,3 @@ describe 'New relationship' do
     click_button 'Add'
   end
 end
-

@@ -16,7 +16,7 @@ module LoansModule
 
         loan_application.voucher_amounts.credit.create!(
           cooperative: loan_application.cooperative,
-          description: 'Capital Build Up',
+          description: "Capital Build Up",
           amount: computed_amount,
           account: share_capital.share_capital_equity_account
         )

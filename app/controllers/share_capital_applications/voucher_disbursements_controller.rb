@@ -8,7 +8,7 @@ module ShareCapitalApplications
         @share_capital = current_cooperative.share_capitals.find_by(account_number: @share_capital_application.account_number)
         disburse_voucher
         set_balance_status
-        redirect_to share_capital_url(id: @share_capital.id), notice: 'Share capital account opened successfully.'
+        redirect_to share_capital_url(id: @share_capital.id), notice: "Share capital account opened successfully."
       end
     end
 

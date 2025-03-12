@@ -12,7 +12,7 @@ module Offices
       @loan_product = current_office.office_loan_products.create(loan_product_params)
       if @loan_product.valid?
         @loan_product.save!
-        redirect_to office_loan_products_url(current_office), notice: 'Loan Product saved successfully.'
+        redirect_to office_loan_products_url(current_office), notice: "Loan Product saved successfully."
       else
         render :new, status: :unprocessable_entity
       end

@@ -7,7 +7,7 @@ module ShareCapitals
         Vouchers::EntryProcessing.new(updateable: @share_capital, voucher: @voucher, employee: current_user).process!
         BalanceStatusChecker.new(account: @share_capital, product: @share_capital.share_capital_product).set_balance_status
       end
-      redirect_to share_capital_url(@share_capital), notice: 'Capital build up transaction saved successfully.'
+      redirect_to share_capital_url(@share_capital), notice: "Capital build up transaction saved successfully."
     end
   end
 end

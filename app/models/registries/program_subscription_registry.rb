@@ -1,11 +1,11 @@
-require 'roo'
+require "roo"
 module Registries
   class ProgramSubscriptionRegistry < Registry
     def parse_for_records
       program_spreadsheet = Roo::Spreadsheet.open(spreadsheet.path)
       header = program_spreadsheet.row(2)
       (3..program_spreadsheet.last_row).each do |i|
-        row = [header, program_spreadsheet.row(i)].transpose.to_h
+        row = [ header, program_spreadsheet.row(i) ].transpose.to_h
         upload_program_subscription(row)
       end
     end
@@ -17,22 +17,22 @@ module Registries
     end
 
     def find_program(row)
-      employee.cooperative.programs.find_by(name: row['Program'])
+      employee.cooperative.programs.find_by(name: row["Program"])
     end
 
     def find_or_create_member_subscriber(row)
       old_member = Member.find_by(
-        last_name: TextNormalizer.new(text: row['Last Name']).propercase,
-        first_name: TextNormalizer.new(text: row['First Name'] || '').propercase,
-        middle_name: TextNormalizer.new(text: row['Middle Name'] || '').propercase
+        last_name: TextNormalizer.new(text: row["Last Name"]).propercase,
+        first_name: TextNormalizer.new(text: row["First Name"] || "").propercase,
+        middle_name: TextNormalizer.new(text: row["Middle Name"] || "").propercase
       )
       if old_member.present?
         old_member
       else
         new_member = Member.create!(
-          last_name: TextNormalizer.new(text: row['Last Name']).propercase,
-          middle_name: TextNormalizer.new(text: row['Middle Name'] || '').propercase,
-          first_name: TextNormalizer.new(text: row['First Name'] || '').propercase
+          last_name: TextNormalizer.new(text: row["Last Name"]).propercase,
+          middle_name: TextNormalizer.new(text: row["Middle Name"] || "").propercase,
+          first_name: TextNormalizer.new(text: row["First Name"] || "").propercase
         )
         new_member.memberships.create!(cooperative: employee.cooperative, account_number: SecureRandom.uuid)
         new_member
@@ -49,19 +49,19 @@ module Registries
         entry_date: cut_off_date(row),
         debit_amounts_attributes: [
           account: debit_account,
-          amount: row['Balance'].to_f,
+          amount: row["Balance"].to_f,
           commercial_document: program_subscription
         ],
         credit_amounts_attributes: [
           account: credit_account(row),
-          amount: row['Balance'].to_f,
+          amount: row["Balance"].to_f,
           commercial_document: program_subscription
         ]
       )
     end
 
     def debit_account
-      AccountingModule::Account.find_by(name: 'Temporary Program Subscription Account')
+      AccountingModule::Account.find_by(name: "Temporary Program Subscription Account")
     end
 
     def credit_account(row)
@@ -69,7 +69,7 @@ module Registries
     end
 
     def cut_off_date(row)
-      Date.parse(row['Cut Off Date'].to_s)
+      Date.parse(row["Cut Off Date"].to_s)
     end
   end
 end

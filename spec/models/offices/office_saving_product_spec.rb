@@ -21,7 +21,7 @@ module Offices
         office_saving_product = build(:office_saving_product, office: office, saving_product: saving_product)
         office_saving_product.save
 
-        expect(office_saving_product.errors[:saving_product_id]).to eq ['has already been taken']
+        expect(office_saving_product.errors[:saving_product_id]).to eq [ 'has already been taken' ]
       end
     end
 

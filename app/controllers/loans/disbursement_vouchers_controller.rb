@@ -12,7 +12,7 @@ module Loans
       if @voucher.valid?
         @voucher.save
         @voucher.add_amounts_from(@loan)
-        redirect_to loan_disbursements_url(@loan), notice: 'Voucher created successfully.'
+        redirect_to loan_disbursements_url(@loan), notice: "Voucher created successfully."
       else
         render :new, status: :unprocessable_entity
       end
@@ -24,7 +24,7 @@ module Loans
       respond_to do |format|
         format.pdf do
           pdf = Vouchers::LoanVoucherPdf.new(@loan, @voucher, view_context)
-          send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Loan Disbursement Voucher.pdf'
+          send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Loan Disbursement Voucher.pdf"
         end
       end
     end

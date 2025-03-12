@@ -13,7 +13,7 @@ module Memberships
         @payment = Memberships::ProgramSubscriptions::PaymentProcessing.new(payment_params)
         if @payment.valid?
           @payment.save
-          redirect_to member_subscriptions_url(@membership.cooperator), notice: 'Payment saved successfully'
+          redirect_to member_subscriptions_url(@membership.cooperator), notice: "Payment saved successfully"
         else
           render :new, status: :unprocessable_entity
         end

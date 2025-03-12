@@ -14,7 +14,7 @@ module LoansModule
         @loss = LoansModule::Loans::LossProcessing.new(loan_loss_params)
         respond_modal_with @loss,
                            location: loans_module_loan_loss_voucher_url(id: @loan.id),
-                           notice: 'saved successfully'
+                           notice: "saved successfully"
       end
 
       private

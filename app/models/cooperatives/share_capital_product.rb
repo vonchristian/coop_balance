@@ -4,11 +4,11 @@ module Cooperatives
     extend Totalable
     extend VarianceMonitoring
 
-    enum balance_averaging_type: { monthly: 0 }
+    enum :balance_averaging_type, { monthly: 0 }
 
     belongs_to :cooperative
-    belongs_to :office,    class_name: 'Cooperatives::Office'
-    has_many :subscribers, class_name: 'DepositsModule::ShareCapital'
+    belongs_to :office,    class_name: "Cooperatives::Office"
+    has_many :subscribers, class_name: "DepositsModule::ShareCapital"
 
     validates :name,
               :cost_per_share, presence: true

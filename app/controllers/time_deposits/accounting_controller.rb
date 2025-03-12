@@ -1,4 +1,4 @@
-require 'will_paginate/array'
+require "will_paginate/array"
 module TimeDeposits
   class AccountingController < ApplicationController
     def index

@@ -12,7 +12,7 @@ module Offices
       @saving_product = current_office.office_saving_products.create(saving_product_params)
       if @saving_product.valid?
         @saving_product.save!
-        redirect_to office_saving_products_url(current_office), notice: 'Saving product saved successfully.'
+        redirect_to office_saving_products_url(current_office), notice: "Saving product saved successfully."
       else
         render :new, status: :unprocessable_entity
       end

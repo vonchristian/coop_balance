@@ -1,4 +1,4 @@
-require 'will_paginate/array'
+require "will_paginate/array"
 module Loans
   class PaymentsController < ApplicationController
     def index
@@ -15,7 +15,7 @@ module Loans
             to_date: @to_date,
             view_context: view_context
           )
-          send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: "#{@loan.borrower_name} Loan Statement.pdf"
+          send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "#{@loan.borrower_name} Loan Statement.pdf"
         end
         format.html
       end
@@ -31,7 +31,7 @@ module Loans
       @payment = @loan.payment_processor.new(payment_params)
       if @payment.valid?
         @payment.process!
-        redirect_to loan_payment_voucher_url(schedule_id: @payment.schedule_id, loan_id: @loan.id, id: @payment.find_voucher.id), notice: 'Payment voucher created successfully.'
+        redirect_to loan_payment_voucher_url(schedule_id: @payment.schedule_id, loan_id: @loan.id, id: @payment.find_voucher.id), notice: "Payment voucher created successfully."
       else
         render :new, status: :unprocessable_entity
       end
@@ -45,7 +45,7 @@ module Loans
     end
 
     def payment_processor_params
-      @loan.payment_processor.to_s.underscore.tr('/', '_').to_sym
+      @loan.payment_processor.to_s.underscore.tr("/", "_").to_sym
     end
   end
 end

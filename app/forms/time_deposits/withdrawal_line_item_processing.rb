@@ -32,7 +32,7 @@ module TimeDeposits
         office: find_employee.office,
         cooperative: find_employee.cooperative,
         preparer: find_employee,
-        description: 'Time deposit withdrawal.',
+        description: "Time deposit withdrawal.",
         reference_number: or_number,
         account_number: account_number,
         date: date
@@ -70,7 +70,7 @@ module TimeDeposits
     end
 
     def principal_amount_not_more_than_balance
-      errors[:amount] << 'Must be less than or equal to balance.' if amount.to_f > find_time_deposit.balance
+      errors[:amount] << "Must be less than or equal to balance." if amount.to_f > find_time_deposit.balance
     end
   end
 end

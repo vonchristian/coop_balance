@@ -3,12 +3,12 @@
 module AccountingModule
   module RunningBalances
     class Account < ApplicationRecord
-      self.table_name = 'account_running_balances'
+      self.table_name = "account_running_balances"
 
       monetize :amount_cents, as: :amount, numericality: true
 
-      belongs_to :entry, class_name: 'AccountingModule::Entry'
-      belongs_to :account, class_name: 'AccountingModule::Account'
+      belongs_to :entry, class_name: "AccountingModule::Entry"
+      belongs_to :account, class_name: "AccountingModule::Account"
 
       validates :entry_date, :entry_time, presence: true
 

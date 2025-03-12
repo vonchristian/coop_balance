@@ -53,10 +53,10 @@ module AccountingModule
                 entries: @entries_for_pdf,
                 cooperative_service: @cooperative_service,
                 employee: current_user,
-                title: 'Cash Disbursement Vouchers',
+                title: "Cash Disbursement Vouchers",
                 view_context: view_context
               )
-              send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Entries report.pdf'
+              send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Entries report.pdf"
             end
           end
         end

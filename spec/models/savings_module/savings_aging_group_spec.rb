@@ -19,7 +19,7 @@ module SavingsModule
         aging_group = build(:savings_aging_group, office: office, title: '0-30-days')
         aging_group.save
 
-        expect(aging_group.errors[:title]).to eql ['has already been taken']
+        expect(aging_group.errors[:title]).to eql [ 'has already been taken' ]
       end
     end
 

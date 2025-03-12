@@ -3,11 +3,11 @@ module StoreFrontModule
     def index
       @products = if params[:category_id].present?
                     StoreFrontModule::Category.find(params[:category_id]).products.paginate(page: params[:page], per_page: 50)
-                  elsif params[:search].present?
+      elsif params[:search].present?
                     StoreFrontModule::Product.text_search(params[:search]).paginate(page: params[:page], per_page: 50)
-                  else
+      else
                     StoreFrontModule::Product.all.paginate(page: params[:page], per_page: 50)
-                  end
+      end
       @categories = StoreFrontModule::Category.all
       respond_to do |format|
         format.html
@@ -24,7 +24,7 @@ module StoreFrontModule
       @product = StoreFrontModule::ProductRegistration.new(product_params)
       if @product.valid?
         @product.register!
-        redirect_to store_front_module_products_url, notice: 'created successfully'
+        redirect_to store_front_module_products_url, notice: "created successfully"
       else
         render :new, status: :unprocessable_entity
       end

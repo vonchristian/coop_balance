@@ -8,7 +8,7 @@ module ShareCapitals
         BalanceStatusChecker.new(account: @share_capital, product: @share_capital.share_capital_product).set_balance_status
         set_share_capital_as_withdrawn!
       end
-      redirect_to share_capital_url(@share_capital), notice: 'Transaction confirmed successfully.'
+      redirect_to share_capital_url(@share_capital), notice: "Transaction confirmed successfully."
     end
 
     private

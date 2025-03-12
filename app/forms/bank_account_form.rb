@@ -19,13 +19,13 @@ class BankAccountForm
       cooperative: find_employee.cooperative,
       recorder: find_employee,
       entry_date: date, reference_number: reference_number, description: description,
-      credit_amounts_attributes: [account: credit_account, amount: parsed_amount],
-      debit_amounts_attributes: [account_id: account_id, amount: parsed_amount]
+      credit_amounts_attributes: [ account: credit_account, amount: parsed_amount ],
+      debit_amounts_attributes: [ account_id: account_id, amount: parsed_amount ]
     )
   end
 
   def parsed_amount
-    amount.delete('^0-9/.').to_f
+    amount.delete("^0-9/.").to_f
   end
 
   def find_employee

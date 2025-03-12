@@ -3,7 +3,7 @@ module Registries
     def create
       @registry = current_cooperative.bank_account_registries.create(registry_params)
       if @registry.save
-        redirect_to management_module_settings_data_migrations_url, notice: 'Bank Accounts saved successfully'
+        redirect_to management_module_settings_data_migrations_url, notice: "Bank Accounts saved successfully"
         @registry.parse_for_records
       else
         render :new, status: :unprocessable_entity

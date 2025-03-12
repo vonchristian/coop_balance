@@ -29,6 +29,6 @@ describe SavingsAccounts::WithdrawInitiation do
     end
 
     it { expect(voucher.description).to eq params[:description] }
-    it { expect(voucher.account_number).to eq(account_number   ) }
+    it { expect(voucher.account_number).to eq(account_number) }
   end
 end

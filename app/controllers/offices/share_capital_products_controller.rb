@@ -10,7 +10,7 @@ module Offices
       @share_capital_product = current_office.office_share_capital_products.create(share_capital_product_params)
       if @share_capital_product.valid?
         @share_capital_product.save!
-        redirect_to office_share_capital_products_url(current_office), notice: 'Share Capital Product saved successfully.'
+        redirect_to office_share_capital_products_url(current_office), notice: "Share Capital Product saved successfully."
       else
         render :new, status: :unprocessable_entity
       end

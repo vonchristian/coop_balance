@@ -1,14 +1,14 @@
 module Offices
   class NetIncomeConfig < ApplicationRecord
-    enum book_closing: { annually: 0, semi_annually: 1, quarterly: 2, monthly: 3 }
+    enum :book_closing, { annually: 0, semi_annually: 1, quarterly: 2, monthly: 3 }
 
-    belongs_to :office,                      class_name: 'Cooperatives::Office'
-    belongs_to :net_surplus_account,         class_name: 'AccountingModule::Account'
-    belongs_to :net_loss_account,            class_name: 'AccountingModule::Account'
-    belongs_to :total_revenue_account,       class_name: 'AccountingModule::Account'
-    belongs_to :total_expense_account,       class_name: 'AccountingModule::Account'
-    belongs_to :interest_on_capital_account, class_name: 'AccountingModule::Account'
-    has_many :entries,                       through: :accounts, class_name: 'AccountingModule::Entry'
+    belongs_to :office,                      class_name: "Cooperatives::Office"
+    belongs_to :net_surplus_account,         class_name: "AccountingModule::Account"
+    belongs_to :net_loss_account,            class_name: "AccountingModule::Account"
+    belongs_to :total_revenue_account,       class_name: "AccountingModule::Account"
+    belongs_to :total_expense_account,       class_name: "AccountingModule::Account"
+    belongs_to :interest_on_capital_account, class_name: "AccountingModule::Account"
+    has_many :entries,                       through: :accounts, class_name: "AccountingModule::Entry"
 
     validates :net_surplus_account_id, :net_loss_account_id, :total_revenue_account_id, :total_expense_account_id, :interest_on_capital_account_id, uniqueness: { scope: :office_id }
 

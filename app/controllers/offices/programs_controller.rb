@@ -10,7 +10,7 @@ module Offices
       @office_program = current_office.office_programs.create(program_params)
       if @office_program.valid?
         @office_program.save!
-        redirect_to office_programs_url(current_office), notice: 'Program created successfully'
+        redirect_to office_programs_url(current_office), notice: "Program created successfully"
       else
         render :new, status: :unprocessable_entity
       end

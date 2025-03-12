@@ -15,7 +15,7 @@ module Offices
       @net_income_config = @office.net_income_configs.create(net_income_config_params)
       if @net_income_config.valid?
         @net_income_config.save!
-        redirect_to office_net_income_configs_url(@office), notice: 'Net Income Configuration saved successfully'
+        redirect_to office_net_income_configs_url(@office), notice: "Net Income Configuration saved successfully"
       else
         render :new, status: :unprocessable_entity
       end

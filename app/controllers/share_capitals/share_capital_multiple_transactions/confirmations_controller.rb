@@ -6,7 +6,7 @@ module ShareCapitals
         ApplicationRecord.transaction do
           Vouchers::EntryProcessing.new(voucher: @voucher, employee: current_user).process!
         end
-        redirect_to share_capitals_url, notice: 'confirmed successfully'
+        redirect_to share_capitals_url, notice: "confirmed successfully"
       end
     end
   end

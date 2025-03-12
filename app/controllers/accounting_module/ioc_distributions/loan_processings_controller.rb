@@ -11,7 +11,7 @@ module AccountingModule
         @ioc_payment = AccountingModule::IocDistributions::IocToLoan.new(ioc_to_loan_params)
         if @ioc_payment.valid?
           @ioc_payment.process!
-          redirect_to new_accounting_module_ioc_distributions_loan_url, notice: 'added successfully.'
+          redirect_to new_accounting_module_ioc_distributions_loan_url, notice: "added successfully."
         else
           render :new, status: :unprocessable_entity
         end

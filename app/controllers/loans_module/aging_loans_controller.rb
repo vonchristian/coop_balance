@@ -1,4 +1,4 @@
-require 'will_paginate/array'
+require "will_paginate/array"
 module LoansModule
   class AgingLoansController < ApplicationController
     def index
@@ -13,7 +13,7 @@ module LoansModule
         format.html
         format.pdf do
           pdf = LoansModule::Reports::AgingLoansPdf.new(@loans, @start_num, @end_num, view_context)
-          send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Aging Loans.pdf'
+          send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Aging Loans.pdf"
         end
       end
     end

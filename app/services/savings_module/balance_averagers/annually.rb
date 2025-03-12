@@ -25,7 +25,7 @@ module SavingsModule
       end
 
       def daily_balances
-        balances = BigDecimal('0')
+        balances = BigDecimal("0")
         date_range.each do |date|
           balances += saving.balance(to_date: date.end_of_day)
         end

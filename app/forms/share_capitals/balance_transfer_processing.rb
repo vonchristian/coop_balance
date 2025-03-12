@@ -47,7 +47,7 @@ module ShareCapitals
     end
 
     def not_greater_than_balance?
-      errors[:amount] << 'is greater than available balance ' if amount.to_f > available_balance
+      errors[:amount] << "is greater than available balance " if amount.to_f > available_balance
     end
   end
 end

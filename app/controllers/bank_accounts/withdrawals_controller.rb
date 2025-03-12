@@ -10,7 +10,7 @@ module BankAccounts
       @withdrawal = BankAccounts::WithdrawLineItemProcessing.new(withdrawal_params)
       if @withdrawal.valid?
         @withdrawal.process!
-        redirect_to bank_account_voucher_url(id: @withdrawal.find_voucher.id, bank_account_id: @bank_account.id), notice: 'Entry saved successfully.'
+        redirect_to bank_account_voucher_url(id: @withdrawal.find_voucher.id, bank_account_id: @bank_account.id), notice: "Entry saved successfully."
       else
         render :new, status: :unprocessable_entity
       end

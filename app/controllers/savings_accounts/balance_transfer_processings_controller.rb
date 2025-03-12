@@ -13,7 +13,7 @@ module SavingsAccounts
       @balance_transfer = SavingsAccounts::BalanceTransfer.new(balance_transfer_params)
       if @balance_transfer.valid?
         @balance_transfer.process!
-        redirect_to new_savings_account_balance_transfer_url(origin_saving_id: @savings_account.id), notice: 'Added successfully'
+        redirect_to new_savings_account_balance_transfer_url(origin_saving_id: @savings_account.id), notice: "Added successfully"
       else
         render :new, status: :unprocessable_entity
       end
@@ -23,7 +23,7 @@ module SavingsAccounts
       @savings_account = current_office.savings.find(params[:savings_account_id])
       @amount = current_cart.voucher_amounts.find(params[:id])
       @amount.destroy
-      redirect_to new_savings_account_balance_transfer_url(@savings_account), notice: 'removed successfully'
+      redirect_to new_savings_account_balance_transfer_url(@savings_account), notice: "removed successfully"
     end
 
     private

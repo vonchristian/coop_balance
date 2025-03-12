@@ -6,6 +6,5 @@ class AddPreviousEntryToEntries < ActiveRecord::Migration[5.2]
 
     add_index :entries, :previous_entry_hash, unique: true
     add_index :entries, :encrypted_hash, unique: true
-
   end
 end

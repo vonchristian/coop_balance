@@ -1,18 +1,18 @@
 wb = xlsx_package.workbook
 wb.styles do |style|
-  defaults = { style: :thin, color: '000000' }
+  defaults = { style: :thin, color: "000000" }
   border = style.add_style(alignment: { horizontal: :left, vertical: :top, wrap_text: true }, sz: 9, border: defaults)
-  header_style = style.add_style(bg_color: 'ded4d3', b: true, sz: 9, alignment: { horizontal: :center, wrap_text: true }, border: defaults)
+  header_style = style.add_style(bg_color: "ded4d3", b: true, sz: 9, alignment: { horizontal: :center, wrap_text: true }, border: defaults)
   style.add_style(num_fmt: 3, sz: 9)
   subtitle_style = style.add_style(alignment: { horizontal: :left, vertical: :top, wrap_text: true }, sz: 9)
 
-  title = params[:membership_type].present? ? "List of #{params[:membership_type].titleize.pluralize}" : 'List of Regular and Associate Members'
+  title = params[:membership_type].present? ? "List of #{params[:membership_type].titleize.pluralize}" : "List of Regular and Associate Members"
 
   def subtitle
     if params[:organization_id].present?
       Organization.find(params[:organization_id]).name
     else
-      ''
+      ""
     end
   end
 
@@ -21,51 +21,51 @@ wb.styles do |style|
     maf_beneficiaries = member.share_capitals.pluck(:maf_beneficiaries)
     td_beneficiaries = member.time_deposits.not_withdrawn.pluck(:beneficiaries)
     sd_beneficiaries = member.savings.pluck(:beneficiaries)
-    (sc_beneficiaries + maf_beneficiaries + td_beneficiaries + sd_beneficiaries).uniq.compact.join(', ')
+    (sc_beneficiaries + maf_beneficiaries + td_beneficiaries + sd_beneficiaries).uniq.compact.join(", ")
   end
 
   def short_term_loan(member)
     if member.current_membership.regular_member?
-      LoansModule::LoanProduct.where('name like ?', '%Short-Term Loan(Member)%').first
+      LoansModule::LoanProduct.where("name like ?", "%Short-Term Loan(Member)%").first
     else
-      LoansModule::LoanProduct.where('name like ?', '%Short-Term Loan(Non-Member)%').first
+      LoansModule::LoanProduct.where("name like ?", "%Short-Term Loan(Non-Member)%").first
     end
   end
 
   def regular_loan
-    LoansModule::LoanProduct.where('name like ?', '%Regular Loan%').first
+    LoansModule::LoanProduct.where("name like ?", "%Regular Loan%").first
   end
 
   def emergency_loan
-    LoansModule::LoanProduct.where('name like ?', '%Emergency Loan%').first
+    LoansModule::LoanProduct.where("name like ?", "%Emergency Loan%").first
   end
 
   def appliance_loan
-    LoansModule::LoanProduct.where('name like ?', '%Appliance Loan%').first
+    LoansModule::LoanProduct.where("name like ?", "%Appliance Loan%").first
   end
 
   def productive_loan
-    LoansModule::LoanProduct.where('name like ?', '%Productive Loan%').first
+    LoansModule::LoanProduct.where("name like ?", "%Productive Loan%").first
   end
 
-  wb.add_worksheet(name: 'MembersList') do |sheet|
+  wb.add_worksheet(name: "MembersList") do |sheet|
     title_row = sheet.add_row [
-      title, '', '', '', '', '', '', ''
+      title, "", "", "", "", "", "", ""
     ], style: title_style
 
     subtitle_row = sheet.add_row [
-      subtitle, '', '', '', '', '', '', ''
+      subtitle, "", "", "", "", "", "", ""
     ], style: subtitle_style
 
     sheet.merge_cells title_row.cells[(0..5)]
     sheet.merge_cells subtitle_row.cells[(0..5)]
 
     sheet.add_row [
-      'LAST NAME', 'FIRST NAME', 'MIDDLE NAME', 'SEX', 'BIRTH DATE',
-      'AGE', 'CIVIL STATUS', 'ADDRESS', 'MOBILE NUMBER', 'BENEFICIARIES',
-      'SHORT-TERM LOAN BALANCE', 'REGULAR LOAN BALANCE', 'EMERGENCY LOAN BALANCE',
-      'APPLIANCE LOAN BALANCE', 'PRODUCTIVE LOAN BALANCE', 'SAVINGS DEPOSIT BALANCE',
-      'TIME DEPOSIT BALANCE', 'SHARE CAPITAL BALANCE'
+      "LAST NAME", "FIRST NAME", "MIDDLE NAME", "SEX", "BIRTH DATE",
+      "AGE", "CIVIL STATUS", "ADDRESS", "MOBILE NUMBER", "BENEFICIARIES",
+      "SHORT-TERM LOAN BALANCE", "REGULAR LOAN BALANCE", "EMERGENCY LOAN BALANCE",
+      "APPLIANCE LOAN BALANCE", "PRODUCTIVE LOAN BALANCE", "SAVINGS DEPOSIT BALANCE",
+      "TIME DEPOSIT BALANCE", "SHARE CAPITAL BALANCE"
     ], style: header_style
 
     @members_pdf.order(:last_name).each do |member|
@@ -73,12 +73,12 @@ wb.styles do |style|
         member.last_name,
         member.first_name,
         member.middle_name,
-        member.sex.present? ? member.sex.first.titleize : '-',
-        member.date_of_birth.try(:strftime, '%D'),
-        member.date_of_birth.present? ? member.age : '',
+        member.sex.present? ? member.sex.first.titleize : "-",
+        member.date_of_birth.try(:strftime, "%D"),
+        member.date_of_birth.present? ? member.age : "",
         member.civil_status.try(:titleize),
-        member.addresses.present? ? member.current_address_complete_address : '-',
-        member.addresses.present? ? member.current_contact_number : '-',
+        member.addresses.present? ? member.current_address_complete_address : "-",
+        member.addresses.present? ? member.current_contact_number : "-",
         beneficiaries(member),
         member.loans_for(loan_product: short_term_loan(member)).sum { |l| l.principal_balance(to_date: Time.zone.now) },
         member.loans_for(loan_product: regular_loan).sum { |l| l.principal_balance(to_date: Time.zone.now) },

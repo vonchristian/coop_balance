@@ -1,11 +1,11 @@
-require 'will_paginate/array'
+require "will_paginate/array"
 class BankAccountsController < ApplicationController
   def index
     @bank_accounts = if params[:search].present?
                        current_cooperative.bank_accounts.text_search(params[:search])
-                     else
+    else
                        current_cooperative.bank_accounts.paginate(page: params[:page], per_page: 25)
-                     end
+    end
   end
 
   def new
@@ -16,7 +16,7 @@ class BankAccountsController < ApplicationController
     @bank_account = BankAccounts::Opening.new(bank_account_params)
     if @bank_account.valid?
       @bank_account.process!
-      redirect_to bank_accounts_url, notice: 'Bank account details saved successfully.'
+      redirect_to bank_accounts_url, notice: "Bank account details saved successfully."
     else
       render :new, status: :unprocessable_entity
     end

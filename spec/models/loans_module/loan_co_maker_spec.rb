@@ -16,7 +16,7 @@ module LoansModule
 
         loan_co_maker.save
 
-        expect(loan_co_maker.errors[:co_maker_id]).to eq ['has already been taken']
+        expect(loan_co_maker.errors[:co_maker_id]).to eq [ 'has already been taken' ]
       end
     end
 

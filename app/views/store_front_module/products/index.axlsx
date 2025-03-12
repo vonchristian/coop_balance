@@ -1,7 +1,7 @@
 wb = xlsx_package.workbook
-wb.add_worksheet(name: 'Products') do |sheet|
-  sheet.add_row ['Product Name', 'Purchases', 'Sales', 'Available']
+wb.add_worksheet(name: "Products") do |sheet|
+  sheet.add_row [ "Product Name", "Purchases", "Sales", "Available" ]
   StoreFrontModule::Product.includes(:line_items).find_each do |product|
-    sheet.add_row [product.name, product.purchases_balance, product.sales_balance, product.balance]
+    sheet.add_row [ product.name, product.purchases_balance, product.sales_balance, product.balance ]
   end
 end

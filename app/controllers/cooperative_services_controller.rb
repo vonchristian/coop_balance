@@ -14,7 +14,7 @@ class CooperativeServicesController < ApplicationController
     @cooperative_service = current_cooperative.cooperative_services.create(cooperative_service_params)
     respond_modal_with @cooperative_service,
                        location: management_module_settings_configurations_url,
-                       notice: 'Cooperative Service created successfully.'
+                       notice: "Cooperative Service created successfully."
   end
 
   def show

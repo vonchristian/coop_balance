@@ -12,7 +12,7 @@ module ShareCapitals
       authorize %i[share_capitals account_closing]
       if @account_closing.valid?
         @account_closing.save
-        redirect_to share_capital_url(@share_capital), alert: 'ShareCapital Account closed successfully'
+        redirect_to share_capital_url(@share_capital), alert: "ShareCapital Account closed successfully"
       else
         render :new, status: :unprocessable_entity
       end

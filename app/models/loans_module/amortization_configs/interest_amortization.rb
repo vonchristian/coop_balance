@@ -1,7 +1,7 @@
 module LoansModule
   module AmortizationConfigs
     class InterestAmortization < ApplicationRecord
-      enum calculation_type: { straight_line: 0, declining_balance: 1 }
+      enum :calculation_type, { straight_line: 0, declining_balance: 1 }
 
       validates :calculation_type, presence: true
 

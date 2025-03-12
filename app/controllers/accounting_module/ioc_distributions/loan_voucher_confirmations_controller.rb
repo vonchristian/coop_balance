@@ -7,7 +7,7 @@ module AccountingModule
           Vouchers::EntryProcessing.new(updateable: @share_capital, voucher: @voucher, employee: current_user).process!
         end
 
-        redirect_to accounting_module_ioc_distributions_url, notice: 'Transaction confirmed successfully.'
+        redirect_to accounting_module_ioc_distributions_url, notice: "Transaction confirmed successfully."
       end
     end
   end

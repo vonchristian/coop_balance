@@ -13,7 +13,7 @@ module Members
       @membership = @member.memberships.create(membership_params)
       respond_modal_with @membership,
                          location: member_settings_url(@member),
-                         notice: 'Membership saved successfully.'
+                         notice: "Membership saved successfully."
     end
 
     def edit
@@ -28,7 +28,7 @@ module Members
       @membership.update(membership_params)
       respond_modal_with @membership,
                          location: member_settings_url(@member),
-                         notice: 'Membership updated successfully.'
+                         notice: "Membership updated successfully."
     end
 
     private

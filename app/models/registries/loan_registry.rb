@@ -4,7 +4,7 @@ module Registries
       loan_spreadsheet = Roo::Spreadsheet.open(spreadsheet.attachment.path)
       header = loan_spreadsheet.row(2)
       (3..loan_spreadsheet.last_row).each do |i|
-        row = [header, loan_spreadsheet.row(i)].transpose.to_h
+        row = [ header, loan_spreadsheet.row(i) ].transpose.to_h
         upload_loan(row)
       end
     end
@@ -51,22 +51,22 @@ module Registries
     end
 
     def find_borrower(row)
-      if row['Borrower Type'] == 'Member'
+      if row["Borrower Type"] == "Member"
         find_or_create_member_borrower(row)
-      elsif row['Borrower Type'] == 'Organization'
-        cooperative.organizations.find_or_create_by(name: row['Last Name'])
+      elsif row["Borrower Type"] == "Organization"
+        cooperative.organizations.find_or_create_by(name: row["Last Name"])
       end
     end
 
     def find_or_create_member_borrower(row)
-      old_member = Member.find_by(last_name: row['Last Name'], first_name: row['First Name'], middle_name: row['Middle Name'])
+      old_member = Member.find_by(last_name: row["Last Name"], first_name: row["First Name"], middle_name: row["Middle Name"])
       if old_member.present?
         old_member
       else
         new_member = Member.create(
-          last_name: row['Last Name'],
-          middle_name: row['Middle Name'],
-          first_name: row['First Name']
+          last_name: row["Last Name"],
+          middle_name: row["Middle Name"],
+          first_name: row["First Name"]
         )
 
         new_member.memberships.create(cooperative: cooperative)
@@ -75,31 +75,31 @@ module Registries
     end
 
     def find_loan_product(row)
-      LoansModule::LoanProduct.find_by(name: row['Loan Product'])
+      LoansModule::LoanProduct.find_by(name: row["Loan Product"])
     end
 
     def cut_off_date(row)
-      Date.parse(row['Cut Off Date'].to_s)
+      Date.parse(row["Cut Off Date"].to_s)
     end
 
     def find_organization(row)
-      cooperative.organizations.find_or_create_by(name: row['Organization'])
+      cooperative.organizations.find_or_create_by(name: row["Organization"])
     end
 
     def find_barangay(row)
-      Addresses::Barangay.find_or_create_by(name: row['Barangay'])
+      Addresses::Barangay.find_or_create_by(name: row["Barangay"])
     end
 
     def find_municipality(row)
-      Addresses::Municipality.find_or_create_by(name: row['Municipality'])
+      Addresses::Municipality.find_or_create_by(name: row["Municipality"])
     end
 
     def loan_balance(row)
-      row['Loan Balance'].to_d
+      row["Loan Balance"].to_d
     end
 
     def loan_amount(row)
-      row['Loan Amount'].to_d
+      row["Loan Amount"].to_d
     end
 
     def term(row)
@@ -107,19 +107,19 @@ module Registries
     end
 
     def loan_status(row)
-      row['Status'].parameterize.tr('-', '_')
+      row["Status"].parameterize.tr("-", "_")
     end
 
     def maturity_date(row)
-      Date.parse(row['Maturity Date'].to_s)
+      Date.parse(row["Maturity Date"].to_s)
     end
 
     def disbursement_date(row)
-      Date.parse(row['Disbursement Date'].to_s)
+      Date.parse(row["Disbursement Date"].to_s)
     end
 
     def credit_account
-      AccountingModule::Account.find_by(name: 'Temporary Loans Account')
+      AccountingModule::Account.find_by(name: "Temporary Loans Account")
     end
   end
 end

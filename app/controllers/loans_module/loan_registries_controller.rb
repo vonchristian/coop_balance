@@ -6,7 +6,7 @@ module LoansModule
 
       @loan_registry.save
       @loan_registry.parse_for_records
-      redirect_to loans_module_settings_url, notice: 'Registry uploaded successfully'
+      redirect_to loans_module_settings_url, notice: "Registry uploaded successfully"
     end
 
     private

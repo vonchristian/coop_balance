@@ -1,10 +1,10 @@
 module Employees
   class EmployeeCashAccount < ApplicationRecord
-    belongs_to :employee,     class_name: 'User'
-    belongs_to :cash_account, class_name: 'AccountingModule::Account'
+    belongs_to :employee,     class_name: "User"
+    belongs_to :cash_account, class_name: "AccountingModule::Account"
 
     delegate :name, to: :cash_account
-    validates :cash_account_id, uniqueness: { scope: :employee_id, message: 'Already taken' }
+    validates :cash_account_id, uniqueness: { scope: :employee_id, message: "Already taken" }
     # before_validation :validate_asset_account?, on: [:create, :update]
 
     def self.cash_accounts
@@ -27,7 +27,7 @@ module Employees
     private
 
     def validate_asset_account?
-      errors.add(:cash_account_id, 'Must be an asset account') if AccountingModule::Account.find(cash_account_id).account_type != 'asset'
+      errors.add(:cash_account_id, "Must be an asset account") if AccountingModule::Account.find(cash_account_id).account_type != "asset"
     end
   end
 end

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class SavingsAccounts::WithdrawInitiation < ActiveInteraction::Base
-  object :savings_account, class: 'DepositsModule::Saving'
-  object :employee, class: 'User'
+  object :savings_account, class: "DepositsModule::Saving"
+  object :employee, class: "User"
 
   uuid :account_number, :cash_account_id
   decimal :amount
@@ -55,7 +55,6 @@ class SavingsAccounts::WithdrawInitiation < ActiveInteraction::Base
   end
 
   def amount_exceed_balance?
-    errors.add(:base, 'Exceeded available balance') if amount.to_f > savings_account.balance
+    errors.add(:base, "Exceeded available balance") if amount.to_f > savings_account.balance
   end
 end
-

@@ -4,9 +4,9 @@ module AccountingModule
       def create
         @voucher = Vouchers::VoucherProcessing.new(voucher_params)
         if @voucher.process!
-          redirect_to accounting_module_entry_line_item_voucher_url(id: @voucher.find_voucher.id), notice: 'Voucher created successfully.'
+          redirect_to accounting_module_entry_line_item_voucher_url(id: @voucher.find_voucher.id), notice: "Voucher created successfully."
         else
-          redirect_to new_accounting_module_entry_line_item_url, alert: 'Error'
+          redirect_to new_accounting_module_entry_line_item_url, alert: "Error"
         end
       end
 
@@ -17,7 +17,7 @@ module AccountingModule
       def destroy
         @voucher = current_cooperative.vouchers.find(params[:id])
         @voucher.destroy
-        redirect_to accounting_module_entries_url, notice: 'Voucher cancelled successfully.'
+        redirect_to accounting_module_entries_url, notice: "Voucher cancelled successfully."
       end
 
       private

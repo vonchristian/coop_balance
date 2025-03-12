@@ -28,7 +28,7 @@ module AccountingModule
               cooperative: current_cooperative,
               view_context: view_context
             )
-            send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Entries report.pdf'
+            send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Entries report.pdf"
           end
         end
       end
@@ -36,9 +36,9 @@ module AccountingModule
       def entries_for_pdf_report
         @employee = if params[:recorder_id].present?
                       current_cooperative.users.find(params[:recorder_id])
-                    else
+        else
                       current_user
-                    end
+        end
         @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_cooperative.entries.order(entry_date: :asc).first.entry_date
         @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Time.zone.today.end_of_year
         @entries = @employee.entries.order(reference_number: :desc)

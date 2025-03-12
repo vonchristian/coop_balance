@@ -1,6 +1,8 @@
 module LoansModule
   class Loan < ApplicationRecord
-    enum status: { current_loan: 0, past_due: 1, restructured: 2, under_litigation: 3 }
+    enum :status, { current_loan: 0, past_due: 1, restructured: 2, under_litigation: 3 }
+    enum :mode_of_payment, { daily: 0, weekly: 1, monthly: 2, semi_monthly: 3, quarterly: 4, semi_annually: 5, lumpsum: 6 }
+
     extend PercentActive
 
     include PgSearch::Model
@@ -11,42 +13,41 @@ module LoansModule
     include InactivityMonitoring
 
     pg_search_scope :text_search,           against: %i[borrower_full_name tracking_number]
-    pg_search_scope :account_number_search, against: [:account_number]
+    pg_search_scope :account_number_search, against: [ :account_number ]
 
-    multisearchable against: [:borrower_full_name]
+    multisearchable against: [ :borrower_full_name ]
 
-    enum mode_of_payment: { daily: 0, weekly: 1, monthly: 2, semi_monthly: 3, quarterly: 4, semi_annually: 5, lumpsum: 6 }
 
     has_one    :term,                     as: :termable
-    belongs_to :loan_aging_group,         class_name: 'LoansModule::LoanAgingGroup'
-    belongs_to :loan_application,         class_name: 'LoansModule::LoanApplication', optional: true
-    belongs_to :disbursement_voucher,     class_name: 'Voucher', optional: true
+    belongs_to :loan_aging_group,         class_name: "LoansModule::LoanAgingGroup"
+    belongs_to :loan_application,         class_name: "LoansModule::LoanApplication", optional: true
+    belongs_to :disbursement_voucher,     class_name: "Voucher", optional: true
     belongs_to :cooperative
-    belongs_to :office,                   class_name: 'Cooperatives::Office'
-    belongs_to :archived_by,              class_name: 'User', optional: true
+    belongs_to :office,                   class_name: "Cooperatives::Office"
+    belongs_to :archived_by,              class_name: "User", optional: true
     belongs_to :borrower,                 polymorphic: true
-    belongs_to :loan_product,             class_name: 'LoansModule::LoanProduct'
-    belongs_to :street,                   class_name: 'Addresses::Street', optional: true
-    belongs_to :barangay,                 class_name: 'Addresses::Barangay', optional: true
-    belongs_to :municipality,             class_name: 'Addresses::Municipality', optional: true
+    belongs_to :loan_product,             class_name: "LoansModule::LoanProduct"
+    belongs_to :street,                   class_name: "Addresses::Street", optional: true
+    belongs_to :barangay,                 class_name: "Addresses::Barangay", optional: true
+    belongs_to :municipality,             class_name: "Addresses::Municipality", optional: true
     belongs_to :organization,             optional: true
-    belongs_to :preparer,                 class_name: 'User', optional: true
-    belongs_to :receivable_account,       class_name: 'AccountingModule::Account'
+    belongs_to :preparer,                 class_name: "User", optional: true
+    belongs_to :receivable_account,       class_name: "AccountingModule::Account"
 
-    belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account'
-    belongs_to :penalty_revenue_account,  class_name: 'AccountingModule::Account'
+    belongs_to :interest_revenue_account, class_name: "AccountingModule::Account"
+    belongs_to :penalty_revenue_account,  class_name: "AccountingModule::Account"
     has_many :amortization_schedules,     dependent: :destroy
     # deprecate
-    has_many :notices,                    class_name: 'LoansModule::Notice', as: :notified
-    has_many :loan_interests,             class_name: 'LoansModule::Loans::LoanInterest', dependent: :destroy
-    has_many :loan_penalties,             class_name: 'LoansModule::Loans::LoanPenalty',  dependent: :destroy
-    has_many :loan_discounts,             class_name: 'LoansModule::Loans::LoanDiscount', dependent: :destroy
+    has_many :notices,                    class_name: "LoansModule::Notice", as: :notified
+    has_many :loan_interests,             class_name: "LoansModule::Loans::LoanInterest", dependent: :destroy
+    has_many :loan_penalties,             class_name: "LoansModule::Loans::LoanPenalty",  dependent: :destroy
+    has_many :loan_discounts,             class_name: "LoansModule::Loans::LoanDiscount", dependent: :destroy
     has_many :notes,                      as: :noteable
-    has_many :loan_co_makers,             class_name: 'LoansModule::LoanCoMaker'
-    has_many :member_co_makers,           through: :loan_co_makers, source: :co_maker, source_type: 'Member'
-    has_many :loan_agings,                class_name: 'LoansModule::Loans::LoanAging'
-    has_many :loan_aging_groups,          through: :loan_agings, class_name: 'LoansModule::LoanAgingGroup'
-    has_many :entries,                    through: :accounts, class_name: 'AccountingModule::Entry'
+    has_many :loan_co_makers,             class_name: "LoansModule::LoanCoMaker"
+    has_many :member_co_makers,           through: :loan_co_makers, source: :co_maker, source_type: "Member"
+    has_many :loan_agings,                class_name: "LoansModule::Loans::LoanAging"
+    has_many :loan_aging_groups,          through: :loan_agings, class_name: "LoansModule::LoanAgingGroup"
+    has_many :entries,                    through: :accounts, class_name: "AccountingModule::Entry"
 
     delegate :name, :address, :contact_number, to: :cooperative, prefix: true
     delegate :disbursed?, to: :disbursement_voucher, allow_nil: true # remove
@@ -135,7 +136,7 @@ module LoansModule
     end
 
     def entries
-      AccountingModule::Entry.joins(:amounts).where('amounts.account_id' => accounts.ids)
+      AccountingModule::Entry.joins(:amounts).where("amounts.account_id" => accounts.ids)
     end
 
     def self.unpaid
@@ -159,9 +160,9 @@ module LoansModule
     end
 
     def badge_color
-      return 'danger' if past_due?
+      return "danger" if past_due?
 
-      'success' if current_loan?
+      "success" if current_loan?
     end
 
     def total_deductions(args = {})
@@ -186,7 +187,7 @@ module LoansModule
 
       if charges_for_loan_product_accounts.count > 1
         charges_including_cash_accounts_and_loan_product_accounts +
-          [charges_for_loan_product_accounts.last]
+          [ charges_for_loan_product_accounts.last ]
       else
         charges_including_cash_accounts_and_loan_product_accounts
       end
@@ -278,20 +279,20 @@ module LoansModule
     end
 
     def self.not_matured
-      active.joins(:term).where('terms.maturity_date > ?', Time.zone.today)
+      active.joins(:term).where("terms.maturity_date > ?", Time.zone.today)
     end
 
     def self.past_due_loans
       not_cancelled
         .not_archived
         .unpaid
-        .joins(:term).where('terms.maturity_date < ?', Time.zone.today)
+        .joins(:term).where("terms.maturity_date < ?", Time.zone.today)
     end
 
     def self.past_due_loans_on(from_date:, to_date:)
       range = DateRange.new(from_date: from_date, to_date: to_date)
       past_due_loans
-        .joins(:term).where('terms.maturity_date' => range.start_date..range.end_date)
+        .joins(:term).where("terms.maturity_date" => range.start_date..range.end_date)
     end
 
     def self.forwarded_loans
@@ -306,25 +307,25 @@ module LoansModule
       from_date = args[:from_date]
       to_date   = args[:to_date]
       range     = DateRange.new(from_date: from_date, to_date: to_date)
-      disbursed.merge(Voucher.disbursed).where('vouchers.date' => range.start_date..range.end_date)
+      disbursed.merge(Voucher.disbursed).where("vouchers.date" => range.start_date..range.end_date)
     end
 
     def self.disbursed_by(args = {})
-      joins(:disbursement_voucher).where('vouchers.disburser_id' => args[:employee_id])
+      joins(:disbursement_voucher).where("vouchers.disburser_id" => args[:employee_id])
     end
 
     def self.matured(options = {})
       if options[:from_date] && options[:to_date]
         range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
-        joins(:term).where('terms.maturity_date' => range.start_date..range.end_date)
+        joins(:term).where("terms.maturity_date" => range.start_date..range.end_date)
       else
-        joins(:term).where('terms.maturity_date < ?', Time.zone.today)
+        joins(:term).where("terms.maturity_date < ?", Time.zone.today)
       end
     end
 
     def self.matured_on(from_date:, to_date:)
       range = DateRange.new(from_date: from_date, to_date: to_date)
-      joins(:term).where('terms.maturity_date' => range.start_date..range.end_date)
+      joins(:term).where("terms.maturity_date" => range.start_date..range.end_date)
     end
 
     def self.aging(options = {})
@@ -361,7 +362,7 @@ module LoansModule
     # move to loan application
     def net_proceed
       if disbursed?
-        amounts = BigDecimal('0')
+        amounts = BigDecimal("0")
         cooperative.cash_accounts.each do |account|
           accounting_entry.credit_amounts.where(account: account).find_each do |amount|
             amounts += amount.amount
@@ -415,21 +416,21 @@ module LoansModule
 
     def status_color
       if is_past_due?
-        'danger'
+        "danger"
       elsif paid?
-        'success'
+        "success"
       else
-        'gray'
+        "gray"
       end
     end
 
     def status_text
       if is_past_due?
-        'Past Due'
+        "Past Due"
       elsif paid?
-        'Paid'
+        "Paid"
       else
-        'Current'
+        "Current"
       end
     end
 

@@ -1,7 +1,7 @@
 module StoreFrontModule
   module Orders
     class SalesOrder < Order
-      has_many :sales_line_items, class_name: 'StoreFrontModule::LineItems::SalesLineItem'
+      has_many :sales_line_items, class_name: "StoreFrontModule::LineItems::SalesLineItem"
       def self.total_income
         sum(&:income)
       end

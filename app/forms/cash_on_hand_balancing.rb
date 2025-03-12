@@ -18,7 +18,7 @@ class CashOnHandBalancing
     Vouchers::VoucherAmount.create(
       amount: find_employee.voucher_amounts.sum(&:amount),
       account: cash_on_hand_account,
-      amount_type: 'debit',
+      amount_type: "debit",
       description: description
     )
   end

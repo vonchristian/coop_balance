@@ -9,9 +9,9 @@ module StoreFrontModule
         @purchase_return_order = StoreFrontModule::Orders::PurchaseReturnOrderProcessing.new(purchase_order_params)
         if @purchase_return_order.valid?
           @purchase_return_order.process!
-          redirect_to store_front_module_purchase_returns_url, notice: 'Purchase Return processed successfully.'
+          redirect_to store_front_module_purchase_returns_url, notice: "Purchase Return processed successfully."
         else
-          redirect_to new_store_front_module_purchase_return_line_item_url, alert: 'Error'
+          redirect_to new_store_front_module_purchase_return_line_item_url, alert: "Error"
         end
       end
 

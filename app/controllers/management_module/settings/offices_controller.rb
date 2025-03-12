@@ -11,7 +11,7 @@ module ManagementModule
         @branch = @cooperative.offices.create(office_params)
         if @branch.valid?
           @branch.save
-          redirect_to management_module_settings_cooperative_url(@cooperative), notice: 'Branch created successfully'
+          redirect_to management_module_settings_cooperative_url(@cooperative), notice: "Branch created successfully"
         else
           render :new, status: :unprocessable_entity
         end

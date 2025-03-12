@@ -19,7 +19,7 @@ module StoreFrontModule
         @purchase_order = StoreFrontModule::Orders::PurchaseOrderProcessing.new(purchase_order_params)
         if @purchase_order.process!
           @purchase_order.process!
-          redirect_to store_front_module_purchase_orders_url, notice: 'Purchase order processed successfully'
+          redirect_to store_front_module_purchase_orders_url, notice: "Purchase order processed successfully"
         else
           redirect_to new_store_front_module_purchase_line_item_path
         end

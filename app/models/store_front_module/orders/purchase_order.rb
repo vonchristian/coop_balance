@@ -1,9 +1,9 @@
 module StoreFrontModule
   module Orders
     class PurchaseOrder < Order
-      has_many :purchase_line_items, class_name: 'StoreFrontModule::LineItems::PurchaseLineItem',
-                                     foreign_key: 'order_id'
-      has_many :products,            class_name: 'StoreFrontModule::Product',
+      has_many :purchase_line_items, class_name: "StoreFrontModule::LineItems::PurchaseLineItem",
+                                     foreign_key: "order_id"
+      has_many :products,            class_name: "StoreFrontModule::Product",
                                      through: :purchase_order_line_items
 
       delegate :number, :date, :disburser_full_name, to: :voucher, prefix: true, allow_nil: true

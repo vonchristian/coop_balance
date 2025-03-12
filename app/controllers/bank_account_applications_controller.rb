@@ -7,7 +7,7 @@ class BankAccountApplicationsController < ApplicationController
     @bank_account = BankAccountApplicationProcessing.new(bank_account_params)
     if @bank_account.valid?
       @bank_account.process!
-      redirect_to bank_account_url(@bank_account.find_bank_account), notice: 'Bank account created successfully.'
+      redirect_to bank_account_url(@bank_account.find_bank_account), notice: "Bank account created successfully."
     else
       render :new, status: :unprocessable_entity
     end

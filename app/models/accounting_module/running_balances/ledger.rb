@@ -3,12 +3,12 @@
 module AccountingModule
   module RunningBalances
     class Ledger < ApplicationRecord
-      self.table_name = 'ledger_running_balances'
+      self.table_name = "ledger_running_balances"
 
       monetize :amount_cents, as: :amount, numericality: true
 
-      belongs_to :entry, class_name: 'AccountingModule::Entry'
-      belongs_to :ledger, class_name: 'AccountingModule::Ledger'
+      belongs_to :entry, class_name: "AccountingModule::Entry"
+      belongs_to :ledger, class_name: "AccountingModule::Ledger"
 
       validates :entry_date, :entry_time, presence: true
 

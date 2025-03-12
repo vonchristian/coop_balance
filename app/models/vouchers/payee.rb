@@ -23,4 +23,3 @@ module Vouchers
     end
   end
 end
-

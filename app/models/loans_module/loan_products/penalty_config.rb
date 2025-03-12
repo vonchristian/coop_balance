@@ -1,7 +1,7 @@
 module LoansModule
   module LoanProducts
     class PenaltyConfig < ApplicationRecord
-      belongs_to :loan_product, class_name: 'LoansModule::LoanProduct'
+      belongs_to :loan_product, class_name: "LoansModule::LoanProduct"
 
       def self.current
         order(created_at: :desc).first

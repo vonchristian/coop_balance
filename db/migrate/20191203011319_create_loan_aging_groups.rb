@@ -4,7 +4,7 @@ class CreateLoanAgingGroups < ActiveRecord::Migration[5.2]
       t.string :title
       t.integer :start_num
       t.integer :end_num
-      t.belongs_to :office, null: false, foreign_key: true, type: :uuid 
+      t.belongs_to :office, null: false, foreign_key: true, type: :uuid
 
       t.timestamps
     end

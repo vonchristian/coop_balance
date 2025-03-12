@@ -11,7 +11,7 @@ module AccountingModule
         @interest_expense_posting = AccountingModule::Entries::SavingsInterestExpenseEntry.new(voucher_params)
         @interest_expense_posting.process!
 
-        redirect_to accounting_module_interest_expense_voucher_url(id: @interest_expense_posting.find_voucher.id), url: 'Voucher created succesfully.'
+        redirect_to accounting_module_interest_expense_voucher_url(id: @interest_expense_posting.find_voucher.id), url: "Voucher created succesfully."
       end
 
       private

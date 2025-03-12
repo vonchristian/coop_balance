@@ -4,12 +4,12 @@ module StoreFrontModule
 
   class LineItem < ApplicationRecord
     include PgSearch::Model
-    pg_search_scope :text_search, associated_against: { barcodes: [:code] }
+    pg_search_scope :text_search, associated_against: { barcodes: [ :code ] }
 
-    belongs_to :unit_of_measurement, class_name: 'StoreFrontModule::UnitOfMeasurement'
-    belongs_to :cart,                class_name: 'StoreFrontModule::Cart'
-    belongs_to :product,             class_name: 'StoreFrontModule::Product'
-    belongs_to :order,               class_name: 'StoreFrontModule::Order'
+    belongs_to :unit_of_measurement, class_name: "StoreFrontModule::UnitOfMeasurement"
+    belongs_to :cart,                class_name: "StoreFrontModule::Cart"
+    belongs_to :product,             class_name: "StoreFrontModule::Product"
+    belongs_to :order,               class_name: "StoreFrontModule::Order"
     belongs_to :cooperative
     has_many :barcodes, dependent: :destroy
 
@@ -28,7 +28,7 @@ module StoreFrontModule
 
     def self.for_store_front(store_front)
       includes(:order)
-        .where('orders.store_front_id' => store_front.id)
+        .where("orders.store_front_id" => store_front.id)
     end
 
     def self.with_orders
@@ -48,7 +48,7 @@ module StoreFrontModule
     end
 
     def normalized_barcodes
-      barcodes.pluck(:code).join(',')
+      barcodes.pluck(:code).join(",")
     end
 
     def processed?
@@ -61,10 +61,10 @@ module StoreFrontModule
 
     def self.balance_finder(args = {})
       klass = if args.present?
-                args.compact.keys.sort.map { |key| key.to_s.titleize }.join.delete(' ')
-              else
-                'DefaultQuantityCalculator'
-              end
+                args.compact.keys.sort.map { |key| key.to_s.titleize }.join.delete(" ")
+      else
+                "DefaultQuantityCalculator"
+      end
       "StoreFrontModule::QuantityCalculators::#{klass}".constantize
     end
 
@@ -73,7 +73,7 @@ module StoreFrontModule
     end
 
     def normalized_barcodes
-      barcodes.pluck(:code).join(',')
+      barcodes.pluck(:code).join(",")
     end
   end
 end

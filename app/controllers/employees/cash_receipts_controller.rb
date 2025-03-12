@@ -7,11 +7,10 @@ module Employees
       @entries = @employee.cash_on_hand_account.debit_entries.entered_on(from_date: @from_date, to_date: @to_date)
       respond_to do |format|
         format.pdf do
-          pdf = Employees::CashOnHandPdf.new(@entries, @employee, @from_date, @to_date, @title = 'DAILY REGISTER OF CASH RECEIPT', view_context)
-          send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Cash Receipt Report.pdf'
+          pdf = Employees::CashOnHandPdf.new(@entries, @employee, @from_date, @to_date, @title = "DAILY REGISTER OF CASH RECEIPT", view_context)
+          send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Cash Receipt Report.pdf"
         end
       end
     end
   end
 end
-

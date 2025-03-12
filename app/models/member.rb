@@ -7,30 +7,30 @@ class Member < ApplicationRecord
 
   pg_search_scope :text_search, against: %i[first_name middle_name last_name]
   multisearchable against: %i[first_name last_name middle_name]
-  enum sex:          { male: 0, female: 1, other: 2 }
-  enum civil_status: { single: 0, married: 1, widow: 2, divorced: 3 }
+  enum :sex,          { male: 0, female: 1, other: 2 }
+  enum :civil_status, { single: 0, married: 1, widow: 2, divorced: 3 }
 
   has_one_attached :signature_specimen
   has_one_attached :avatar
 
-  has_many :entries,                  class_name: 'AccountingModule::Entry', as: :commercial_document
-  has_many :memberships,              class_name: 'Cooperatives::Membership', as: :cooperator, dependent: :destroy
-  has_many :savings,                  class_name: 'DepositsModule::Saving', as: :depositor
-  has_many :share_capitals,           class_name: 'DepositsModule::ShareCapital', as: :subscriber
-  has_many :time_deposits,            class_name: 'DepositsModule::TimeDeposit', as: :depositor
-  has_many :program_subscriptions,    class_name: 'MembershipsModule::ProgramSubscription', as: :subscriber
-  has_many :loans,                    class_name: 'LoansModule::Loan', as: :borrower
-  has_many :subscribed_programs,      class_name: 'Cooperatives::Program', through: :program_subscriptions, source: :program
-  has_many :organization_memberships, class_name: 'Organizations::OrganizationMember', as: :organization_membership
+  has_many :entries,                  class_name: "AccountingModule::Entry", as: :commercial_document
+  has_many :memberships,              class_name: "Cooperatives::Membership", as: :cooperator, dependent: :destroy
+  has_many :savings,                  class_name: "DepositsModule::Saving", as: :depositor
+  has_many :share_capitals,           class_name: "DepositsModule::ShareCapital", as: :subscriber
+  has_many :time_deposits,            class_name: "DepositsModule::TimeDeposit", as: :depositor
+  has_many :program_subscriptions,    class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
+  has_many :loans,                    class_name: "LoansModule::Loan", as: :borrower
+  has_many :subscribed_programs,      class_name: "Cooperatives::Program", through: :program_subscriptions, source: :program
+  has_many :organization_memberships, class_name: "Organizations::OrganizationMember", as: :organization_membership
   has_many :organizations,            through: :organization_memberships
   has_many :relationships,            as: :relationee
   has_many :relations,                as: :relationer
   has_many :beneficiaries,                dependent: :destroy
-  has_many :loan_applications,            class_name: 'LoansModule::LoanApplication', as: :borrower
-  has_many :share_capital_applications,   class_name: 'ShareCapitalsModule::ShareCapitalApplication', as: :subscriber
+  has_many :loan_applications,            class_name: "LoansModule::LoanApplication", as: :borrower
+  has_many :share_capital_applications,   class_name: "ShareCapitalsModule::ShareCapitalApplication", as: :subscriber
   has_many :savings_account_applications, as: :depositor
-  has_many :time_deposit_applications,    class_name: 'TimeDepositsModule::TimeDepositApplication', as: :depositor
-  has_many :identifications,              class_name: 'IdentificationModule::Identification', as: :identifiable
+  has_many :time_deposit_applications,    class_name: "TimeDepositsModule::TimeDepositApplication", as: :depositor
+  has_many :identifications,              class_name: "IdentificationModule::Identification", as: :identifiable
 
   validates :last_name, :first_name, presence: true, on: :update
 
@@ -41,26 +41,26 @@ class Member < ApplicationRecord
 
   def beneficiaries
     sc_beneficiaries = if share_capitals.present?
-                         share_capitals.pluck(:beneficiaries).map { |b| b.present? ? ["#{b} (SC)"] : [] }
-                       else
+                         share_capitals.pluck(:beneficiaries).map { |b| b.present? ? [ "#{b} (SC)" ] : [] }
+    else
                          []
-                       end
+    end
     maf_beneficiaries = if share_capitals.present?
-                          share_capitals.pluck(:maf_beneficiaries).map { |b| b.present? ? ["#{b} (MAF)"] : [] }
-                        else
+                          share_capitals.pluck(:maf_beneficiaries).map { |b| b.present? ? [ "#{b} (MAF)" ] : [] }
+    else
                           []
-                        end
+    end
     td_beneficiaries = if time_deposits.present?
-                         time_deposits.not_withdrawn.pluck(:beneficiaries).map { |b| b.present? ? ["#{b} (TD)"] : [] }
-                       else
+                         time_deposits.not_withdrawn.pluck(:beneficiaries).map { |b| b.present? ? [ "#{b} (TD)" ] : [] }
+    else
                          []
-                       end
+    end
     sd_beneficiaries = if savings.present?
-                         savings.pluck(:beneficiaries).map { |b| b.present? ? ["#{b} (SD)"] : [] }
-                       else
+                         savings.pluck(:beneficiaries).map { |b| b.present? ? [ "#{b} (SD)" ] : [] }
+    else
                          []
-                       end
-    (sc_beneficiaries + maf_beneficiaries + td_beneficiaries + sd_beneficiaries).uniq.compact.join(', ')
+    end
+    (sc_beneficiaries + maf_beneficiaries + td_beneficiaries + sd_beneficiaries).uniq.compact.join(", ")
   end
 
   def self.retired
@@ -68,7 +68,7 @@ class Member < ApplicationRecord
   end
 
   def self.for_cooperative(args = {})
-    joins(:memberships).where('memberships.cooperative_id' => args[:cooperative].id)
+    joins(:memberships).where("memberships.cooperative_id" => args[:cooperative].id)
   end
 
   def self.updated_at(args = {})
@@ -77,7 +77,7 @@ class Member < ApplicationRecord
     from_date = args[:from_date] || latest.last_transaction_date
     to_date   = args[:to_date]   || oldest.last_transaction_date
     date_range = DateRange.new(from_date: from_date, to_date: to_date)
-    where('last_transaction_date' => date_range.range)
+    where("last_transaction_date" => date_range.range)
   end
 
   def self.created_at(args = {})
@@ -86,7 +86,7 @@ class Member < ApplicationRecord
     from_date = args[:from_date] || latest.last_transaction_date
     to_date   = args[:to_date]   || oldest.last_transaction_date
     date_range = DateRange.new(from_date: from_date, to_date: to_date)
-    where('created_at' => date_range.range)
+    where("created_at" => date_range.range)
   end
 
   def self.oldest
@@ -134,7 +134,7 @@ class Member < ApplicationRecord
     if sales_orders.present?
       sales_orders.order(created_at: :asc).last.date
     else
-      'No Purchases yet'
+      "No Purchases yet"
     end
   end
 
@@ -203,17 +203,17 @@ class Member < ApplicationRecord
     to_date   = args.fetch(:to_date)
     activity  = entries.where(office: office).entered_on(from_date: from_date, to_date: to_date)
     if activity.present?
-      'Active'
+      "Active"
     else
-      'Inactive'
+      "Inactive"
     end
   end
 
   def activity_status_text_color(args = {})
-    if activity_status(args) == 'Active'
-      'success'
+    if activity_status(args) == "Active"
+      "success"
     else
-      'danger'
+      "danger"
     end
   end
 

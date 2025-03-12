@@ -12,7 +12,7 @@ module ManagementModule
         @time_deposit_product = current_cooperative.time_deposit_products.create(time_deposit_product_params)
         respond_modal_with @time_deposit_product,
                            location: management_module_settings_cooperative_products_url,
-                           notice: 'Time Deposit product saved successfully.'
+                           notice: "Time Deposit product saved successfully."
       end
 
       def show

@@ -15,10 +15,10 @@ module LoansModule
 
       def create_voucher_amount
         loan_application.voucher_amounts.where(
-          description: 'Capital Build Up',
+          description: "Capital Build Up",
           account: share_capital.share_capital_equity_account,
           cooperative: loan_application.cooperative,
-          amount_type: 'credit'
+          amount_type: "credit"
         ).first_or_create(amount: amount)
       end
 

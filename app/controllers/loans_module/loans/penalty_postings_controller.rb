@@ -13,7 +13,7 @@ module LoansModule
         @loan = current_cooperative.loans.find(params[:loan_id])
         @penalty_posting = LoansModule::Loans::PenaltyPosting.new(penalty_params)
         @penalty_posting.post!
-        respond_modal_with @penalty_posting, location: loan_url(@loan), notice: 'Penalty receivable posted successfully.'
+        respond_modal_with @penalty_posting, location: loan_url(@loan), notice: "Penalty receivable posted successfully."
         # if @penalty_posting.valid?
         #   @penalty_posting.post!
         #   redirect_to loan_url(@loan), notice: "Penalty receivable posted successfully."

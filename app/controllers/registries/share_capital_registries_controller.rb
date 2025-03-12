@@ -5,7 +5,7 @@ module Registries
       @registry.save
       @registry.parse_for_records
       # disable turbolinks on redirects
-      redirect_to management_module_settings_data_migrations_url, notice: 'Share Capital registry saved successfully'
+      redirect_to management_module_settings_data_migrations_url, notice: "Share Capital registry saved successfully"
     end
 
     private

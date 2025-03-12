@@ -9,7 +9,7 @@ module LoansModule
         @loan_aging_group = current_office.loan_aging_groups.create(loan_aging_group_params)
         if @loan_aging_group.valid?
           @loan_aging_group.save!
-          redirect_to loans_module_settings_url, notice: 'Loan aging group created successfully.'
+          redirect_to loans_module_settings_url, notice: "Loan aging group created successfully."
         else
           render :new, status: :unprocessable_entity
         end
@@ -29,7 +29,7 @@ module LoansModule
         return unless @loan_aging_group.valid?
 
         @loan_aging_group.save!
-        redirect_to loans_module_settings_loan_aging_group_url(@loan_aging_group), notice: 'updated successfully'
+        redirect_to loans_module_settings_loan_aging_group_url(@loan_aging_group), notice: "updated successfully"
       end
 
       private

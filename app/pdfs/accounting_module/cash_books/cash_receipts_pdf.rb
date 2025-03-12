@@ -4,7 +4,7 @@ module AccountingModule
       attr_reader :entries, :employee, :from_date, :to_date, :view_context, :cooperative, :accounts, :title, :cooperative_service, :office
 
       def initialize(args)
-        super(margin: 30, page_size: 'A4', page_layout: :portrait)
+        super(margin: 30, page_size: "A4", page_layout: :portrait)
         @entries      = args[:entries]
         @employee     = args[:employee]
         @office       = @employee.office
@@ -23,7 +23,7 @@ module AccountingModule
       private
 
       def price(number)
-        view_context.number_to_currency(number, unit: 'P ')
+        view_context.number_to_currency(number, unit: "P ")
       end
 
       def display_commercial_document_for(entry)
@@ -31,33 +31,33 @@ module AccountingModule
       end
 
       def heading
-        bounding_box [300, 770], width: 50 do
+        bounding_box [ 300, 770 ], width: 50 do
           image Rails.root.join("app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg").to_s, width: 50, height: 50
         end
-        bounding_box [360, 770], width: 200 do
+        bounding_box [ 360, 770 ], width: 200 do
           text cooperative.abbreviated_name.to_s, style: :bold, size: 20
           text cooperative.name.try(:upcase).to_s, size: 8
           text cooperative.address.to_s, size: 8
         end
-        bounding_box [0, 770], width: 400 do
+        bounding_box [ 0, 770 ], width: 400 do
           text title.upcase.to_s, style: :bold, size: 14
           move_down 5
-          table([['Employee:', employee.first_middle_and_last_name.to_s]],
-                cell_style: { padding: [0, 0, 1, 0], inline_format: true, size: 10 },
-                column_widths: [50, 150]) do
+          table([ [ "Employee:", employee.first_middle_and_last_name.to_s ] ],
+                cell_style: { padding: [ 0, 0, 1, 0 ], inline_format: true, size: 10 },
+                column_widths: [ 50, 150 ]) do
             cells.borders = []
             column(1).font_style = :bold
           end
-          table([[{ content: "#{from_date.strftime('%b. %e, %Y')} - #{to_date.strftime('%b. %e, %Y')}", colspan: 2 }]],
-                cell_style: { padding: [0, 0, 1, 0], inline_format: true, size: 10 },
-                column_widths: [50, 150]) do
+          table([ [ { content: "#{from_date.strftime('%b. %e, %Y')} - #{to_date.strftime('%b. %e, %Y')}", colspan: 2 } ] ],
+                cell_style: { padding: [ 0, 0, 1, 0 ], inline_format: true, size: 10 },
+                column_widths: [ 50, 150 ]) do
             cells.borders = []
             column(1).font_style = :bold
           end
           unless cooperative_service.nil?
-            table([[{ content: cooperative_service.title, colspan: 2 }]],
-                  cell_style: { padding: [0, 0, 1, 0], inline_format: true, size: 10 },
-                  column_widths: [50, 150]) do
+            table([ [ { content: cooperative_service.title, colspan: 2 } ] ],
+                  cell_style: { padding: [ 0, 0, 1, 0 ], inline_format: true, size: 10 },
+                  column_widths: [ 50, 150 ]) do
               cells.borders = []
               column(1).font_style = :bold
             end
@@ -65,7 +65,7 @@ module AccountingModule
         end
         move_down 10
         stroke do
-          stroke_color '24292E'
+          stroke_color "24292E"
           line_width 1
           stroke_horizontal_rule
           move_down 5
@@ -73,11 +73,11 @@ module AccountingModule
       end
 
       def entries_table_header
-        table([['DATE', { content: 'PARTICULARS', colspan: 2 }, 'REF. NO.', 'DEBIT', 'CREDIT']],
-              cell_style: { inline_format: true, size: 7, font: 'Helvetica', padding: [4, 2, 4, 2] },
-              column_widths: [40, 140, 165, 50, 70, 70]) do
+        table([ [ "DATE", { content: "PARTICULARS", colspan: 2 }, "REF. NO.", "DEBIT", "CREDIT" ] ],
+              cell_style: { inline_format: true, size: 7, font: "Helvetica", padding: [ 4, 2, 4, 2 ] },
+              column_widths: [ 40, 140, 165, 50, 70, 70 ]) do
           row(0).font_style = :bold
-          row(0).background_color = 'DDDDDD'
+          row(0).background_color = "DDDDDD"
           column(4).align = :right
           column(5).align = :right
           column(2).align = :center
@@ -88,27 +88,27 @@ module AccountingModule
       def entries_table
         if @entries.none?
           move_down 10
-          text 'No entries data.', align: :center
+          text "No entries data.", align: :center
         else
           entries_table_header
 
           entries_data ||= entries.sort_by { |e| e.reference_number.to_i }.map do |entry|
             if entry.cancelled?
-              ['Cancelled', '-', '-', "##{entry.reference_number}", '-', '-']
+              [ "Cancelled", "-", "-", "##{entry.reference_number}", "-", "-" ]
             else
               [
-                entry.entry_date.strftime('%D'),
+                entry.entry_date.strftime("%D"),
                 display_commercial_document_for(entry).try(:upcase),
                 entry.description,
                 "##{entry.reference_number}",
-                entry.debit_amounts.where(account: office.cash_accounts).sum(&:amount).zero? ? '-' : price(entry.debit_amounts.where(account: office.cash_accounts).sum(&:amount)),
-                entry.credit_amounts.where(account: office.cash_accounts).sum(&:amount).zero? ? '-' : price(entry.credit_amounts.where(account: office.cash_accounts).sum(&:amount))
+                entry.debit_amounts.where(account: office.cash_accounts).sum(&:amount).zero? ? "-" : price(entry.debit_amounts.where(account: office.cash_accounts).sum(&:amount)),
+                entry.credit_amounts.where(account: office.cash_accounts).sum(&:amount).zero? ? "-" : price(entry.credit_amounts.where(account: office.cash_accounts).sum(&:amount))
               ]
             end
           end
           table(entries_data,
-                cell_style: { inline_format: true, size: 8, padding: [1, 5, 3, 2] },
-                column_widths: [40, 140, 165, 50, 70, 70]) do
+                cell_style: { inline_format: true, size: 8, padding: [ 1, 5, 3, 2 ] },
+                column_widths: [ 40, 140, 165, 50, 70, 70 ]) do
             column(4).align = :right
             column(5).align = :right
           end
@@ -117,10 +117,10 @@ module AccountingModule
       end
 
       def grand_total_table
-        grand_total_data = [[{ content: 'Total ', colspan: 4 }, price(grand_total), '']]
+        grand_total_data = [ [ { content: "Total ", colspan: 4 }, price(grand_total), "" ] ]
         table(grand_total_data,
-              cell_style: { inline_format: true, size: 8, padding: [1, 5, 3, 2] },
-              column_widths: [40, 140, 165, 50, 70, 70]) do
+              cell_style: { inline_format: true, size: 8, padding: [ 1, 5, 3, 2 ] },
+              column_widths: [ 40, 140, 165, 50, 70, 70 ]) do
           row(0).font_style = :bold
           column(4).align = :right
           column(5).align = :right
@@ -134,11 +134,11 @@ module AccountingModule
         text "List of similar reference numbers with their total amounts. (#{grouped_similar_reference_numbers.count})", size: 9
         move_down 4
         sub_total_data ||= grouped_similar_reference_numbers.sort_by(&:to_i).map do |reference_number|
-          ['', '', "No. of Entries: #{entries.where(reference_number: reference_number).count}", "##{reference_number}", price(debits_sub_total(reference_number)).to_s, '']
+          [ "", "", "No. of Entries: #{entries.where(reference_number: reference_number).count}", "##{reference_number}", price(debits_sub_total(reference_number)).to_s, "" ]
         end
         table(sub_total_data,
-              cell_style: { inline_format: true, size: 8, padding: [1, 5, 3, 2] },
-              column_widths: [40, 140, 165, 50, 70, 70]) do
+              cell_style: { inline_format: true, size: 8, padding: [ 1, 5, 3, 2 ] },
+              column_widths: [ 40, 140, 165, 50, 70, 70 ]) do
           column(4).align = :right
           column(5).align = :right
         end
@@ -149,7 +149,7 @@ module AccountingModule
       end
 
       def grouped_similar_reference_numbers
-        entries.where(reference_number: entries.select(:reference_number).group(:reference_number).having('count(*) > 1')).order(:reference_number).pluck(:reference_number).uniq
+        entries.where(reference_number: entries.select(:reference_number).group(:reference_number).having("count(*) > 1")).order(:reference_number).pluck(:reference_number).uniq
       end
 
       def debits_sub_total(reference_number)
@@ -164,4 +164,3 @@ module AccountingModule
     end
   end
 end
-

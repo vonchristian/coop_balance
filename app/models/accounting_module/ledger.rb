@@ -5,26 +5,26 @@ module AccountingModule
     NORMAL_CREDIT_BALANCE = %w[equity liability revenue].freeze
     has_ancestry
 
-    enum account_type: {
-      asset: 'asset',
-      liability: 'liability',
-      equity: 'equity',
-      revenue: 'revenue',
-      expense: 'expense'
+    enum :account_type, {
+      asset: "asset",
+      liability: "liability",
+      equity: "equity",
+      revenue: "revenue",
+      expense: "expense"
     }
 
-    has_many :accounts, class_name: 'AccountingModule::Account'
-    has_many :running_balances, class_name: 'AccountingModule::RunningBalances::Ledger'
+    has_many :accounts, class_name: "AccountingModule::Account"
+    has_many :running_balances, class_name: "AccountingModule::RunningBalances::Ledger"
 
-    has_many :credit_amounts,        -> { not_cancelled }, class_name: 'AccountingModule::CreditAmount', through: :accounts
-    has_many :debit_amounts,         -> { not_cancelled }, class_name: 'AccountingModule::DebitAmount', through: :accounts
+    has_many :credit_amounts,        -> { not_cancelled }, class_name: "AccountingModule::CreditAmount", through: :accounts
+    has_many :debit_amounts,         -> { not_cancelled }, class_name: "AccountingModule::DebitAmount", through: :accounts
 
     def subsidiary_ledgers
       children
     end
 
     def self.balance(options = {})
-      accounts_balance = BigDecimal('0')
+      accounts_balance = BigDecimal("0")
       find_each do |ledger|
         if ledger.contra?
           accounts_balance -= ledger.balance(options)
@@ -58,13 +58,13 @@ module AccountingModule
     end
 
     def self.running_balance(entry_date: nil)
-      accounts_balance = BigDecimal('0')
+      accounts_balance = BigDecimal("0")
       find_each do |ledger|
         accounts_balance += if ledger.children
                               ledger.children.running_balance(entry_date: entry_date)
-                            else
+        else
                               ledger.running_balance(entry_date: entry_date)
-                            end
+        end
       end
 
       accounts_balance

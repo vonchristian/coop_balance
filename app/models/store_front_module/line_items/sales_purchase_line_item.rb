@@ -1,8 +1,8 @@
 module StoreFrontModule
   module LineItems
     class SalesPurchaseLineItem < LineItem
-      belongs_to :sales_line_item, class_name: 'StoreFrontModule::LineItems::SalesLineItem'
-      belongs_to :purchase_line_item, class_name: 'StoreFrontModule::LineItems::PurchaseLineItem'
+      belongs_to :sales_line_item, class_name: "StoreFrontModule::LineItems::SalesLineItem"
+      belongs_to :purchase_line_item, class_name: "StoreFrontModule::LineItems::PurchaseLineItem"
       delegate :sales_order, to: :sales_line_item
 
       def self.total_quantity

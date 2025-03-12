@@ -11,7 +11,7 @@ class MetricsController < ApplicationController
       format.html
       format.pdf do
         pdf = MetricsPdf.new(@members, @revenues, @expenses, @from_date, @to_date, view_context)
-        send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Metrics.pdf'
+        send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Metrics.pdf"
       end
     end
   end

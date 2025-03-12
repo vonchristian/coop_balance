@@ -14,7 +14,7 @@ module Members
       @member = current_cooperative.member_memberships.find(params[:member_id])
       @share_capital = ShareCapitals::Opening.new(share_capital_params)
       if @share_capital.subscribe!
-        redirect_to share_capital_url(@share_capital.find_share_capital), notice: 'Success'
+        redirect_to share_capital_url(@share_capital.find_share_capital), notice: "Success"
       else
         render :new, status: :unprocessable_entity
       end

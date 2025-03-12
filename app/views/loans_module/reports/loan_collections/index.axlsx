@@ -1,11 +1,11 @@
 wb = xlsx_package.workbook
-wb.add_worksheet(name: 'Loan Collections') do |sheet|
-  sheet.add_row ['Borrower', 'Date', 'REF #', 'Principal', 'Interest', 'Penalty', 'Total']
+wb.add_worksheet(name: "Loan Collections") do |sheet|
+  sheet.add_row [ "Borrower", "Date", "REF #", "Principal", "Interest", "Penalty", "Total" ]
   @collections.each do |entry|
     current_cooperative.loans.for_entry(entry: entry).each do |loan|
       sheet.add_row [
         loan.borrower_name,
-        entry.entry_date.strftime('%B %e, %Y'),
+        entry.entry_date.strftime("%B %e, %Y"),
         entry.reference_number,
         LoansModule::Payments::Classifier.new(loan: loan, entry: entry).principal,
         LoansModule::Payments::Classifier.new(loan: loan, entry: entry).interest,

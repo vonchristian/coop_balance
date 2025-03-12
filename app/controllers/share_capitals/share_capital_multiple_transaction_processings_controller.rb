@@ -4,9 +4,9 @@ module ShareCapitals
       @share_capital_multiple_transaction = ShareCapitals::MultiplePaymentVoucherProcessing.new(voucher_params)
       if @share_capital_multiple_transaction.valid?
         @share_capital_multiple_transaction.process!
-        redirect_to share_capital_multiple_transaction_voucher_url(id: current_office.vouchers.find_by!(account_number: params[:share_capitals_multiple_payment_voucher_processing][:account_number]).id), notice: 'created successfully'
+        redirect_to share_capital_multiple_transaction_voucher_url(id: current_office.vouchers.find_by!(account_number: params[:share_capitals_multiple_payment_voucher_processing][:account_number]).id), notice: "created successfully"
       else
-        redirect_to new_share_capital_multiple_transaction_url, alert: 'Error'
+        redirect_to new_share_capital_multiple_transaction_url, alert: "Error"
       end
     end
 

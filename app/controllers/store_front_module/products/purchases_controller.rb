@@ -19,7 +19,7 @@ module StoreFrontModule
         @stock = @product.stocks.build(stock_params)
         if @stock.valid?
           @stock.save
-          redirect_to store_front_module_product_path(@product), notice: 'Stock saved successfully'
+          redirect_to store_front_module_product_path(@product), notice: "Stock saved successfully"
         else
           render :new, status: :unprocessable_entity
         end

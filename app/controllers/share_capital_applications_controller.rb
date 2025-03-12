@@ -9,7 +9,7 @@ class ShareCapitalApplicationsController < ApplicationController
     @share_capital_application = ShareCapitalApplicationProcessing.new(application_params)
     if @share_capital_application.valid?
       @share_capital_application.process!
-      redirect_to share_capital_application_voucher_url(share_capital_application_id: @share_capital_application.find_share_capital_application.id, id: @share_capital_application.find_voucher.id), notice: 'Voucher created successfully.'
+      redirect_to share_capital_application_voucher_url(share_capital_application_id: @share_capital_application.find_share_capital_application.id, id: @share_capital_application.find_voucher.id), notice: "Voucher created successfully."
     else
       render :new, status: :unprocessable_entity
     end

@@ -14,7 +14,7 @@ module Loans
       @disbursement = LoanDisbursementForm.new(disbursement_params)
       if @disbursement.valid?
         @disbursement.save
-        redirect_to loan_path(@loan), notice: 'Disbursed successfully.'
+        redirect_to loan_path(@loan), notice: "Disbursed successfully."
       else
         render :new, status: :unprocessable_entity
       end

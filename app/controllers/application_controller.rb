@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   include Pundit::Authorization
   include Pagy::Backend
-  protect_from_forgery with: :null_session, if: proc { |c| c.request.format == 'application/json' }
+  protect_from_forgery with: :null_session, if: proc { |c| c.request.format == "application/json" }
   before_action :authenticate_user!
   rescue_from Pundit::NotAuthorizedError, with: :permission_denied
   helper_method :current_cooperative, :current_cart, :current_office, :current_store_front
@@ -48,6 +48,6 @@ class ApplicationController < ActionController::Base
   end
 
   def permission_denied
-    redirect_to '/', alert: 'Sorry but you are not allowed to access this page.'
+    redirect_to "/", alert: "Sorry but you are not allowed to access this page."
   end
 end

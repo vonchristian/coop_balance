@@ -1,9 +1,9 @@
 class SavingsAccountsController < ApplicationController
   def index
     if params[:search].present?
-      @pagy, @savings_accounts = pagy(current_office.savings.includes(:saving_product, :liability_account, depositor: [avatar_attachment: [:blob]]).text_search(params[:search]))
+      @pagy, @savings_accounts = pagy(current_office.savings.includes(:saving_product, :liability_account, depositor: [ avatar_attachment: [ :blob ] ]).text_search(params[:search]))
     else
-      @pagy, @savings_accounts = pagy(current_office.savings.includes(:saving_product, :liability_account, depositor: [avatar_attachment: [:blob]]).order(:account_owner_name))
+      @pagy, @savings_accounts = pagy(current_office.savings.includes(:saving_product, :liability_account, depositor: [ avatar_attachment: [ :blob ] ]).order(:account_owner_name))
     end
     @offices = current_cooperative.offices
   end
@@ -22,7 +22,7 @@ class SavingsAccountsController < ApplicationController
           savings_account: @savings_account,
           view_context: view_context
         )
-        send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Statement of Account.pdf'
+        send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Statement of Account.pdf"
         nil
       end
     end

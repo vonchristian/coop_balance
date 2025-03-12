@@ -7,9 +7,9 @@ module Members
       @merging = Members::Merging.new
       @members = if params[:search].present?
                    current_cooperative.member_memberships.where.not(id: @current_member.id).text_search(params[:search]).paginate(page: params[:page], per_page: 20)
-                 else
+      else
                    current_cooperative.member_memberships.where.not(id: @current_member.id).text_search(@current_member.last_name).paginate(page: params[:page], per_page: 20)
-                 end
+      end
     end
 
     def create

@@ -1,15 +1,15 @@
-require 'will_paginate/array'
+require "will_paginate/array"
 module Organizations
   class MembersController < ApplicationController
     def index
       @organization = current_cooperative.organizations.find(params[:organization_id])
       @members = if params[:membership_type].present?
                    @organization.member_memberships.select { |m| m.current_membership.membership_type == params[:membership_type] }.paginate(page: params[:page], per_page: 25)
-                 elsif params[:search].present?
+      elsif params[:search].present?
                    @organization.member_memberships.text_search(params[:search]).paginate(page: params[:page], per_page: 25)
-                 else
+      else
                    @organization.member_memberships.uniq.paginate(page: params[:page], per_page: 25)
-                 end
+      end
     end
 
     def new
@@ -33,7 +33,7 @@ module Organizations
         )
       )
       @member.process!
-      redirect_to new_organization_member_url(@organization), notice: 'Member added successfully.'
+      redirect_to new_organization_member_url(@organization), notice: "Member added successfully."
     end
 
     private

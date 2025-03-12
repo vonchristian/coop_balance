@@ -1,18 +1,18 @@
 module StoreFrontModule
   class Order < ApplicationRecord
     include PgSearch::Model
-    pg_search_scope :text_search, against: [:commercial_document_name]
+    pg_search_scope :text_search, against: [ :commercial_document_name ]
 
-    enum pay_type: { cash: 0, check: 1 }
+    enum :pay_type, { cash: 0, check: 1 }
 
-    belongs_to :employee,                 class_name: 'User'
+    belongs_to :employee,                 class_name: "User"
     belongs_to :commercial_document,      polymorphic: true
     belongs_to :store_front
     belongs_to :cooperative
     belongs_to :voucher
 
-    has_many :line_items,                 class_name: 'StoreFrontModule::LineItem', dependent: :destroy
-    has_many :products,                   class_name: 'StoreFrontModule::Product', through: :line_items
+    has_many :line_items,                 class_name: "StoreFrontModule::LineItem", dependent: :destroy
+    has_many :products,                   class_name: "StoreFrontModule::Product", through: :line_items
 
     delegate :name,                       to: :commercial_document, prefix: true
     delegate :name,                       to: :employee, prefix: true, allow_nil: true
@@ -28,7 +28,7 @@ module StoreFrontModule
     def self.ordered_on(options = {})
       if options[:from_date] && options[:to_date]
         date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
-        where('date' => (date_range.start_date..date_range.end_date))
+        where("date" => (date_range.start_date..date_range.end_date))
       else
         all
       end
@@ -54,9 +54,9 @@ module StoreFrontModule
 
     def badge_color
       if cash? || check?
-        'green'
+        "green"
       elsif credit?
-        'red'
+        "red"
       end
     end
 

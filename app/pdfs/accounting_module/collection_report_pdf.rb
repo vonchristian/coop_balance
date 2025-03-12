@@ -3,7 +3,7 @@ module AccountingModule
     attr_reader :view_context
 
     def initialize(entries, employee, from_date, to_date, view_context)
-      super(margin: 30, page_size: 'A4', page_layout: :portrait)
+      super(margin: 30, page_size: "A4", page_layout: :portrait)
       @entries = entries
       @employee = employee
       @from_date = from_date
@@ -17,7 +17,7 @@ module AccountingModule
     private
 
     def price(number)
-      view_context.number_to_currency(number, unit: 'P ')
+      view_context.number_to_currency(number, unit: "P ")
     end
 
     def display_commercial_document_for(entry)
@@ -31,23 +31,23 @@ module AccountingModule
     end
 
     def heading
-      bounding_box [310, 780], width: 60 do
-        image Rails.root.join('app/assets/images/kccmc_logo.jpg').to_s, width: 70, height: 70
+      bounding_box [ 310, 780 ], width: 60 do
+        image Rails.root.join("app/assets/images/kccmc_logo.jpg").to_s, width: 70, height: 70
       end
-      bounding_box [390, 770], width: 150 do
-        text 'KCCMC', style: :bold, size: 22
-        text 'Kalanguya Cultural Community', size: 10
-        text 'Multipurpose Cooperative', size: 10
+      bounding_box [ 390, 770 ], width: 150 do
+        text "KCCMC", style: :bold, size: 22
+        text "Kalanguya Cultural Community", size: 10
+        text "Multipurpose Cooperative", size: 10
         move_down 10
       end
-      bounding_box [0, 770], width: 400 do
-        text 'TRANSACTIONS REPORT', style: :bold, size: 14
+      bounding_box [ 0, 770 ], width: 400 do
+        text "TRANSACTIONS REPORT", style: :bold, size: 14
         move_down 5
         text "As of #{Time.zone.today.strftime('%B %e, %Y')}", size: 10
       end
       move_down 30
       stroke do
-        stroke_color '24292E'
+        stroke_color "24292E"
         line_width 1
         stroke_horizontal_rule
         move_down 20
@@ -71,30 +71,30 @@ module AccountingModule
     def entries_table
       if @entries.none?
         move_down 10
-        text 'No entries data.', align: :center
+        text "No entries data.", align: :center
       else
 
-        table([['DATE', 'DESCRIPTION', 'REFERENCE NUMBER', 'MEMBER', 'ACCOUNT', 'AMOUNT']], cell_style: { inline_format: true, size: 6, font: 'Helvetica' }, column_widths: [50, 150, 50, 100, 100, 80]) do
+        table([ [ "DATE", "DESCRIPTION", "REFERENCE NUMBER", "MEMBER", "ACCOUNT", "AMOUNT" ] ], cell_style: { inline_format: true, size: 6, font: "Helvetica" }, column_widths: [ 50, 150, 50, 100, 100, 80 ]) do
           row(0).font_style = :bold
-          row(0).background_color = 'DDDDDD'
+          row(0).background_color = "DDDDDD"
         end
         @entries.each do |entry|
-          table([[entry.entry_date.strftime('%B %e, %Y').to_s, entry.description.to_s, entry.reference_number.to_s, display_commercial_document_for(entry).try(:upcase).to_s]], cell_style: { size: 9, padding: [5, 5, 4, 0] }, column_widths: [50, 150, 50, 100, 100, 80]) do
+          table([ [ entry.entry_date.strftime("%B %e, %Y").to_s, entry.description.to_s, entry.reference_number.to_s, display_commercial_document_for(entry).try(:upcase).to_s ] ], cell_style: { size: 9, padding: [ 5, 5, 4, 0 ] }, column_widths: [ 50, 150, 50, 100, 100, 80 ]) do
             cells.borders = []
           end
 
-          table([['', '', '', '', '', '<b>DEBIT</b>']] +
-            entry.debit_amounts.map { |a| ['', '', '', '', '', a.account.name, price(a.amount)] }, column_widths: [50, 100, 50, 100, 50, 100, 80], cell_style: { inline_format: true, size: 8, padding: [0, 0, 0, 0] }) do
+          table([ [ "", "", "", "", "", "<b>DEBIT</b>" ] ] +
+            entry.debit_amounts.map { |a| [ "", "", "", "", "", a.account.name, price(a.amount) ] }, column_widths: [ 50, 100, 50, 100, 50, 100, 80 ], cell_style: { inline_format: true, size: 8, padding: [ 0, 0, 0, 0 ] }) do
             cells.borders = []
             column(-1).align = :right
           end
 
-          table([['', '', '', '', '', '<b>CREDIT</b>']] + entry.credit_amounts.map { |a| ['', '', '', '', '', a.account.name, price(a.amount)] }, column_widths: [50, 100, 50, 100, 50, 100, 80], cell_style: { inline_format: true, padding: [0, 0, 2, 0], size: 8 }) do
+          table([ [ "", "", "", "", "", "<b>CREDIT</b>" ] ] + entry.credit_amounts.map { |a| [ "", "", "", "", "", a.account.name, price(a.amount) ] }, column_widths: [ 50, 100, 50, 100, 50, 100, 80 ], cell_style: { inline_format: true, padding: [ 0, 0, 2, 0 ], size: 8 }) do
             cells.borders = []
             column(-1).align = :right
           end
           stroke do
-            stroke_color 'CCCCCC'
+            stroke_color "CCCCCC"
             line_width 0.2
             stroke_horizontal_rule
           end

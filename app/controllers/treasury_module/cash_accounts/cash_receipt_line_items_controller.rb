@@ -33,7 +33,7 @@ module TreasuryModule
         authorize %i[treasury_module cash_receipt]
         if @cash_receipt_line_item.valid?
           @cash_receipt_line_item.process!
-          redirect_to new_treasury_module_cash_account_cash_receipt_line_item_url(cash_account_id: @cash_account.id), notice: 'Added successfully'
+          redirect_to new_treasury_module_cash_account_cash_receipt_line_item_url(cash_account_id: @cash_account.id), notice: "Added successfully"
         else
           render :new, status: :unprocessable_entity
         end
@@ -43,7 +43,7 @@ module TreasuryModule
         @cash_account = current_cooperative.accounts.find(params[:id])
         @amount = current_cooperative.voucher_amounts.find(params[:amount_id])
         @amount.destroy
-        redirect_to new_treasury_module_cash_account_cash_receipt_line_item_url(@cash_account), notice: 'removed successfully'
+        redirect_to new_treasury_module_cash_account_cash_receipt_line_item_url(@cash_account), notice: "removed successfully"
       end
 
       private

@@ -2,14 +2,14 @@ module Vouchers
   class VoucherAmount < ApplicationRecord
     monetize :amount_cents, as: :amount, numericality: true
 
-    enum amount_type: { debit: 0, credit: 1 }
+    enum :amount_type, { debit: 0, credit: 1 }
     belongs_to :temp_cart, polymorphic: true, optional: true
-    belongs_to :cart,                class_name: 'StoreFrontModule::Cart', optional: true
-    belongs_to :account,             class_name: 'AccountingModule::Account'
+    belongs_to :cart,                class_name: "StoreFrontModule::Cart", optional: true
+    belongs_to :account,             class_name: "AccountingModule::Account"
     belongs_to :voucher,             optional: true
     belongs_to :cooperative,         optional: true
-    belongs_to :loan_application,    class_name: 'LoansModule::LoanApplication', optional: true
-    belongs_to :recorder,            class_name: 'User', optional: true
+    belongs_to :loan_application,    class_name: "LoansModule::LoanApplication", optional: true
+    belongs_to :recorder,            class_name: "User", optional: true
     belongs_to :commercial_document, polymorphic: true, optional: true
 
     delegate :name, :display_name, to: :account, prefix: true

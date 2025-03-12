@@ -9,7 +9,7 @@ module Vouchers
     def create_interest_on_loan_charge
       loan_application.voucher_amounts.credit.create(
         cooperative: loan_application.cooperative,
-        description: 'Interest on Loan',
+        description: "Interest on Loan",
         amount: loan_application.prededucted_interest,
         account: interest_revenue_account
       )

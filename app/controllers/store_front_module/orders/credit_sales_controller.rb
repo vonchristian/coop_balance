@@ -11,9 +11,9 @@ module StoreFrontModule
         @sales_order = StoreFrontModule::Orders::CreditSalesOrderProcessing.new(order_processing_params)
         if @sales_order.valid?
           @sales_order.process!
-          redirect_to '/', notice: 'Order processed successfully.'
+          redirect_to "/", notice: "Order processed successfully."
         else
-          redirect_to new_store_front_module_customer_credit_sales_line_item_url(customer_id: params[:customer_id]), alert: 'Error'
+          redirect_to new_store_front_module_customer_credit_sales_line_item_url(customer_id: params[:customer_id]), alert: "Error"
         end
       end
 

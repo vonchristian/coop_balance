@@ -8,7 +8,7 @@ module ManagementModule
       def create
         @break_contract_fee = CoopConfigurationsModule::BreakContractFee.create(break_contract_fee_params)
         if @break_contract_fee.save
-          redirect_to management_module_settings_url, notice: 'Break Contract Fee saved successfully'
+          redirect_to management_module_settings_url, notice: "Break Contract Fee saved successfully"
         else
           render :new, status: :unprocessable_entity
         end

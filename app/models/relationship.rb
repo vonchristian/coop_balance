@@ -1,5 +1,5 @@
 class Relationship < ApplicationRecord
-  enum relationship_type: { father: 0, mother: 1, son: 2, daughter: 3 }
+  enum :relationship_type, { father: 0, mother: 1, son: 2, daughter: 3 }
   belongs_to :relationee, polymorphic: true
   belongs_to :relationer, polymorphic: true
 
@@ -12,10 +12,10 @@ class Relationship < ApplicationRecord
   end
 
   def self.fathers
-    where(relationship_type: 'father')
+    where(relationship_type: "father")
   end
 
   def self.mothers
-    where(relationship_type: 'mother')
+    where(relationship_type: "mother")
   end
 end

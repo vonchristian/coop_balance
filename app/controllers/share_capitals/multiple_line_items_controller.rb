@@ -10,7 +10,7 @@ module ShareCapitals
       @line_item     = ShareCapitals::MultiplePayment.new(payment_params)
       if @line_item.valid?
         @line_item.process!
-        redirect_to new_share_capital_multiple_transaction_url, notice: 'added successfully.'
+        redirect_to new_share_capital_multiple_transaction_url, notice: "added successfully."
       else
         render :new, status: :unprocessable_entity
       end
@@ -20,7 +20,7 @@ module ShareCapitals
       @share_capital = current_office.share_capitals.find(params[:share_capital_id])
       @amount        = current_cart.voucher_amounts.find(params[:id])
       @amount.destroy
-      redirect_to new_share_capital_multiple_transaction_url, notice: 'Removed successfully'
+      redirect_to new_share_capital_multiple_transaction_url, notice: "Removed successfully"
     end
 
     private

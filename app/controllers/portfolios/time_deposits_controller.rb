@@ -20,19 +20,19 @@ module Portfolios
 
     def render_csv
       # Tell Rack to stream the content
-      headers.delete('Content-Length')
+      headers.delete("Content-Length")
 
       # Don't cache anything from this generated endpoint
-      headers['Cache-Control'] = 'no-cache'
+      headers["Cache-Control"] = "no-cache"
 
       # Tell the browser this is a CSV file
-      headers['Content-Type'] = 'text/csv'
+      headers["Content-Type"] = "text/csv"
 
       # Make the file download with a specific filename
-      headers['Content-Disposition'] = 'attachment; filename="Time Deposits Portfolio.csv"'
+      headers["Content-Disposition"] = 'attachment; filename="Time Deposits Portfolio.csv"'
 
       # Don't buffer when going through proxy servers
-      headers['X-Accel-Buffering'] = 'no'
+      headers["X-Accel-Buffering"] = "no"
 
       # Set an Enumerator as the body
       self.response_body = csv_body
@@ -42,14 +42,14 @@ module Portfolios
 
     def csv_body
       Enumerator.new do |yielder|
-        yielder << CSV.generate_line(["#{current_office.name} - Time Deposits Portfolio"])
-        yielder << CSV.generate_line(['Depositor', 'Balance', 'Time Deposit Product', 'Maturity Date'])
+        yielder << CSV.generate_line([ "#{current_office.name} - Time Deposits Portfolio" ])
+        yielder << CSV.generate_line([ "Depositor", "Balance", "Time Deposit Product", "Maturity Date" ])
         @time_deposits.each do |time_deposit|
           yielder << CSV.generate_line([
                                          time_deposit.depositor_name,
                                          time_deposit.balance(to_date: @to_date),
                                          time_deposit.time_deposit_product_name,
-                                         time_deposit.term_maturity_date.strftime('%B %e, %Y')
+                                         time_deposit.term_maturity_date.strftime("%B %e, %Y")
                                        ])
         end
       end

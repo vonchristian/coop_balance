@@ -3,9 +3,9 @@ module TreasuryModule
     def index
       @cash_accounts = if current_user.general_manager?
                          current_office.cash_accounts
-                       else
+      else
                          current_user.cash_accounts
-                       end
+      end
     end
 
     def show

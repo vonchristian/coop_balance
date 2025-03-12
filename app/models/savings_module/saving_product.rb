@@ -4,11 +4,11 @@ module SavingsModule
     extend Metricable
     extend VarianceMonitoring
 
-    has_one :saving_product_interest_config, class_name: 'SavingsModule::SavingProducts::SavingProductInterestConfig'
+    has_one :saving_product_interest_config, class_name: "SavingsModule::SavingProducts::SavingProductInterestConfig"
     belongs_to :cooperative
-    belongs_to :office,                   class_name: 'Cooperatives::Office'
-    belongs_to :closing_account,          class_name: 'AccountingModule::Account'
-    has_many :subscribers,                class_name: 'DepositsModule::Saving'
+    belongs_to :office,                   class_name: "Cooperatives::Office"
+    belongs_to :closing_account,          class_name: "AccountingModule::Account"
+    has_many :subscribers,                class_name: "DepositsModule::Saving"
 
     validates :interest_rate,
               :minimum_balance,
@@ -51,7 +51,7 @@ module SavingsModule
       find_each do |saving_product|
         accounts << saving_product.subscribers.pluck(:liability_account_id)
       end
-      AccountingModule::Account.where('accounts.id' => accounts.uniq.compact.flatten)
+      AccountingModule::Account.where("accounts.id" => accounts.uniq.compact.flatten)
     end
 
     def applicable_rate

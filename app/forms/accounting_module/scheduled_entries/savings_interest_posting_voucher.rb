@@ -23,8 +23,8 @@ module AccountingModule
           preparer: find_employee,
           office: find_employee.office,
           cooperative: find_cooperative,
-          description: 'Journal entry for savings interest posting',
-          number: 'system',
+          description: "Journal entry for savings interest posting",
+          number: "system",
           date: to_date
         )
         find_cooperative.savings.each do |savings_account|

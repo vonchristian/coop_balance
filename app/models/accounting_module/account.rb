@@ -5,25 +5,25 @@ module AccountingModule
     NORMAL_CREDIT_BALANCE = %w[equity liability revenue].freeze
     include PgSearch::Model
 
-    enum account_type: {
-      asset: 'asset',
-      liability: 'liability',
-      equity: 'equity',
-      revenue: 'revenue',
-      expense: 'expense'
+    enum :account_type, {
+      asset: "asset",
+      liability: "liability",
+      equity: "equity",
+      revenue: "revenue",
+      expense: "expense"
     }
 
     pg_search_scope :text_search, against: %i[name code]
 
-    belongs_to :ledger, class_name: 'AccountingModule::Ledger'
-    belongs_to :office, class_name: 'Cooperatives::Office'
-    has_many :amounts, class_name: 'AccountingModule::Amount'
-    has_many :credit_amounts,        -> { not_cancelled },        class_name: 'AccountingModule::CreditAmount'
-    has_many :debit_amounts,         -> { not_cancelled },        class_name: 'AccountingModule::DebitAmount'
-    has_many :entries,                       through: :amounts, source: :entry, class_name: 'AccountingModule::Entry'
-    has_many :credit_entries,                through: :credit_amounts, source: :entry, class_name: 'AccountingModule::Entry'
-    has_many :debit_entries,                 through: :debit_amounts, source: :entry, class_name: 'AccountingModule::Entry'
-    has_many :running_balances, class_name: 'AccountingModule::RunningBalances::Account'
+    belongs_to :ledger, class_name: "AccountingModule::Ledger"
+    belongs_to :office, class_name: "Cooperatives::Office"
+    has_many :amounts, class_name: "AccountingModule::Amount"
+    has_many :credit_amounts,        -> { not_cancelled },        class_name: "AccountingModule::CreditAmount"
+    has_many :debit_amounts,         -> { not_cancelled },        class_name: "AccountingModule::DebitAmount"
+    has_many :entries,                       through: :amounts, source: :entry, class_name: "AccountingModule::Entry"
+    has_many :credit_entries,                through: :credit_amounts, source: :entry, class_name: "AccountingModule::Entry"
+    has_many :debit_entries,                 through: :debit_amounts, source: :entry, class_name: "AccountingModule::Entry"
+    has_many :running_balances, class_name: "AccountingModule::RunningBalances::Account"
 
     validates :account_type, :name, :code, presence: true
     validates :name, uniqueness: true
@@ -43,11 +43,11 @@ module AccountingModule
 
     def self.updated_at(args = {})
       date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-      joins(:entries).where('entries.entry_date' => date_range.start_date..date_range.end_date)
+      joins(:entries).where("entries.entry_date" => date_range.start_date..date_range.end_date)
     end
 
     def self.updated_by(employee)
-      includes(:entries).where('entries.recorder_id' => employee.id)
+      includes(:entries).where("entries.recorder_id" => employee.id)
     end
 
     def account_name
@@ -55,19 +55,19 @@ module AccountingModule
     end
 
     def normalized_type
-      type.gsub('AccountingModule::', '')
+      type.gsub("AccountingModule::", "")
     end
 
     def self.types
-      ['AccountingModule::Asset',
-       'AccountingModule::Equity',
-       'AccountingModule::Liability',
-       'AccountingModule::Expense',
-       'AccountingModule::Revenue']
+      [ "AccountingModule::Asset",
+       "AccountingModule::Equity",
+       "AccountingModule::Liability",
+       "AccountingModule::Expense",
+       "AccountingModule::Revenue" ]
     end
 
     def self.balance(options = {})
-      accounts_balance = BigDecimal('0')
+      accounts_balance = BigDecimal("0")
       find_each do |account|
         if  account.normal_credit_balance ^ account.contra?
           accounts_balance -= account.balance(options)
@@ -106,7 +106,7 @@ module AccountingModule
     end
 
     def self.debits_balance(options = {})
-      accounts_balance = BigDecimal('0')
+      accounts_balance = BigDecimal("0")
       find_each do |account|
         if account.normal_credit_balance ^ account.contra?
           accounts_balance -= account.debits_balance(options)
@@ -118,7 +118,7 @@ module AccountingModule
     end
 
     def self.credits_balance(options = {})
-      accounts_balance = BigDecimal('0')
+      accounts_balance = BigDecimal("0")
       find_each do |account|
         if  account.normal_credit_balance ^ account.contra?
           accounts_balance -= account.credits_balance(options)

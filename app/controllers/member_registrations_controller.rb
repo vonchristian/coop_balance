@@ -7,7 +7,7 @@ class MemberRegistrationsController < ApplicationController
     @member = MemberRegistrationForm.new(member_params)
     if @member.valid?
       @member.save
-      redirect_to management_module_members_url, notice: 'Member registered successfully.'
+      redirect_to management_module_members_url, notice: "Member registered successfully."
     else
       render :new, status: :unprocessable_entity
     end

@@ -11,7 +11,7 @@ module Employees
       @cash_count = CashCount.create(cash_count_params)
       if @cash_count.valid?
         @cash_count.save!
-        redirect_to new_employee_cash_count_line_item_url(current_user), notice: 'added successfully.'
+        redirect_to new_employee_cash_count_line_item_url(current_user), notice: "added successfully."
       else
         render :new, status: :unprocessable_entity
       end

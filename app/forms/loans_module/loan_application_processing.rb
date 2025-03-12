@@ -82,7 +82,7 @@ module LoansModule
     end
 
     def maximum_term?
-      errors[:number_of_days] << 'must not exceed 10 years.' if number_of_days.to_f > 3650
+      errors[:number_of_days] << "must not exceed 10 years." if number_of_days.to_f > 3650
     end
   end
 end

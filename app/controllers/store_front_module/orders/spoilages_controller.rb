@@ -8,12 +8,12 @@ module StoreFrontModule
                          .text_search(params[:search])
                          .order(date: :desc)
                          .paginate(page: params[:page], per_page: 30)
-                     else
+        else
                        StoreFrontModule::Orders::SpoilageOrder
                          .includes(:commercial_document, :spoilage_line_items, :line_items, :employee)
                          .order(date: :desc)
                          .paginate(page: params[:page], per_page: 30)
-                     end
+        end
       end
 
       def create
@@ -21,9 +21,9 @@ module StoreFrontModule
         @spoilage_order = StoreFrontModule::Orders::SpoilageOrderProcessing.new(spoilage_processing_params)
         if @spoilage_order.process!
           @spoilage_order.process!
-          redirect_to new_store_front_module_spoilage_line_item_url, notice: 'Spoilage Order processed successfully.'
+          redirect_to new_store_front_module_spoilage_line_item_url, notice: "Spoilage Order processed successfully."
         else
-          redirect_to new_store_front_module_spoilage_line_item_url, alert: 'Error processing spoilage order.'
+          redirect_to new_store_front_module_spoilage_line_item_url, alert: "Error processing spoilage order."
         end
       end
 

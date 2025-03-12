@@ -26,7 +26,7 @@ module LoansModule
           loan_aging = build(:loan_aging, loan: loan, loan_aging_group: loan_aging_group)
           loan_aging.save
 
-          expect(loan_aging.errors[:loan_aging_group_id]).to eql ['has already been taken']
+          expect(loan_aging.errors[:loan_aging_group_id]).to eql [ 'has already been taken' ]
         end
 
         it 'validate_uniqueness_of(:receivable_account_id).scoped_to(:loan_id)' do
@@ -36,7 +36,7 @@ module LoansModule
           loan_aging = build(:loan_aging, loan: loan, receivable_account: receivable_account)
           loan_aging.save
 
-          expect(loan_aging.errors[:receivable_account_id]).to eql ['has already been taken']
+          expect(loan_aging.errors[:receivable_account_id]).to eql [ 'has already been taken' ]
         end
       end
 

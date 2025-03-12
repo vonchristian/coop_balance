@@ -3,7 +3,7 @@
 module AccountingModule
   module RunningBalances
     class CreateService < ActiveInteraction::Base
-      object :entry, class: 'AccountingModule::Entry'
+      object :entry, class: "AccountingModule::Entry"
 
       def execute
         entry.accounts.includes(:ledger, :amounts).find_each do |account|

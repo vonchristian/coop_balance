@@ -11,7 +11,7 @@ module TimeDeposits
             voucher: @voucher,
             view_context: view_context
           )
-          send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Voucher.pdf'
+          send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Voucher.pdf"
         end
       end
     end

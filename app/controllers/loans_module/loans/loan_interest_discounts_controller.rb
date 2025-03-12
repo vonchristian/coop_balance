@@ -11,7 +11,7 @@ module LoansModule
         @loan_discount = @loan.loan_discounts.interest.create(loan_discount_params)
         if @loan_discount.valid?
           @loan_discount.save!
-          redirect_to loans_module_loan_interests_url(@loan), notice: 'Loan interest discount saved successfully.'
+          redirect_to loans_module_loan_interests_url(@loan), notice: "Loan interest discount saved successfully."
         else
           render :new, status: :unprocessable_entity
         end
@@ -26,4 +26,3 @@ module LoansModule
     end
   end
 end
-

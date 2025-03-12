@@ -1,4 +1,4 @@
-require 'will_paginate/array'
+require "will_paginate/array"
 module Loans
   class PaymentWithIocsController < ApplicationController
     def new
@@ -11,7 +11,7 @@ module Loans
       @payment = LoansModule::Loans::PaymentWithIocProcessing.new(payment_params)
       if @payment.valid?
         @payment.process!
-        redirect_to loan_payment_voucher_url(schedule_id: @payment.schedule_id, loan_id: @loan.id, id: @payment.find_voucher.id), notice: 'Payment voucher created successfully.'
+        redirect_to loan_payment_voucher_url(schedule_id: @payment.schedule_id, loan_id: @loan.id, id: @payment.find_voucher.id), notice: "Payment voucher created successfully."
       else
         render :new, status: :unprocessable_entity
       end

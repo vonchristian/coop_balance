@@ -84,7 +84,7 @@ module Loans
     end
 
     def principal_amount_not_more_than_balance
-      errors[:principal_amount] << 'Must be less than or equal to balance.' if principal_amount.to_f > find_loan.balance
+      errors[:principal_amount] << "Must be less than or equal to balance." if principal_amount.to_f > find_loan.balance
     end
   end
 end

@@ -12,7 +12,7 @@ module ShareCapitals
             share_capital: @share_capital,
             view_context: view_context
           )
-          send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Statement of Account.pdf'
+          send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Statement of Account.pdf"
         end
       end
     end

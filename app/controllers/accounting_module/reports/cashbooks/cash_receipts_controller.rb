@@ -52,11 +52,11 @@ module AccountingModule
                 to_date: @to_date,
                 entries: @entries_for_pdf,
                 cooperative_service: @cooperative_service,
-                title: 'Cash Receipts Journal',
+                title: "Cash Receipts Journal",
                 employee: current_user,
                 view_context: view_context
               )
-              send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Entries report.pdf'
+              send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Entries report.pdf"
             end
           end
         end

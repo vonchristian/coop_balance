@@ -49,7 +49,7 @@ module Memberships
       end
 
       def amount_is_less_than_or_equal_to_balance?
-        errors[:amount] << 'exceeded available balance' if amount.to_f > find_origin.balance
+        errors[:amount] << "exceeded available balance" if amount.to_f > find_origin.balance
       end
     end
   end

@@ -23,8 +23,8 @@ module AccountingModule
           preparer: find_employee,
           office: find_employee.office,
           cooperative: find_cooperative,
-          description: 'Journal entry for share capital dividend posting',
-          number: 'system',
+          description: "Journal entry for share capital dividend posting",
+          number: "system",
           date: to_date
         )
         find_cooperative.share_capitals.each do |share_capital|

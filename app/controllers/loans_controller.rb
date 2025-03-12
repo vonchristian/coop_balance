@@ -15,7 +15,7 @@ class LoansController < ApplicationController
       format.html
       format.pdf do
         pdf = LoansModule::Reports::FilteredLoansPdf.new(@loans, view_context)
-        send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Loans Report.pdf'
+        send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Loans Report.pdf"
       end
     end
   end
@@ -30,7 +30,7 @@ class LoansController < ApplicationController
           loan: @loan,
           view_context: view_context
         )
-        send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Statement of Account.pdf'
+        send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Statement of Account.pdf"
       end
     end
   end

@@ -1,13 +1,13 @@
 module StoreFrontModule
   module LineItems
     class PurchaseLineItem < LineItem
-      belongs_to :purchase_order,         class_name: 'StoreFrontModule::Orders::PurchaseOrder',
-                                          foreign_key: 'order_id'
-      has_many :sales_purchase_line_items, class_name: 'SalesPurchaseLineItem', foreign_key: 'purchase_line_item'
-      has_many :purchase_returns,         class_name: 'StoreFrontModule::LineItems::PurchaseReturnLineItem'
-      has_many :internal_uses,            class_name: 'StoreFrontModule::LineItems::InternalUseLineItem'
-      has_many :sales_returns,            class_name: 'StoreFrontModule::LineItems::SalesReturnLineItem'
-      has_many :spoilages,                class_name: 'StoreFrontModule::LineItems::SpoilageLineItem'
+      belongs_to :purchase_order,         class_name: "StoreFrontModule::Orders::PurchaseOrder",
+                                          foreign_key: "order_id"
+      has_many :sales_purchase_line_items, class_name: "SalesPurchaseLineItem", foreign_key: "purchase_line_item"
+      has_many :purchase_returns,         class_name: "StoreFrontModule::LineItems::PurchaseReturnLineItem"
+      has_many :internal_uses,            class_name: "StoreFrontModule::LineItems::InternalUseLineItem"
+      has_many :sales_returns,            class_name: "StoreFrontModule::LineItems::SalesReturnLineItem"
+      has_many :spoilages,                class_name: "StoreFrontModule::LineItems::SpoilageLineItem"
 
       delegate :supplier_name, to: :purchase_order, allow_nil: true
 

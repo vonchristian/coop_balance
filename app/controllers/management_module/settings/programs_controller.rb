@@ -15,7 +15,7 @@ module ManagementModule
         @program = Cooperatives::Program.create(program_params)
         if @program.valid?
           @program.save!
-          redirect_to management_module_settings_programs_url, notice: 'Program created successfully.'
+          redirect_to management_module_settings_programs_url, notice: "Program created successfully."
         else
           render :new, status: :unprocessable_entity
         end

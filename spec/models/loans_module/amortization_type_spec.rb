@@ -10,7 +10,7 @@ module LoansModule
     describe 'enums' do
       it { should define_enum_for(:calculation_type).with_values(%i[straight_line declining_balance ipsmpc_amortizer]) }
       it { should define_enum_for(:repayment_calculation_type).with_values(%i[equal_principal equal_payment]) }
-      it { should define_enum_for(:interest_amortization_scope).with_values([:exclude_on_first_year]) }
+      it { should define_enum_for(:interest_amortization_scope).with_values([ :exclude_on_first_year ]) }
     end
 
     describe 'amortizer' do

@@ -12,7 +12,7 @@ module StoreFrontModule
         @amount = StoreFrontModule::Suppliers::VoucherAmountProcessing.new(amount_params)
         if @amount.valid?
           @amount.process!
-          redirect_to new_store_front_module_supplier_voucher_amount_url(@supplier), notice: 'added successfully.'
+          redirect_to new_store_front_module_supplier_voucher_amount_url(@supplier), notice: "added successfully."
         else
           render :new, status: :unprocessable_entity
         end
@@ -22,7 +22,7 @@ module StoreFrontModule
         @supplier = Supplier.find(params[:supplier_id])
         @voucher_amount = Vouchers::VoucherAmount.find(params[:id])
         @voucher_amount.destroy
-        redirect_to new_store_front_module_supplier_voucher_amount_url(@supplier), notice: 'Removed successfully.'
+        redirect_to new_store_front_module_supplier_voucher_amount_url(@supplier), notice: "Removed successfully."
       end
 
       private

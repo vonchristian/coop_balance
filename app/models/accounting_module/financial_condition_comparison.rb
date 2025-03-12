@@ -1,20 +1,20 @@
 module AccountingModule
   class FinancialConditionComparison < ApplicationRecord
-    enum comparison_type: { daily: 0, weekly: 1, monthly: 2, quarterly: 3, semi_annually: 4, yearly: 5 }
+    enum :comparison_type, { daily: 0, weekly: 1, monthly: 2, quarterly: 3, semi_annually: 4, yearly: 5 }
 
     def first_date_display_title
       if yearly?
-        first_date.strftime('%Y')
+        first_date.strftime("%Y")
       else
-        first_date.strftime('%B %Y')
+        first_date.strftime("%B %Y")
       end
     end
 
     def second_date_display_title
       if yearly?
-        second_date.strftime('%Y')
+        second_date.strftime("%Y")
       else
-        second_date.strftime('%B %Y')
+        second_date.strftime("%B %Y")
       end
     end
 

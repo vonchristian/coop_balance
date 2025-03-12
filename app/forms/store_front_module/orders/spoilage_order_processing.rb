@@ -44,12 +44,12 @@ module StoreFrontModule
           commercial_document: spoilage_order,
           entry_date: date,
           description: description,
-          debit_amounts_attributes: [amount: spoilage_order.total_cost,
+          debit_amounts_attributes: [ amount: spoilage_order.total_cost,
                                      account: spoilage_account,
-                                     commercial_document: spoilage_order],
-          credit_amounts_attributes: [account: merchandise_inventory,
+                                     commercial_document: spoilage_order ],
+          credit_amounts_attributes: [ account: merchandise_inventory,
                                       amount: spoilage_order.total_cost,
-                                      commercial_document: spoilage_order]
+                                      commercial_document: spoilage_order ]
         )
       end
     end
