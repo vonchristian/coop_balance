@@ -375,10 +375,6 @@ GEM
     rake (13.2.1)
     rdoc (6.12.0)
       psych (>= 4.0.0)
-    redis (5.4.0)
-      redis-client (>= 0.22.0)
-    redis-client (0.24.0)
-      connection_pool
     regexp_parser (2.10.0)
     reline (0.6.0)
       io-console (~> 0.5)
@@ -503,8 +499,6 @@ GEM
     thruster (0.1.12-arm64-darwin)
     thruster (0.1.12-x86_64-linux)
     timeout (0.4.3)
-    trix (0.10.1)
-      rails
     ttfunk (1.8.0)
       bigdecimal (~> 3.1)
     turbo-rails (2.0.13)
@@ -603,7 +597,6 @@ DEPENDENCIES
   pundit-matchers
   rack-mini-profiler
   rails (~> 8.0)
-  redis
   responders
   roo
   rqrcode
@@ -621,7 +614,6 @@ DEPENDENCIES
   tailwindcss-rails (~> 4.1)
   tailwindcss-ruby (~> 4.0, >= 4.0.9)
   thruster
-  trix
   turbo-rails
   web-console
   webdrivers (~> 4.0)
