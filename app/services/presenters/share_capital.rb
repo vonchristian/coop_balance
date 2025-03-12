@@ -10,25 +10,25 @@ module Presenters
 
     def chevron
       if entry.credit_amounts.accounts.include?(account)
-        'down'
+        "down"
       else
-        'up'
+        "up"
       end
     end
 
     def text_color
       if entry.credit_amounts.accounts.include?(account)
-        'success'
+        "success"
       else
-        'danger'
+        "danger"
       end
     end
 
     def plus_or_minus_icon
       if entry.credit_amounts.accounts.include?(account)
-        'plus'
+        "plus"
       else
-        'minus'
+        "minus"
       end
     end
   end

@@ -7,9 +7,9 @@ module LoansModule
         @loan_product = current_cooperative.loan_products.find(params[:loan_type]) if params[:loan_type].present?
         @loans = if @loan_product.present?
                    @loan_product.loans
-                 else
+        else
                    current_office.loans
-                 end
+        end
 
         respond_to do |format|
           format.csv { render_csv }
@@ -24,7 +24,7 @@ module LoansModule
               loan_product: @loan_product,
               view_context: view_context
             )
-            send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Loan Collections Report.pdf'
+            send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Loan Collections Report.pdf"
           end
         end
       end
@@ -33,19 +33,19 @@ module LoansModule
 
       def render_csv
         # Tell Rack to stream the content
-        headers.delete('Content-Length')
+        headers.delete("Content-Length")
 
         # Don't cache anything from this generated endpoint
-        headers['Cache-Control'] = 'no-cache'
+        headers["Cache-Control"] = "no-cache"
 
         # Tell the browser this is a CSV file
-        headers['Content-Type'] = 'text/csv'
+        headers["Content-Type"] = "text/csv"
 
         # Make the file download with a specific filename
-        headers['Content-Disposition'] = 'attachment; filename="Loans Portfolio.csv"'
+        headers["Content-Disposition"] = 'attachment; filename="Loans Portfolio.csv"'
 
         # Don't buffer when going through proxy servers
-        headers['X-Accel-Buffering'] = 'no'
+        headers["X-Accel-Buffering"] = "no"
 
         # Set an Enumerator as the body
         self.response_body = csv_body
@@ -55,8 +55,8 @@ module LoansModule
 
       def csv_body
         Enumerator.new do |yielder|
-          yielder << CSV.generate_line(["#{current_office.name} Loan Collections"])
-          yielder << CSV.generate_line(['Borrower', 'Loan Product', "Principal Balance #{@from_date.strftime('%b. %e, %Y')}", 'Interest Collections', 'Penalty Collections', "Principal Balance #{@to_date.strftime('%b. %e, %Y')}"])
+          yielder << CSV.generate_line([ "#{current_office.name} Loan Collections" ])
+          yielder << CSV.generate_line([ "Borrower", "Loan Product", "Principal Balance #{@from_date.strftime('%b. %e, %Y')}", "Interest Collections", "Penalty Collections", "Principal Balance #{@to_date.strftime('%b. %e, %Y')}" ])
           @loans.order(:borrower_name).each do |loan|
             yielder << CSV.generate_line([
                                            loan.borrower_full_name,

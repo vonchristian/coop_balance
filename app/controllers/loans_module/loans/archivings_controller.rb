@@ -9,7 +9,7 @@ module LoansModule
           archived_by: current_user
         )
 
-        redirect_to loan_url(@loan), notice: 'Loan archived successfully.'
+        redirect_to loan_url(@loan), notice: "Loan archived successfully."
       end
     end
   end

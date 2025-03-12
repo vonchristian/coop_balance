@@ -11,7 +11,7 @@ module ManagementModule
         @store_front = @cooperative.store_fronts.create(store_front_params)
         if @store_front.valid?
           @store_front.save!
-          redirect_to management_module_settings_configurations_url, notice: 'Store Front created successfully.'
+          redirect_to management_module_settings_configurations_url, notice: "Store Front created successfully."
         else
           render :new, status: :unprocessable_entity
         end

@@ -8,17 +8,17 @@ module Metricable
 
   def metric_color
     if metric.negative?
-      'danger'
+      "danger"
     elsif metric.positive?
-      'success'
+      "success"
     end
   end
 
   def arrow_sign
     if metric.negative?
-      'down'
+      "down"
     elsif metric.positive?
-      'up'
+      "up"
     end
   end
 end

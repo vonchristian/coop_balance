@@ -1,10 +1,10 @@
 module MembershipsModule
   class ProgramSubscription < ApplicationRecord
-    belongs_to :program_account,     class_name: 'AccountingModule::Account', foreign_key: 'account_id'
-    belongs_to :program,             class_name: 'Cooperatives::Program'
-    belongs_to :office,              class_name: 'Cooperatives::Office'
+    belongs_to :program_account,     class_name: "AccountingModule::Account", foreign_key: "account_id"
+    belongs_to :program,             class_name: "Cooperatives::Program"
+    belongs_to :office,              class_name: "Cooperatives::Office"
     belongs_to :subscriber,          polymorphic: true
-    has_many :subscription_payments, class_name: 'AccountingModule::Entry', as: :commercial_document
+    has_many :subscription_payments, class_name: "AccountingModule::Entry", as: :commercial_document
 
     delegate :name,
              :amount,

@@ -12,7 +12,7 @@ module ManagementModule
         @loan_protection_plan_provider = current_cooperative.loan_protection_plan_providers.create(provider_params)
         # authorize [:management_module, :settings, :loan_protection_plan_provider]
         respond_modal_with @loan_protection_plan_provider, location: management_module_settings_url,
-                                                           notice: 'Plan Provider saved successfully.'
+                                                           notice: "Plan Provider saved successfully."
       end
 
       private

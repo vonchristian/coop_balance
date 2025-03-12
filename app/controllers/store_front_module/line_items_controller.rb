@@ -6,7 +6,7 @@ module StoreFrontModule
       @line_item = StoreFrontModule::LineItems::SalesOrderLineItemProcessing.new(line_item_params)
       if @line_item.valid?
         @line_item.process!
-        redirect_to store_front_module_index_url, notice: 'Added to cart.'
+        redirect_to store_front_module_index_url, notice: "Added to cart."
       else
         redirect_to store_front_module_index_url
       end

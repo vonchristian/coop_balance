@@ -3,8 +3,8 @@ module SavingsModule
     class SavingProductInterestConfig < ApplicationRecord
       # default daily averaged balance
 
-      enum interest_posting: { annually: 0 }
-      belongs_to :saving_product,             class_name: 'SavingsModule::SavingProduct'
+      enum :interest_posting, { annually: 0 }
+      belongs_to :saving_product,             class_name: "SavingsModule::SavingProduct"
 
       validates :annual_rate, presence: true, numericality: true
       validates :minimum_balance, presence: true, numericality: true

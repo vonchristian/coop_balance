@@ -11,7 +11,7 @@ module AccountingModule
         @ioc_payment = AccountingModule::IocDistributions::IocToShareCapital.new(ioc_to_share_capital_params)
         if @ioc_payment.valid?
           @ioc_payment.process!
-          redirect_to new_accounting_module_ioc_distributions_share_capital_url, notice: 'added successfully.'
+          redirect_to new_accounting_module_ioc_distributions_share_capital_url, notice: "added successfully."
         else
           render :new, status: :unprocessable_entity
         end

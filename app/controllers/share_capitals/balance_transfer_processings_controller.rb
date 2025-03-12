@@ -14,7 +14,7 @@ module ShareCapitals
       @balance_transfer          = ShareCapitals::BalanceTransferProcessing.new(balance_transfer_params)
       if @balance_transfer.valid?
         @balance_transfer.process!
-        redirect_to new_share_capital_balance_transfer_url(@origin_share_capital), notice: 'Amount created successfully.'
+        redirect_to new_share_capital_balance_transfer_url(@origin_share_capital), notice: "Amount created successfully."
       else
         render :new, status: :unprocessable_entity
       end
@@ -26,7 +26,7 @@ module ShareCapitals
         @amount = current_cart.voucher_amounts.find(params[:id])
         @amount.destroy
       end
-      redirect_to new_share_capital_balance_transfer_url(share_capital_id: @share_capital.id), alert: 'Removed successfully'
+      redirect_to new_share_capital_balance_transfer_url(share_capital_id: @share_capital.id), alert: "Removed successfully"
     end
 
     private

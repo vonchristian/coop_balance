@@ -6,7 +6,7 @@ class Term < ApplicationRecord
   delegate :disbursed?, to: :termable, allow_nil: true
 
   def self.past_due
-    where('maturity_date < ?', Time.zone.today)
+    where("maturity_date < ?", Time.zone.today)
   end
 
   def number_of_months

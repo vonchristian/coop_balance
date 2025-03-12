@@ -20,7 +20,7 @@ module Offices
         net_income_config = build(:net_income_config, office: office, net_surplus_account: net_surplus_account)
         net_income_config.save
 
-        expect(net_income_config.errors[:net_surplus_account_id]).to eq ['has already been taken']
+        expect(net_income_config.errors[:net_surplus_account_id]).to eq [ 'has already been taken' ]
       end
 
       it 'validate_uniqueness_of(:net_loss_account_id).scoped_to(:office_id)' do
@@ -30,7 +30,7 @@ module Offices
         net_income_config = build(:net_income_config, office: office, net_loss_account: net_loss_account)
         net_income_config.save
 
-        expect(net_income_config.errors[:net_loss_account_id]).to eq ['has already been taken']
+        expect(net_income_config.errors[:net_loss_account_id]).to eq [ 'has already been taken' ]
       end
 
       it 'validate_uniqueness_of(:interest_on_capital_account_id).scoped_to(:office_id)' do
@@ -40,7 +40,7 @@ module Offices
         net_income_config = build(:net_income_config, office: office, interest_on_capital_account: ioc_account)
         net_income_config.save
 
-        expect(net_income_config.errors[:interest_on_capital_account_id]).to eq ['has already been taken']
+        expect(net_income_config.errors[:interest_on_capital_account_id]).to eq [ 'has already been taken' ]
       end
     end
 

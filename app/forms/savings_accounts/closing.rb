@@ -32,7 +32,7 @@ module SavingsAccounts
         office: find_employee.office,
         cooperative: find_employee.cooperative,
         preparer: find_employee,
-        description: 'Closing of savings account',
+        description: "Closing of savings account",
         reference_number: reference_number,
         account_number: account_number,
         date: date,
@@ -72,11 +72,11 @@ module SavingsAccounts
     end
 
     def amount_is_less_than_balance?
-      errors[:amount] << 'Amount exceeded balance' if amount.to_f > find_savings_account.balance
+      errors[:amount] << "Amount exceeded balance" if amount.to_f > find_savings_account.balance
     end
 
     def amount_less_than_current_cash_on_hand?
-      errors[:amount] << 'Amount exceeded current cash on hand' if amount.to_f > cash_account.balance
+      errors[:amount] << "Amount exceeded current cash on hand" if amount.to_f > cash_account.balance
     end
   end
 end

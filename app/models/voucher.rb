@@ -7,17 +7,17 @@ class Voucher < ApplicationRecord
 
   belongs_to :cooperative, optional: true
   belongs_to :store_front,         optional: true
-  belongs_to :cooperative_service, class_name: 'CoopServicesModule::CooperativeService', optional: true
-  belongs_to :office,              class_name: 'Cooperatives::Office', optional: true
-  belongs_to :accounting_entry,    class_name: 'AccountingModule::Entry', foreign_key: 'entry_id', optional: true
+  belongs_to :cooperative_service, class_name: "CoopServicesModule::CooperativeService", optional: true
+  belongs_to :office,              class_name: "Cooperatives::Office", optional: true
+  belongs_to :accounting_entry,    class_name: "AccountingModule::Entry", foreign_key: "entry_id", optional: true
   belongs_to :payee,               polymorphic: true
   belongs_to :commercial_document, polymorphic: true, optional: true # attaching voucher to orders
-  belongs_to :preparer,            class_name: 'User', optional: true
+  belongs_to :preparer,            class_name: "User", optional: true
   belongs_to :recording_agent,     polymorphic: true, optional: true
   belongs_to :disbursing_agent,    polymorphic: true, optional: true
   belongs_to :origin,              polymorphic: true, optional: true
-  belongs_to :disburser,           class_name: 'User', optional: true
-  has_many :voucher_amounts,       class_name: 'Vouchers::VoucherAmount', dependent: :destroy
+  belongs_to :disburser,           class_name: "User", optional: true
+  has_many :voucher_amounts,       class_name: "Vouchers::VoucherAmount", dependent: :destroy
 
   delegate :title, to: :cooperative_service, prefix: true, allow_nil: true
   delegate :name, :abbreviated_name, :address, :contact_number, to: :cooperative, prefix: true
@@ -90,7 +90,7 @@ class Voucher < ApplicationRecord
   def self.disbursed_on(args = {})
     if args[:from_date] && args[:to_date]
       range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-      disbursed.joins(:accounting_entry).where('entries.entry_date' => (range.start_date..range.end_date))
+      disbursed.joins(:accounting_entry).where("entries.entry_date" => (range.start_date..range.end_date))
     else
       disbursed
     end
@@ -105,7 +105,7 @@ class Voucher < ApplicationRecord
   end
 
   def self.generate_number
-    return '000000000001' if blank?
+    return "000000000001" if blank?
 
     pluck(:number).compact!.max.next
   end
@@ -135,14 +135,14 @@ class Voucher < ApplicationRecord
   end
 
   def has_credit_amounts?
-    errors.add(:base, 'Voucher must have at least one credit amount') if voucher_amounts.credit.blank?
+    errors.add(:base, "Voucher must have at least one credit amount") if voucher_amounts.credit.blank?
   end
 
   def has_debit_amounts?
-    errors.add(:base, 'Voucher must have at least one debit amount') if voucher_amounts.debit.blank?
+    errors.add(:base, "Voucher must have at least one debit amount") if voucher_amounts.debit.blank?
   end
 
   def amounts_cancel?
-    errors.add(:base, 'The credit and debit amounts are not equal') if voucher_amounts.credit.total != voucher_amounts.debit.total
+    errors.add(:base, "The credit and debit amounts are not equal") if voucher_amounts.credit.total != voucher_amounts.debit.total
   end
 end

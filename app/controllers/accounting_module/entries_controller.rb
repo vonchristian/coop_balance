@@ -1,4 +1,4 @@
-require 'will_paginate/array'
+require "will_paginate/array"
 module AccountingModule
   class EntriesController < ApplicationController
     def index
@@ -22,10 +22,10 @@ module AccountingModule
             organization: @organization,
             employee: current_user,
             cooperative: current_cooperative,
-            title: 'Journal Entries',
+            title: "Journal Entries",
             view_context: view_context
           )
-          send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Entries report.pdf'
+          send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Entries report.pdf"
         end
       end
     end
@@ -38,7 +38,7 @@ module AccountingModule
       @line_item = Vouchers::VoucherAmountProcessing.new(entry_params)
       if @line_item.valid?
         @line_item.save
-        redirect_to new_accounting_module_entry_line_item_url, notice: 'Entry saved successfully'
+        redirect_to new_accounting_module_entry_line_item_url, notice: "Entry saved successfully"
       else
         render :new, status: :unprocessable_entity
       end
@@ -53,7 +53,7 @@ module AccountingModule
       @entry_form = AccountingModule::Entries::UpdateProcessing.new(edit_entry_params)
       if @entry_form.valid?
         @entry_form.process!
-        redirect_to accounting_module_entry_url(@entry), notice: 'Entry updated successfully'
+        redirect_to accounting_module_entry_url(@entry), notice: "Entry updated successfully"
       else
         render :edit
       end
@@ -77,19 +77,19 @@ module AccountingModule
 
     def render_csv
       # Tell Rack to stream the content
-      headers.delete('Content-Length')
+      headers.delete("Content-Length")
 
       # Don't cache anything from this generated endpoint
-      headers['Cache-Control'] = 'no-cache'
+      headers["Cache-Control"] = "no-cache"
 
       # Tell the browser this is a CSV file
-      headers['Content-Type'] = 'text/csv'
+      headers["Content-Type"] = "text/csv"
 
       # Make the file download with a specific filename
-      headers['Content-Disposition'] = 'attachment; filename="Entries.csv"'
+      headers["Content-Disposition"] = 'attachment; filename="Entries.csv"'
 
       # Don't buffer when going through proxy servers
-      headers['X-Accel-Buffering'] = 'no'
+      headers["X-Accel-Buffering"] = "no"
 
       # Set an Enumerator as the body
       self.response_body = csv_body
@@ -99,30 +99,30 @@ module AccountingModule
 
     def csv_body
       Enumerator.new do |yielder|
-        yielder << CSV.generate_line(["#{current_office.name} - Entries "])
-        yielder << CSV.generate_line(['DATE', 'MEMBER/PAYEE', 'PARTICULARS', 'REF NO.', 'ACCOUNT', 'DEBIT', 'CREDIT'])
+        yielder << CSV.generate_line([ "#{current_office.name} - Entries " ])
+        yielder << CSV.generate_line([ "DATE", "MEMBER/PAYEE", "PARTICULARS", "REF NO.", "ACCOUNT", "DEBIT", "CREDIT" ])
         @entries_for_pdf.order(reference_number: :asc).each do |entry|
           yielder << CSV.generate_line([
-                                         entry.entry_date.strftime('%B %e, %Y'),
+                                         entry.entry_date.strftime("%B %e, %Y"),
                                          entry.display_commercial_document,
                                          entry.description,
                                          entry.reference_number
                                        ])
           entry.debit_amounts.each do |debit_amount|
-            yielder << CSV.generate_line(['', '', '', '', debit_amount.account_display_name,
-                                          debit_amount.amount])
+            yielder << CSV.generate_line([ "", "", "", "", debit_amount.account_display_name,
+                                          debit_amount.amount ])
           end
           entry.credit_amounts.each do |credit_amount|
-            yielder << CSV.generate_line(['', '', '', '', "    #{credit_amount.account_display_name}", '', credit_amount.amount])
+            yielder << CSV.generate_line([ "", "", "", "", "    #{credit_amount.account_display_name}", "", credit_amount.amount ])
           end
         end
 
-        yielder << CSV.generate_line([''])
-        yielder << CSV.generate_line(['Accounts Summary'])
+        yielder << CSV.generate_line([ "" ])
+        yielder << CSV.generate_line([ "Accounts Summary" ])
         yielder << CSV.generate_line(%w[DEBIT ACCOUNT CREDIT])
 
-        yielder << CSV.generate_line([''])
-        yielder << CSV.generate_line(['Accounts Summary'])
+        yielder << CSV.generate_line([ "" ])
+        yielder << CSV.generate_line([ "Accounts Summary" ])
         yielder << CSV.generate_line(%w[DEBIT ACCOUNT CREDIT])
         ids = @entries_for_pdf.accounts.pluck(:ledger_id)
         current_office.ledgers.where(id: ids.compact.flatten.uniq).find_each do |ledger|

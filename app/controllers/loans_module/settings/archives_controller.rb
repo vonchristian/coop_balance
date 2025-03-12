@@ -12,7 +12,7 @@ module LoansModule
       def create
         @loan_archive = LoansModule::LoansArchiveProcessing.new(archive_params)
         if @loan_archive.archive!
-          redirect_to new_loans_module_settings_archive_path, notice: 'Loans archived successfully.'
+          redirect_to new_loans_module_settings_archive_path, notice: "Loans archived successfully."
         else
           render :new, status: :unprocessable_entity
         end

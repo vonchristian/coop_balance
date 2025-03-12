@@ -4,5 +4,3 @@ module AccountingModule
   describe BookClosing, type: :model do
   end
 end
-
-

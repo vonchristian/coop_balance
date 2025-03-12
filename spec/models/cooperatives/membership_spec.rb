@@ -21,7 +21,7 @@ module Cooperatives
         membership = build(:membership, cooperator: member, cooperative: cooperative)
         membership.save
 
-        expect(membership.errors[:cooperator_id]).to eq ['has already been taken']
+        expect(membership.errors[:cooperator_id]).to eq [ 'has already been taken' ]
       end
 
       it { should validate_presence_of :account_number }

@@ -1,9 +1,9 @@
 class Address < ApplicationRecord
   belongs_to :addressable, polymorphic: true
-  belongs_to :street,       class_name: 'Addresses::Street', optional: true
-  belongs_to :barangay,     class_name: 'Addresses::Barangay', optional: true
-  belongs_to :municipality, class_name: 'Addresses::Municipality', optional: true
-  belongs_to :province,     class_name: 'Addresses::Province', optional: true
+  belongs_to :street,       class_name: "Addresses::Street", optional: true
+  belongs_to :barangay,     class_name: "Addresses::Barangay", optional: true
+  belongs_to :municipality, class_name: "Addresses::Municipality", optional: true
+  belongs_to :province,     class_name: "Addresses::Province", optional: true
 
   delegate :name, to: :barangay, prefix: true, allow_nil: true
   def self.current

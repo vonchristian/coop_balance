@@ -13,7 +13,7 @@ module LoansModule
           if @loan_aging_group_loan_product.valid?
             @loan_aging_group_loan_product.save!
 
-            redirect_to loans_module_settings_url, notice: 'saved successfully'
+            redirect_to loans_module_settings_url, notice: "saved successfully"
           else
             render :new, status: :unprocessable_entity
           end

@@ -9,7 +9,7 @@ class SavingsAccountApplicationsController < ApplicationController
     @savings_account_application = SavingsAccountApplicationProcessing.new(savings_account_application_params)
     if @savings_account_application.valid?
       @savings_account_application.process!
-      redirect_to savings_account_application_voucher_url(savings_account_application_id: @savings_account_application.find_savings_account_application.id, id: @savings_account_application.find_voucher.id), notice: 'Voucher created successfully.'
+      redirect_to savings_account_application_voucher_url(savings_account_application_id: @savings_account_application.find_savings_account_application.id, id: @savings_account_application.find_voucher.id), notice: "Voucher created successfully."
     else
       render :new, status: :unprocessable_entity
     end

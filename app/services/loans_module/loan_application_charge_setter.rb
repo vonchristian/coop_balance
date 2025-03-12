@@ -39,7 +39,7 @@ module LoansModule
         cooperative: loan_application.cooperative,
         amount: loan_product.loan_protection_plan_provider.amount_for(loan_application),
         account: loan_product.loan_protection_plan_provider.accounts_payable,
-        description: 'Loan Protection Fund'
+        description: "Loan Protection Fund"
       )
     end
 

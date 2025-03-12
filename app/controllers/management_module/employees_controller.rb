@@ -12,7 +12,7 @@ module ManagementModule
       @employee = current_cooperative.users.create(employee_params)
       if @employee.valid?
         @employee.save
-        redirect_to employee_url(@employee), notice: 'Employee registered successfully.'
+        redirect_to employee_url(@employee), notice: "Employee registered successfully."
       else
         render :new, status: :unprocessable_entity
       end

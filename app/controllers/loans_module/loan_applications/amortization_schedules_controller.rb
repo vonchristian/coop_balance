@@ -15,7 +15,7 @@ module LoansModule
               term: @loan_application.number_of_days,
               view_context: view_context
             )
-            send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Amortization Schedule.pdf'
+            send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Amortization Schedule.pdf"
           end
         end
       end

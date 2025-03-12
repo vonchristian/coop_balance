@@ -15,7 +15,7 @@ module StoreFrontModule
         @sales_order = StoreFrontModule::Orders::SalesReturnOrderProcessing.new(order_processing_params)
         if @sales_order.valid?
           @sales_order.process!
-          redirect_to store_front_module_sales_returns_url, notice: 'Sales return Order processed successfully.'
+          redirect_to store_front_module_sales_returns_url, notice: "Sales return Order processed successfully."
         else
           render :new, status: :unprocessable_entity
         end

@@ -6,16 +6,16 @@ module ManagementModule
       def edit
         @cooperative = Cooperative.find(params[:id])
         respond_modal_with @cooperative
-        authorize [:management_module, :settings, @cooperative]
+        authorize [ :management_module, :settings, @cooperative ]
       end
 
       def update
         @cooperative = Cooperative.find(params[:id])
-        authorize [:management_module, :settings, @cooperative]
+        authorize [ :management_module, :settings, @cooperative ]
         @cooperative.update(cooperative_params)
         respond_modal_with @cooperative,
                            location: management_module_settings_url,
-                           notice: 'Cooperative details saved successfully.'
+                           notice: "Cooperative details saved successfully."
       end
 
       def show

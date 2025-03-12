@@ -63,10 +63,10 @@ module Vouchers
     end
 
     def amount_type_contra
-      if amount_type == 'credit'
-        'debit'
-      elsif amount_type == 'debit'
-        'credit'
+      if amount_type == "credit"
+        "debit"
+      elsif amount_type == "debit"
+        "credit"
       end
     end
 
@@ -75,8 +75,8 @@ module Vouchers
     end
 
     def set_amount_type(amount_type)
-      if find_account.account_type == 'revenue'
-        'credit'
+      if find_account.account_type == "revenue"
+        "credit"
       else
         amount_type
       end

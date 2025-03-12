@@ -3,9 +3,9 @@ class MultipleLoanPaymentProcessingsController < ApplicationController
     @multiple_loan_payment_processing = Loans::MultiplePaymentProcessing.new(payment_params)
     if @multiple_loan_payment_processing.valid?
       @multiple_loan_payment_processing.create_voucher!
-      redirect_to multiple_loan_payment_voucher_path(@multiple_loan_payment_processing.find_voucher), notice: 'created successfully'
+      redirect_to multiple_loan_payment_voucher_path(@multiple_loan_payment_processing.find_voucher), notice: "created successfully"
     else
-      redirect_to new_loan_multiple_payment_line_item_url, notice: 'Cannot proceed. Please fill up all the form correctly.'
+      redirect_to new_loan_multiple_payment_line_item_url, notice: "Cannot proceed. Please fill up all the form correctly."
     end
   end
 

@@ -28,7 +28,7 @@ module LoansModule
         create(:loan_application, account_number: '1')
         loan_application_2 = build(:loan_application, account_number: '1')
         loan_application_2.save
-        expect(loan_application_2.errors[:account_number]).to eq ['has already been taken']
+        expect(loan_application_2.errors[:account_number]).to eq [ 'has already been taken' ]
       end
     end
 

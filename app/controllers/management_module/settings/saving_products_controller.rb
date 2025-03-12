@@ -12,7 +12,7 @@ module ManagementModule
         @saving_product =  current_cooperative.saving_products.create(saving_product_params)
         respond_modal_with @saving_product,
                            location: management_module_settings_cooperative_products_url,
-                           notice: 'Saving Product created successfully'
+                           notice: "Saving Product created successfully"
       end
 
       def edit

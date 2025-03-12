@@ -15,7 +15,7 @@ module StoreFrontModule
         office: find_employee.office,
         cooperative: find_employee.cooperative,
         description: "Forwarded merchandise invetory (#{find_store_front.name})",
-        reference_number: 'SYSTEM',
+        reference_number: "SYSTEM",
         date: date
       )
       voucher.voucher_amounts.debit.build(
@@ -26,7 +26,7 @@ module StoreFrontModule
       )
       voucher.voucher_amounts.credit.build(
         cooperative: find_employee.cooperative,
-        account: find_cooperative.accounts.find_by(name: 'Temporary Merchandise Inventory Account'),
+        account: find_cooperative.accounts.find_by(name: "Temporary Merchandise Inventory Account"),
         amount: amount,
         commercial_document: find_store_front
       )

@@ -3,7 +3,7 @@ class DropAccountingReports < ActiveRecord::Migration[6.1]
     drop_table :accounting_reports
   end
 
-  def down 
+  def down
     raise ActiveRecord::IrreversibleMigration
   end
 end

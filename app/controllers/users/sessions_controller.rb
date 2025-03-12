@@ -1,5 +1,5 @@
 class Users::SessionsController < Devise::SessionsController
-  layout 'signin'
+  layout "signin"
 
   def destroy
     super do

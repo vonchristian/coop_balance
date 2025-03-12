@@ -7,6 +7,6 @@ class CreateOfficeLedgers < ActiveRecord::Migration[6.1]
       t.timestamps
     end
 
-    add_index :office_ledgers, [:office_id, :ledger_id], unique: true
+    add_index :office_ledgers, [ :office_id, :ledger_id ], unique: true
   end
 end

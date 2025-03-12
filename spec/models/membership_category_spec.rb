@@ -14,7 +14,7 @@ describe MembershipCategory, type: :model do
       category = build(:membership_category, title: 'Test Category', cooperative: cooperative)
       category.save
 
-      expect(category.errors[:title]).to eq ['has already been taken']
+      expect(category.errors[:title]).to eq [ 'has already been taken' ]
     end
   end
 end

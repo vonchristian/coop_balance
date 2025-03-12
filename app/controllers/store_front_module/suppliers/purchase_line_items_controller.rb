@@ -17,7 +17,7 @@ module StoreFrontModule
         @purchase_order_line_item = StoreFrontModule::LineItems::PurchaseLineItemProcessing.new(line_item_params)
         if @purchase_order_line_item.valid?
           @purchase_order_line_item.process!
-          redirect_to new_store_front_module_purchase_line_item_url, notice: 'Added to cart.'
+          redirect_to new_store_front_module_purchase_line_item_url, notice: "Added to cart."
         else
           render :new, status: :unprocessable_entity
         end

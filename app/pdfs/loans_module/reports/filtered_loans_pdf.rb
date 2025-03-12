@@ -2,7 +2,7 @@ module LoansModule
   module Reports
     class FilteredLoansPdf < Prawn::Document
       def initialize(loans, view_context)
-        super(margin: 40, page_size: 'A4', page_layout: :portrait)
+        super(margin: 40, page_size: "A4", page_layout: :portrait)
         @loans = loans
         @view_context = view_context
         heading
@@ -12,21 +12,21 @@ module LoansModule
       private
 
       def price(number)
-        @view_context.number_to_currency(number, unit: 'P ')
+        @view_context.number_to_currency(number, unit: "P ")
       end
 
       def heading
-        bounding_box [300, 780], width: 50 do
-          image Rails.root.join('app/assets/images/kccmc_logo.jpg').to_s, width: 50, height: 50
+        bounding_box [ 300, 780 ], width: 50 do
+          image Rails.root.join("app/assets/images/kccmc_logo.jpg").to_s, width: 50, height: 50
         end
-        bounding_box [370, 780], width: 200 do
-          text 'KCCMC', style: :bold, size: 24
-          text 'Tinoc Community Multipurpose Cooperative', size: 10
+        bounding_box [ 370, 780 ], width: 200 do
+          text "KCCMC", style: :bold, size: 24
+          text "Tinoc Community Multipurpose Cooperative", size: 10
         end
-        bounding_box [0, 780], width: 400 do
-          text 'Loans Report', style: :bold, size: 14
+        bounding_box [ 0, 780 ], width: 400 do
+          text "Loans Report", style: :bold, size: 14
           move_down 3
-          text Time.zone.today.strftime('%B %e, %Y').to_s, size: 10
+          text Time.zone.today.strftime("%B %e, %Y").to_s, size: 10
           text @loans.count.to_s
           move_down 3
 
@@ -34,7 +34,7 @@ module LoansModule
         end
         move_down 15
         stroke do
-          stroke_color '24292E'
+          stroke_color "24292E"
           line_width 1
           stroke_horizontal_rule
           move_down 20
@@ -42,18 +42,18 @@ module LoansModule
       end
 
       def loans_table
-        table(table_data, header: true, cell_style: { size: 12, font: 'Helvetica' }) do
+        table(table_data, header: true, cell_style: { size: 12, font: "Helvetica" }) do
           column(1).align = :right
           row(0).font_style = :bold
-          row(0).background_color = 'DDDDDD'
+          row(0).background_color = "DDDDDD"
         end
       end
 
       def table_data
         move_down 5
-        [['Borrower', 'Date Disbursed', 'Net Proceed', 'Balance']] +
-          @table_data ||= @loans.map { |e| [e.borrower_name, e.disbursement_date.try(:strftime, '%B %e, %Y'), price(e.net_proceed), price(e.balance)] } +
-                          [[@loans.count.to_s, price(@loans.sum(&:balance)).to_s]]
+        [ [ "Borrower", "Date Disbursed", "Net Proceed", "Balance" ] ] +
+          @table_data ||= @loans.map { |e| [ e.borrower_name, e.disbursement_date.try(:strftime, "%B %e, %Y"), price(e.net_proceed), price(e.balance) ] } +
+                          [ [ @loans.count.to_s, price(@loans.sum(&:balance)).to_s ] ]
       end
     end
   end

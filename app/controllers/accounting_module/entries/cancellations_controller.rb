@@ -13,7 +13,7 @@ module AccountingModule
         authorize %i[accounting_module entries cancellation]
         if @cancellation.valid?
           @cancellation.process!
-          redirect_to accounting_module_entry_url(@entry), notice: 'Entry cancelled successfully.'
+          redirect_to accounting_module_entry_url(@entry), notice: "Entry cancelled successfully."
         else
           render :new, status: :unprocessable_entity
         end

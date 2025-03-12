@@ -15,7 +15,7 @@ module Members
       @time_deposit = Memberships::TimeDeposits::DepositProcessing.new(time_deposit_params)
       if @time_deposit.valid?
         @time_deposit.susbscribe!
-        redirect_to voucher_url(id: @time_deposit.find_voucher.id), notice: ' Time deposit voucher created successfully.'
+        redirect_to voucher_url(id: @time_deposit.find_voucher.id), notice: " Time deposit voucher created successfully."
       else
         render :new, status: :unprocessable_entity
       end

@@ -11,7 +11,7 @@ module LoansModule
         @rebate = LoansModule::Loans::InterestRebatePosting.new(rebate_params)
         if @rebate.valid?
           @rebate.save
-          redirect_to loan_url(@loan), notice: 'Rebate saved successfully'
+          redirect_to loan_url(@loan), notice: "Rebate saved successfully"
         else
           render :new, status: :unprocessable_entity
         end
@@ -26,4 +26,3 @@ module LoansModule
     end
   end
 end
-

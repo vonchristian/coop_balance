@@ -4,7 +4,7 @@ class InterestPosting
       commercial_document: employee,
       origin: employee.office,
       recorder: employee,
-      description: 'Interest expense on savings deposits',
+      description: "Interest expense on savings deposits",
       entry_date: posting_date
     )
     DepositsModule::Saving.has_minimum_balance.each do |savings_account|

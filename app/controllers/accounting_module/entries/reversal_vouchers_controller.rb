@@ -12,7 +12,7 @@ module AccountingModule
         if @reversal.valid?
           @reversal.process!
           @voucher = current_office.vouchers.find_by(account_number: params[:accounting_module_entries_reversal_voucher_processing][:account_number])
-          redirect_to accounting_module_entry_reversal_voucher_url(entry_id: @entry.id, id: @voucher.id), notice: 'Voucher created successfully'
+          redirect_to accounting_module_entry_reversal_voucher_url(entry_id: @entry.id, id: @voucher.id), notice: "Voucher created successfully"
         else
           render :new, status: :unprocessable_entity
         end

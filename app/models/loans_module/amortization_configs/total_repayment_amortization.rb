@@ -1,7 +1,7 @@
 module LoansModule
   module AmortizationConfigs
     class TotalRepaymentAmortization < ApplicationRecord
-      enum calculation_type: { equal_principal: 0, equal_payment: 1 }
+      enum :calculation_type, { equal_principal: 0, equal_payment: 1 }
 
       validates :calculation_type, presence: true
 

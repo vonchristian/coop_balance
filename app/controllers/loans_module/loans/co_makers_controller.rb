@@ -1,4 +1,4 @@
-require 'will_paginate/array'
+require "will_paginate/array"
 module LoansModule
   module Loans
     class CoMakersController < ApplicationController
@@ -12,7 +12,7 @@ module LoansModule
         @loan = current_cooperative.loans.find(params[:loan_id])
         @co_maker = @loan.loan_co_makers.create(co_maker_params)
         @co_maker.save
-        redirect_to new_loans_module_loan_co_maker_url(@loan), notice: 'Added successfully'
+        redirect_to new_loans_module_loan_co_maker_url(@loan), notice: "Added successfully"
       end
 
       private

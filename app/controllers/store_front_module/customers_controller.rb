@@ -1,12 +1,12 @@
-require 'will_paginate/array'
+require "will_paginate/array"
 module StoreFrontModule
   class CustomersController < ApplicationController
     def index
       @customers = if params[:search].present?
                      Customer.text_search(params[:search]).paginate(page: params[:page], per_page: 25)
-                   else
+      else
                      Customer.all.paginate(page: params[:page], per_page: 25)
-                   end
+      end
     end
 
     def show

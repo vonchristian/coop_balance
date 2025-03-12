@@ -15,7 +15,7 @@ module Employees
       @voucher = Vouchers::EmployeeVoucher.create(voucher_params)
       if @voucher.save
         @voucher.add_amounts(@employee)
-        redirect_to employee_vouchers_url(@employee), notice: 'Voucher created successfully.'
+        redirect_to employee_vouchers_url(@employee), notice: "Voucher created successfully."
       else
         render :new, status: :unprocessable_entity
       end

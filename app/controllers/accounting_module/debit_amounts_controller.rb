@@ -5,9 +5,9 @@ module AccountingModule
       @entry = @amount.entry
       @accounts = if params[:text_search].present?
                     current_office.accounts.text_search(params[:text_search])
-                  else
+      else
                     @entry.accounts
-                  end
+      end
       @account = params[:account_id] ? current_office.accounts.find_by(id: params[:account_id]) : @amount.account
     end
 
@@ -15,7 +15,7 @@ module AccountingModule
       @amount = AccountingModule::DebitAmount.find(params[:id])
       @amount.update(amount_params)
       if @amount.save
-        redirect_to accounting_module_entry_url(@amount.entry), notice: 'Amount updated successfully'
+        redirect_to accounting_module_entry_url(@amount.entry), notice: "Amount updated successfully"
       else
         render :edit, status: :unprocessable_entity
       end

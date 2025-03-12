@@ -15,7 +15,7 @@ module Offices
         office_program = build(:office_program, office: office, program: program)
         office_program.save
 
-        expect(office_program.errors[:program_id]).to eql ['has already been taken']
+        expect(office_program.errors[:program_id]).to eql [ 'has already been taken' ]
       end
     end
   end

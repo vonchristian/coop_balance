@@ -72,7 +72,7 @@ module StoreFrontModule
       end
 
       def quantity_is_less_than_or_equal_to_available_quantity?
-        errors[:quantity] << 'exceeded available quantity' if converted_quantity.to_f > available_quantity
+        errors[:quantity] << "exceeded available quantity" if converted_quantity.to_f > available_quantity
       end
     end
   end

@@ -20,11 +20,11 @@ module LoansModule
 
     def update_amortization_payment_status
       if voucher.voucher_amounts.credit.where(account: loan.receivable_account).sum(&:amount).to_f >= schedule.principal
-        schedule.update(payment_status: 'full_payment')
+        schedule.update(payment_status: "full_payment")
       elsif voucher.voucher_amounts.credit.where(account: loan.receivable_account).sum(&:amount).to_f < schedule.principal
-        schedule.update(payment_status: 'partial_payment')
+        schedule.update(payment_status: "partial_payment")
       elsif voucher.voucher_amounts.credit.where(account: loan.receivable_account).sum(&:amount).zero?
-        schedule.update(payment_status: 'unpaid')
+        schedule.update(payment_status: "unpaid")
       end
     end
 

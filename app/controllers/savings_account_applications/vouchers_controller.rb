@@ -10,7 +10,7 @@ module SavingsAccountApplications
       @voucher = current_cooperative.vouchers.find(params[:id])
       @voucher.destroy
       @savings_account_application.destroy
-      redirect_to '/', alert: 'Cancelled successfully.'
+      redirect_to "/", alert: "Cancelled successfully."
     end
   end
 end

@@ -1,6 +1,6 @@
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails/all'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -8,11 +8,9 @@ Bundler.require(*Rails.groups)
 
 module CoopBalance
   class Application < Rails::Application
-    # Use the responders controller from the responders gem
-    config.app_generators.scaffold_controller :responders_controller
-
+    Rails.autoloaders.main.ignore("#{Rails.root}/app/node_modules")
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.1
+    config.load_defaults 8.0
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
@@ -25,9 +23,7 @@ module CoopBalance
     # in config/environments, which are processed later.
     #
     # config.time_zone = "Central Time (US & Canada)"
-    config.time_zone = 'Asia/Manila'
+    config.time_zone = "Asia/Manila"
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
-Rails.autoloaders.main.ignore(Rails.root.join('app/node_modules'))
-

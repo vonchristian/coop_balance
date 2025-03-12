@@ -3,7 +3,7 @@ module Cooperatives
     def create
       @cooperative = current_cooperative
       @logo = @cooperative.update(logo_params)
-      redirect_to management_module_settings_path, notice: 'Logo updated.'
+      redirect_to management_module_settings_path, notice: "Logo updated."
     end
 
     private

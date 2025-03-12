@@ -1,7 +1,7 @@
 wb = xlsx_package.workbook
-wb.add_worksheet(name: 'Buttons') do |sheet|
-  sheet.add_row ['Borrower', 'Release Date', 'Maturity Date', 'Loan Amount', 'Loan Balance']
+wb.add_worksheet(name: "Buttons") do |sheet|
+  sheet.add_row [ "Borrower", "Release Date", "Maturity Date", "Loan Amount", "Loan Balance" ]
   @loans.each do |loan|
-    sheet.add_row [loan.borrower_name, loan.disbursement_date, loan.maturity_date, loan.loan_amount, loan.balance]
+    sheet.add_row [ loan.borrower_name, loan.disbursement_date, loan.maturity_date, loan.loan_amount, loan.balance ]
   end
 end

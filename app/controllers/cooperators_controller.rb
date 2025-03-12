@@ -1,5 +1,5 @@
 class CooperatorsController < ApplicationController
-  layout 'cooperator'
+  layout "cooperator"
   def show
     @cooperator = current_cooperator
   end

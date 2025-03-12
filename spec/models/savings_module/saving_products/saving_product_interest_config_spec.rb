@@ -13,7 +13,7 @@ module SavingsModule
         it { should validate_numericality_of :annual_rate }
       end
 
-      it { should define_enum_for(:interest_posting).with_values([:annually]) }
+      it { should define_enum_for(:interest_posting).with_values([ :annually ]) }
 
       it '#balance_averager' do
         annually = create(:saving_product_interest_config, interest_posting: 'annually')

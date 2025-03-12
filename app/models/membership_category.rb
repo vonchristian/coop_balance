@@ -3,10 +3,10 @@ class MembershipCategory < ApplicationRecord
 
   validates :title, presence: true, uniqueness: { scope: :cooperative_id }
   def regular_member?
-    title == 'Regular Member'
+    title == "Regular Member"
   end
 
   def associate_member?
-    title == 'Associate Member'
+    title == "Associate Member"
   end
 end

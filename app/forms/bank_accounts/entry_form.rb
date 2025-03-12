@@ -25,8 +25,8 @@ module BankAccounts
         office: find_employee.office,
         cooperative: find_employee.cooperative,
         description: description, reference_number: reference_number, entry_date: date,
-        debit_amounts_attributes: [account_id: debit_account_id, amount: amount],
-        credit_amounts_attributes: [account_id: credit_account_id, amount: amount]
+        debit_amounts_attributes: [ account_id: debit_account_id, amount: amount ],
+        credit_amounts_attributes: [ account_id: credit_account_id, amount: amount ]
       )
     end
 

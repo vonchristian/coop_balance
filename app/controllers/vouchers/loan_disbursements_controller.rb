@@ -10,7 +10,7 @@ module Vouchers
       @disbursement = Vouchers::LoanDisbursementForm.new(disbursement_params)
       if @disbursement.valid?
         @disbursement.save
-        redirect_to voucher_url(@voucher), notice: 'Loan Disbursement Voucher disbursed successfully'
+        redirect_to voucher_url(@voucher), notice: "Loan Disbursement Voucher disbursed successfully"
       else
         render :new, status: :unprocessable_entity
       end

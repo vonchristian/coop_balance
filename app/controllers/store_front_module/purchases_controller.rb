@@ -11,7 +11,7 @@ module StoreFrontModule
       @line_item = StoreFrontModule::PurchaseLineItemProcessing.new(purchase_params)
       if @line_item.valid?
         @line_item.process!
-        redirect_to new_store_front_module_purchase_url(@supplier), notice: 'Stock added successfully'
+        redirect_to new_store_front_module_purchase_url(@supplier), notice: "Stock added successfully"
       else
         render :new, status: :unprocessable_entity
       end

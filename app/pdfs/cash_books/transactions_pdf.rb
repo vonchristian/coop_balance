@@ -3,7 +3,7 @@ module CashBooks
     attr_reader :entries, :employee, :from_date, :to_date, :view_context, :cooperative, :accounts, :title
 
     def initialize(args)
-      super(margin: 30, page_size: 'A4', page_layout: :portrait)
+      super(margin: 30, page_size: "A4", page_layout: :portrait)
       @entries      = args[:entries]
       @employee     = args[:employee]
       @cooperative  = @employee.cooperative
@@ -20,7 +20,7 @@ module CashBooks
     private
 
     def price(number)
-      view_context.number_to_currency(number, unit: 'P ')
+      view_context.number_to_currency(number, unit: "P ")
     end
 
     def display_commercial_document_for(entry)
@@ -28,39 +28,39 @@ module CashBooks
     end
 
     def heading
-      bounding_box [300, 770], width: 50 do
+      bounding_box [ 300, 770 ], width: 50 do
         image Rails.root.join("app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg").to_s, width: 50, height: 50
       end
-      bounding_box [360, 770], width: 200 do
+      bounding_box [ 360, 770 ], width: 200 do
         text cooperative.abbreviated_name.to_s, style: :bold, size: 20
         text cooperative.name.try(:upcase).to_s, size: 8
         text cooperative.address.to_s, size: 8
       end
-      bounding_box [0, 770], width: 400 do
+      bounding_box [ 0, 770 ], width: 400 do
         text title.upcase.to_s, style: :bold, size: 14
         move_down 5
-        table([['Employee:', employee.first_middle_and_last_name.to_s]],
-              cell_style: { padding: [0, 0, 1, 0], inline_format: true, size: 10 },
-              column_widths: [50, 150]) do
+        table([ [ "Employee:", employee.first_middle_and_last_name.to_s ] ],
+              cell_style: { padding: [ 0, 0, 1, 0 ], inline_format: true, size: 10 },
+              column_widths: [ 50, 150 ]) do
           cells.borders = []
           column(1).font_style = :bold
         end
-        table([['From:', from_date.strftime('%B %e, %Y').to_s]],
-              cell_style: { padding: [0, 0, 1, 0], inline_format: true, size: 10 },
-              column_widths: [50, 150]) do
+        table([ [ "From:", from_date.strftime("%B %e, %Y").to_s ] ],
+              cell_style: { padding: [ 0, 0, 1, 0 ], inline_format: true, size: 10 },
+              column_widths: [ 50, 150 ]) do
           cells.borders = []
           column(1).font_style = :bold
         end
-        table([['To:', to_date.strftime('%B %e, %Y').to_s]],
-              cell_style: { padding: [0, 0, 1, 0], inline_format: true, size: 10 },
-              column_widths: [50, 150]) do
+        table([ [ "To:", to_date.strftime("%B %e, %Y").to_s ] ],
+              cell_style: { padding: [ 0, 0, 1, 0 ], inline_format: true, size: 10 },
+              column_widths: [ 50, 150 ]) do
           cells.borders = []
           column(1).font_style = :bold
         end
       end
       move_down 10
       stroke do
-        stroke_color '24292E'
+        stroke_color "24292E"
         line_width 1
         stroke_horizontal_rule
         move_down 5
@@ -68,11 +68,11 @@ module CashBooks
     end
 
     def entries_table_header
-      table([['DATE', { content: 'PARTICULARS', colspan: 2 }, 'CRJ#', 'CDV#', 'DEBIT', 'CREDIT']],
-            cell_style: { inline_format: true, size: 7, font: 'Helvetica', padding: [4, 2, 4, 2] },
-            column_widths: [40, 110, 145, 50, 50, 70, 70]) do
+      table([ [ "DATE", { content: "PARTICULARS", colspan: 2 }, "CRJ#", "CDV#", "DEBIT", "CREDIT" ] ],
+            cell_style: { inline_format: true, size: 7, font: "Helvetica", padding: [ 4, 2, 4, 2 ] },
+            column_widths: [ 40, 110, 145, 50, 50, 70, 70 ]) do
         row(0).font_style = :bold
-        row(0).background_color = 'DDDDDD'
+        row(0).background_color = "DDDDDD"
         column(6).align = :right
         column(5).align = :right
         column(2).align = :center
@@ -83,24 +83,24 @@ module CashBooks
     def entries_table
       if @entries.none?
         move_down 10
-        text 'No entries data.', align: :center
+        text "No entries data.", align: :center
       else
         entries_table_header
 
         entries_data ||= entries.sort_by { |e| e.reference_number.to_i }.map do |entry|
           [
-            entry.entry_date.strftime('%D'),
+            entry.entry_date.strftime("%D"),
             display_commercial_document_for(entry).try(:upcase),
             entry.description,
-            entry.credit_amounts.where(account: employee.cash_accounts).sum(&:amount).zero? ? "##{entry.reference_number}" : '',
-            entry.debit_amounts.where(account: employee.cash_accounts).sum(&:amount).zero? ? "##{entry.reference_number}" : '',
-            entry.debit_amounts.where(account: employee.cash_accounts).sum(&:amount).zero? ? '-' : price(entry.debit_amounts.where(account: employee.cash_accounts).sum(&:amount)),
-            entry.credit_amounts.where(account: employee.cash_accounts).sum(&:amount).zero? ? '-' : price(entry.credit_amounts.where(account: employee.cash_accounts).sum(&:amount))
+            entry.credit_amounts.where(account: employee.cash_accounts).sum(&:amount).zero? ? "##{entry.reference_number}" : "",
+            entry.debit_amounts.where(account: employee.cash_accounts).sum(&:amount).zero? ? "##{entry.reference_number}" : "",
+            entry.debit_amounts.where(account: employee.cash_accounts).sum(&:amount).zero? ? "-" : price(entry.debit_amounts.where(account: employee.cash_accounts).sum(&:amount)),
+            entry.credit_amounts.where(account: employee.cash_accounts).sum(&:amount).zero? ? "-" : price(entry.credit_amounts.where(account: employee.cash_accounts).sum(&:amount))
           ]
         end
         table(entries_data,
-              cell_style: { inline_format: true, size: 8, padding: [1, 2, 3, 2] },
-              column_widths: [40, 110, 145, 50, 50, 70, 70]) do
+              cell_style: { inline_format: true, size: 8, padding: [ 1, 2, 3, 2 ] },
+              column_widths: [ 40, 110, 145, 50, 50, 70, 70 ]) do
           column(6).align = :right
           column(5).align = :right
         end
@@ -109,10 +109,10 @@ module CashBooks
     end
 
     def grand_total_table
-      grand_total_data = [[{ content: 'Total ', colspan: 5 }, price(total_debits), price(total_credits)]]
+      grand_total_data = [ [ { content: "Total ", colspan: 5 }, price(total_debits), price(total_credits) ] ]
       table(grand_total_data,
-            cell_style: { inline_format: true, size: 8, padding: [1, 2, 3, 2] },
-            column_widths: [40, 110, 145, 50, 50, 70, 70]) do
+            cell_style: { inline_format: true, size: 8, padding: [ 1, 2, 3, 2 ] },
+            column_widths: [ 40, 110, 145, 50, 50, 70, 70 ]) do
         row(0).font_style = :bold
         column(6).align = :right
         column(5).align = :right
@@ -126,14 +126,14 @@ module CashBooks
       text "List of similar reference numbers with their total amounts. (#{grouped_similar_reference_numbers.count})", size: 9
       move_down 4
       sub_total_data ||= grouped_similar_reference_numbers.sort_by(&:to_i).map do |reference_number|
-        ['', '',
+        [ "", "",
          { content: "No. of Entries: #{entries.where(reference_number: reference_number).count}", colspan: 2 },
          "##{reference_number}",
-         debits_sub_total(reference_number).zero? ? { content: price(credits_sub_total(reference_number)), colspan: 2 } : { content: price(debits_sub_total(reference_number)), colspan: 2 }]
+         debits_sub_total(reference_number).zero? ? { content: price(credits_sub_total(reference_number)), colspan: 2 } : { content: price(debits_sub_total(reference_number)), colspan: 2 } ]
       end
       table(sub_total_data,
-            cell_style: { inline_format: true, size: 8, padding: [1, 5, 3, 2] },
-            column_widths: [40, 110, 145, 50, 50, 70, 70]) do
+            cell_style: { inline_format: true, size: 8, padding: [ 1, 5, 3, 2 ] },
+            column_widths: [ 40, 110, 145, 50, 50, 70, 70 ]) do
         column(6).align = :right
         column(5).align = :right
       end
@@ -148,7 +148,7 @@ module CashBooks
     end
 
     def grouped_similar_reference_numbers
-      entries.where(reference_number: entries.select(:reference_number).group(:reference_number).having('count(*) > 1')).order(:reference_number).pluck(:reference_number).uniq
+      entries.where(reference_number: entries.select(:reference_number).group(:reference_number).having("count(*) > 1")).order(:reference_number).pluck(:reference_number).uniq
     end
 
     def debits_sub_total(reference_number)
@@ -162,4 +162,3 @@ module CashBooks
     end
   end
 end
-

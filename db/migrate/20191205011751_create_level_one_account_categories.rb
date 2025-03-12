@@ -1,7 +1,7 @@
 class CreateLevelOneAccountCategories < ActiveRecord::Migration[6.0]
   def change
     create_table :level_one_account_categories, id: :uuid do |t|
-      t.belongs_to :office, foreign_key: true, type: :uuid 
+      t.belongs_to :office, foreign_key: true, type: :uuid
       t.string :title
       t.string :code
       t.boolean :contra

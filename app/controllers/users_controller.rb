@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     authorize @user
     @user.update(user_params)
     if @user.save
-      redirect_to @user, notice: 'Password updated successfully.'
+      redirect_to @user, notice: "Password updated successfully."
     else
       render :edit, status: :unprocessable_entity
     end

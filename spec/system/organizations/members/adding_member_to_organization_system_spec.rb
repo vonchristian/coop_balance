@@ -15,4 +15,3 @@ describe 'Add member to organization', type: :system do
     expect(@organization.members).to include(member)
   end
 end
-

@@ -1,41 +1,41 @@
 module StoreFrontModule
   class Product < ApplicationRecord
     include PgSearch::Model
-    multisearchable against: [:name]
-    pg_search_scope :text_search,               against: [:name]
-    pg_search_scope :text_search_with_barcode,  against: [:name],
-                                                associated_against: { line_items: [:barcode] }
+    multisearchable against: [ :name ]
+    pg_search_scope :text_search,               against: [ :name ]
+    pg_search_scope :text_search_with_barcode,  against: [ :name ],
+                                                associated_against: { line_items: [ :barcode ] }
     belongs_to :store_front
     belongs_to :cooperative
-    belongs_to :category,                       class_name: 'StoreFrontModule::Category', optional: true
-    has_many :unit_of_measurements,             class_name: 'StoreFrontModule::UnitOfMeasurement', dependent: :destroy
+    belongs_to :category,                       class_name: "StoreFrontModule::Category", optional: true
+    has_many :unit_of_measurements,             class_name: "StoreFrontModule::UnitOfMeasurement", dependent: :destroy
     has_many :mark_up_prices,                   through: :unit_of_measurements
-    has_many :line_items,                       class_name: 'StoreFrontModule::LineItem'
-    has_many :purchases,                        class_name: 'StoreFrontModule::LineItems::PurchaseLineItem'
-    has_many :purchase_returns,                 class_name: 'StoreFrontModule::LineItems::PurchaseReturnLineItem'
-    has_many :sales,                            class_name: 'StoreFrontModule::LineItems::SalesLineItem'
-    has_many :sales_returns,                    class_name: 'StoreFrontModule::LineItems::SalesReturnLineItem'
-    has_many :spoilages,                        class_name: 'StoreFrontModule::LineItems::SpoilageLineItem'
-    has_many :internal_uses,                    class_name: 'StoreFrontModule::LineItems::InternalUseLineItem'
-    has_many :stock_transfers,                  class_name: 'StoreFrontModule::LineItems::StockTransferLineItem'
+    has_many :line_items,                       class_name: "StoreFrontModule::LineItem"
+    has_many :purchases,                        class_name: "StoreFrontModule::LineItems::PurchaseLineItem"
+    has_many :purchase_returns,                 class_name: "StoreFrontModule::LineItems::PurchaseReturnLineItem"
+    has_many :sales,                            class_name: "StoreFrontModule::LineItems::SalesLineItem"
+    has_many :sales_returns,                    class_name: "StoreFrontModule::LineItems::SalesReturnLineItem"
+    has_many :spoilages,                        class_name: "StoreFrontModule::LineItems::SpoilageLineItem"
+    has_many :internal_uses,                    class_name: "StoreFrontModule::LineItems::InternalUseLineItem"
+    has_many :stock_transfers,                  class_name: "StoreFrontModule::LineItems::StockTransferLineItem"
     has_many :orders,                           through: :line_items,
                                                 source: :order
     has_many :sales_orders,                     through: :sales,
                                                 source: :sales_order,
-                                                class_name: 'StoreFrontModule::Orders::SalesOrder'
+                                                class_name: "StoreFrontModule::Orders::SalesOrder"
     has_many :purchase_orders,                  through: :purchases,
                                                 source: :purchase_order,
-                                                class_name: 'StoreFrontModule::Orders::PurchaseOrder'
-    has_many :purchase_return_orders,           class_name: 'StoreFrontModule::Orders::PurchaseReturnOrder',
+                                                class_name: "StoreFrontModule::Orders::PurchaseOrder"
+    has_many :purchase_return_orders,           class_name: "StoreFrontModule::Orders::PurchaseReturnOrder",
                                                 through: :purchase_returns,
                                                 source: :purchase_return_order
-    has_many :sales_return_orders,              class_name: 'StoreFrontModule::Orders::SalesReturnOrder',
+    has_many :sales_return_orders,              class_name: "StoreFrontModule::Orders::SalesReturnOrder",
                                                 through: :sales_returns,
                                                 source: :sales_return_order
-    has_many :internal_use_orders,              class_name: 'StoreFrontModule::Orders::InternalUseOrder',
+    has_many :internal_use_orders,              class_name: "StoreFrontModule::Orders::InternalUseOrder",
                                                 through: :internal_uses,
                                                 source: :internal_use_order
-    has_many :spoilage_orders,                  class_name: 'StoreFrontModule::Orders::SpoilageOrder',
+    has_many :spoilage_orders,                  class_name: "StoreFrontModule::Orders::SpoilageOrder",
                                                 through: :spoilages,
                                                 source: :spoilage_order
 

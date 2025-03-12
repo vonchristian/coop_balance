@@ -17,7 +17,7 @@ module StoreFrontModule
         @purchase_return_order_line_item = StoreFrontModule::LineItems::PurchaseReturnLineItemProcessing.new(line_item_params)
         if @purchase_return_order_line_item.valid?
           @purchase_return_order_line_item.process!
-          redirect_to new_store_front_module_purchase_return_line_item_url, notice: 'Added successfully'
+          redirect_to new_store_front_module_purchase_return_line_item_url, notice: "Added successfully"
         else
           render :new, status: :unprocessable_entity
         end
@@ -27,7 +27,7 @@ module StoreFrontModule
         @cart = current_cart
         @line_item = StoreFrontModule::LineItems::PurchaseReturnLineItem.find(params[:id])
         @line_item.destroy
-        redirect_to new_store_front_module_purchase_return_line_item_url, alert: 'Removed successfully'
+        redirect_to new_store_front_module_purchase_return_line_item_url, alert: "Removed successfully"
       end
 
       private

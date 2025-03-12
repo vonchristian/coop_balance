@@ -10,7 +10,7 @@ module LoansModule
       @collateral = @loan.collaterals.create(collateral_params)
       if @collateral.valid?
         @collateral.save
-        redirect_to new_loan_collateral_url(@loan), notice: 'Collateral added successfully.'
+        redirect_to new_loan_collateral_url(@loan), notice: "Collateral added successfully."
       else
         render :new, status: :unprocessable_entity
       end

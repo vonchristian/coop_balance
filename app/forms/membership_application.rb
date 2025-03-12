@@ -37,11 +37,11 @@ class MembershipApplication
       email: email,
       last_transaction_date: Date.current
     )
-    member.avatar.attach(io: Rails.root.join('app/assets/images/default.png').open, filename: 'default.png')
+    member.avatar.attach(io: Rails.root.join("app/assets/images/default.png").open, filename: "default.png")
   end
 
   def avatar_asset
-    avatar.presence || Rails.root.join('app/assets/images/default.png')
+    avatar.presence || Rails.root.join("app/assets/images/default.png")
   end
 
   def create_membership
@@ -72,8 +72,8 @@ class MembershipApplication
   end
 
   def unique_full_name
-    errors[:last_name] << 'Member already registered' if Member.find_by(first_name: first_name, middle_name: middle_name, last_name: last_name).present?
-    errors[:first_name] << 'Memberalready registered' if Member.find_by(first_name: first_name, middle_name: middle_name, last_name: last_name).present?
-    errors[:middle_name] << 'Member already registered' if Member.find_by(first_name: first_name, middle_name: middle_name, last_name: last_name).present?
+    errors[:last_name] << "Member already registered" if Member.find_by(first_name: first_name, middle_name: middle_name, last_name: last_name).present?
+    errors[:first_name] << "Memberalready registered" if Member.find_by(first_name: first_name, middle_name: middle_name, last_name: last_name).present?
+    errors[:middle_name] << "Member already registered" if Member.find_by(first_name: first_name, middle_name: middle_name, last_name: last_name).present?
   end
 end

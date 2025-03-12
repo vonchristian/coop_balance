@@ -5,19 +5,19 @@ module DepositsModule
     extend  PercentActive
     monetize :averaged_balance_cents, as: :averaged_balance, numericality: true
     pg_search_scope :text_search, against: %i[account_number account_owner_name]
-    pg_search_scope :account_number_search, against: [:account_number]
+    pg_search_scope :account_number_search, against: [ :account_number ]
 
     multisearchable against: %i[account_number account_owner_name]
 
     belongs_to :organization, optional: true
     belongs_to :cooperative
-    belongs_to :barangay,                 optional: true, class_name: 'Addresses::Barangay'
+    belongs_to :barangay,                 optional: true, class_name: "Addresses::Barangay"
     belongs_to :depositor,                polymorphic: true
-    belongs_to :liability_account,        class_name: 'AccountingModule::Account'
-    belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
-    belongs_to :saving_product,           class_name: 'SavingsModule::SavingProduct'
-    belongs_to :office,                   class_name: 'Cooperatives::Office'
-    has_many :savings_account_agings,     class_name: 'SavingsModule::SavingsAccountAging', foreign_key: 'savings_account_id', dependent: :destroy
+    belongs_to :liability_account,        class_name: "AccountingModule::Account"
+    belongs_to :interest_expense_account, class_name: "AccountingModule::Account"
+    belongs_to :saving_product,           class_name: "SavingsModule::SavingProduct"
+    belongs_to :office,                   class_name: "Cooperatives::Office"
+    has_many :savings_account_agings,     class_name: "SavingsModule::SavingsAccountAging", foreign_key: "savings_account_id", dependent: :destroy
     has_many :savings_aging_groups,       through: :savings_account_agings
 
     delegate :name, :current_address_complete_address, :current_contact_number, to: :depositor, prefix: true
@@ -103,7 +103,7 @@ module DepositsModule
     def self.updated_at(args = {})
       if args[:from_date].present? && args[:to_date].present?
         date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-        joins(:entries).where('entries.entry_date' => (date_range.start_date..date_range.end_date))
+        joins(:entries).where("entries.entry_date" => (date_range.start_date..date_range.end_date))
       else
         all
       end

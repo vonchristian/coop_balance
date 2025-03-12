@@ -7,7 +7,6 @@ class CreateShareCapitals < ActiveRecord::Migration[5.1]
       t.string :account_number
       t.datetime :date_opened
       t.string :type, index: true
-
     end
     add_index :share_capitals, :account_number, unique: true
   end

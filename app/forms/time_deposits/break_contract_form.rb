@@ -13,7 +13,7 @@ module TimeDeposits
           save_withdraw
           close_account
         else
-          errors[:base] << 'Amount exceed balance'
+          errors[:base] << "Amount exceed balance"
         end
       end
     end
@@ -31,20 +31,20 @@ module TimeDeposits
         office: find_employee.office,
         cooperative: find_employee.cooperative,
         recorder: find_employee,
-        description: 'Withdraw time deposit with break contract fee',
+        description: "Withdraw time deposit with break contract fee",
         reference_number: reference_number,
         entry_date: date,
         commercial_document: find_time_deposit.depositor,
-        debit_amounts_attributes: [{
+        debit_amounts_attributes: [ {
           account: debit_account,
           amount: find_time_deposit.amount_deposited
-        }],
-        credit_amounts_attributes: [{
+        } ],
+        credit_amounts_attributes: [ {
           account: credit_account,
           amount: amount
         },
                                     { account: break_contract_account,
-                                      amount: break_contract_amount }]
+                                      amount: break_contract_amount } ]
       )
     end
 

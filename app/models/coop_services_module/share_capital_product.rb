@@ -4,10 +4,10 @@ module CoopServicesModule
     extend Totalable
     extend VarianceMonitoring
     belongs_to :cooperative
-    belongs_to :equity_account, class_name: 'AccountingModule::Account'
-    belongs_to :interest_payable_account, class_name: 'AccountingModule::Account'
-    belongs_to :transfer_fee_account, class_name: 'AccountingModule::Account'
-    has_many :subscribers,            class_name: 'DepositsModule::ShareCapital'
+    belongs_to :equity_account, class_name: "AccountingModule::Account"
+    belongs_to :interest_payable_account, class_name: "AccountingModule::Account"
+    belongs_to :transfer_fee_account, class_name: "AccountingModule::Account"
+    has_many :subscribers,            class_name: "DepositsModule::ShareCapital"
 
     validates :name,               :cost_per_share, presence: true
     validates :name, uniqueness: { scope: :cooperative_id }

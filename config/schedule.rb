@@ -14,13 +14,13 @@
 # end
 #
 every 1.day do
-  runner 'SavingProduct.post_interests_earned'
+  runner "SavingProduct.post_interests_earned"
 end
 
 every 1.day do
-  runner 'UnearnedInterestIncome.post_entry'
+  runner "UnearnedInterestIncome.post_entry"
 end
 every 1.hour do
-  command 'backup perform -t coopcatalyst_backup'
+  command "backup perform -t coopcatalyst_backup"
 end
 # Learn more: http://github.com/javan/whenever

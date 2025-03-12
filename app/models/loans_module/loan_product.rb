@@ -3,22 +3,22 @@ module LoansModule
     extend Totalable
     extend PastDuePercentage
 
-    belongs_to :amortization_type,             class_name: 'LoansModule::AmortizationType'
-    belongs_to :loan_protection_plan_provider, class_name: 'LoansModule::LoanProtectionPlanProvider', optional: true
+    belongs_to :amortization_type,             class_name: "LoansModule::AmortizationType"
+    belongs_to :loan_protection_plan_provider, class_name: "LoansModule::LoanProtectionPlanProvider", optional: true
     belongs_to :cooperative
-    belongs_to :office,                        class_name: 'Cooperatives::Office'
-    belongs_to :interest_amortization,         class_name: 'LoansModule::AmortizationConfigs::InterestAmortization'
-    belongs_to :total_repayment_amortization,  class_name: 'LoansModule::AmortizationConfigs::TotalRepaymentAmortization'
-    has_many :interest_configs,                class_name: 'LoansModule::LoanProducts::InterestConfig', dependent: :destroy
-    has_many :penalty_configs,                 class_name: 'LoansModule::LoanProducts::PenaltyConfig', dependent: :destroy
-    has_many :loan_product_charges,            class_name: 'LoansModule::LoanProducts::Charge', dependent: :destroy
-    has_many :loans,                           class_name: 'LoansModule::Loan', dependent: :nullify
-    has_many :member_borrowers,                through: :loans, source: :borrower, source_type: 'Member'
-    has_many :employee_borrowers,              through: :loans, source: :borrower, source_type: 'User'
-    has_many :organization_borrowers,          through: :loans, source: :borrower, source_type: 'Organization'
-    has_many :interest_predeductions,          class_name: 'LoansModule::LoanProducts::InterestPrededuction'
-    has_many :loan_applications,               class_name: 'LoansModule::LoanApplication'
-    has_many :office_loan_products,            class_name: 'Offices::OfficeLoanProduct'
+    belongs_to :office,                        class_name: "Cooperatives::Office"
+    belongs_to :interest_amortization,         class_name: "LoansModule::AmortizationConfigs::InterestAmortization"
+    belongs_to :total_repayment_amortization,  class_name: "LoansModule::AmortizationConfigs::TotalRepaymentAmortization"
+    has_many :interest_configs,                class_name: "LoansModule::LoanProducts::InterestConfig", dependent: :destroy
+    has_many :penalty_configs,                 class_name: "LoansModule::LoanProducts::PenaltyConfig", dependent: :destroy
+    has_many :loan_product_charges,            class_name: "LoansModule::LoanProducts::Charge", dependent: :destroy
+    has_many :loans,                           class_name: "LoansModule::Loan", dependent: :nullify
+    has_many :member_borrowers,                through: :loans, source: :borrower, source_type: "Member"
+    has_many :employee_borrowers,              through: :loans, source: :borrower, source_type: "User"
+    has_many :organization_borrowers,          through: :loans, source: :borrower, source_type: "Organization"
+    has_many :interest_predeductions,          class_name: "LoansModule::LoanProducts::InterestPrededuction"
+    has_many :loan_applications,               class_name: "LoansModule::LoanApplication"
+    has_many :office_loan_products,            class_name: "Offices::OfficeLoanProduct"
     has_many :loan_aging_groups, through: :office_loan_products
     delegate :calculation_type, to: :amortization_type, prefix: true
     delegate :rate,

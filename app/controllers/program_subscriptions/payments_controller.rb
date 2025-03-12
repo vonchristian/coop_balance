@@ -12,7 +12,7 @@ module ProgramSubscriptions
       @payment = ProgramSubscriptions::PaymentProcessing.new(payment_params)
       if @payment.valid?
         @payment.save
-        redirect_to program_subscription_voucher_url(program_subscription_id: @program_subscription.id, id: @payment.find_voucher.id), notice: 'Subscription payment created successfully.'
+        redirect_to program_subscription_voucher_url(program_subscription_id: @program_subscription.id, id: @payment.find_voucher.id), notice: "Subscription payment created successfully."
       else
         render :new, status: :unprocessable_entity
       end

@@ -50,18 +50,18 @@ module StoreFrontModule
           origin: find_employee.office,
           entry_date: order.date,
           description: note,
-          debit_amounts_attributes: [{ amount: order.total_cost,
+          debit_amounts_attributes: [ { amount: order.total_cost,
                                        account: sales_return,
                                        commercial_document: order },
                                      { amount: order.total_cost,
                                        account: merchandise_inventory,
-                                       commercial_document: order }],
-          credit_amounts_attributes: [{ amount: order.total_cost,
+                                       commercial_document: order } ],
+          credit_amounts_attributes: [ { amount: order.total_cost,
                                         account: cash_on_hand,
                                         commercial_document: order },
                                       { amount: order.total_cost,
                                         account: cost_of_goods_sold,
-                                        commercial_document: order }]
+                                        commercial_document: order } ]
         )
       end
     end

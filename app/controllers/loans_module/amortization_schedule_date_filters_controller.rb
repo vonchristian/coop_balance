@@ -18,7 +18,7 @@ module LoansModule
             cooperative: current_cooperative,
             view_context: view_context
           )
-          send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'dasd.pdf'
+          send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "dasd.pdf"
         end
       end
     end

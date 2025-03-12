@@ -13,7 +13,7 @@ module LoansModule
         @payment       = LoansModule::Loans::PaymentFromShareCapital.new(payment_params)
         if @payment.valid?
           @payment.process!
-          redirect_to new_loans_module_loan_payment_from_share_capital_url(@loan), notice: 'Amount created successfully'
+          redirect_to new_loans_module_loan_payment_from_share_capital_url(@loan), notice: "Amount created successfully"
         else
           render :new, status: :unprocessable_entity
         end
@@ -23,7 +23,7 @@ module LoansModule
         @loan = current_office.loans.find(params[:loan_id])
         @amount = current_cart.voucher_amounts.find(params[:id])
         @amount.destroy
-        redirect_to new_loans_module_loan_payment_from_share_capital_url(@loan), alert: 'Removed successfully'
+        redirect_to new_loans_module_loan_payment_from_share_capital_url(@loan), alert: "Removed successfully"
       end
 
       private

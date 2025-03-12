@@ -12,7 +12,7 @@ module TimeDeposits
       authorize %i[time_deposits break_contract]
       if @break_contract.valid?
         @break_contract.save
-        redirect_to time_deposit_url(@time_deposit), alert: 'Break contract saved successfully.'
+        redirect_to time_deposit_url(@time_deposit), alert: "Break contract saved successfully."
       else
         render :new, status: :unprocessable_entity
       end

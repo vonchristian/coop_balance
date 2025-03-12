@@ -12,7 +12,7 @@ module Offices
       @time_deposit_product = current_office.office_time_deposit_products.create(time_deposit_product_params)
       if @time_deposit_product.valid?
         @time_deposit_product.save!
-        redirect_to office_time_deposit_products_url(current_office), notice: 'Time Deposit Product saved successfully.'
+        redirect_to office_time_deposit_products_url(current_office), notice: "Time Deposit Product saved successfully."
       else
         render :new, status: :unprocessable_entity
       end

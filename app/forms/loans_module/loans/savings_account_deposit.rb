@@ -14,14 +14,14 @@ module LoansModule
 
       def save_loan_charge
         deposit = Charge.amount_type.create(
-          name: 'Savings Account Deposit',
+          name: "Savings Account Deposit",
           amount: amount,
           account: find_savings_account.liability_account
         )
         find_loan.loan_charges.find_or_create_by(
           charge: deposit,
           commercial_document: find_savings_account,
-          amount_type: 'credit'
+          amount_type: "credit"
         )
       end
 

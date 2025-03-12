@@ -1,6 +1,6 @@
 module LoansModule
   class LoanApplicationsController < ApplicationController
-    require 'will_paginate/array'
+    require "will_paginate/array"
     def index
       if params[:search].present?
         @pagy, @loan_applications = pagy(current_office
@@ -12,7 +12,7 @@ module LoansModule
         @pagy, @loan_applications = pagy(current_office
         .loan_applications
         .not_cancelled
-        .includes(:loan_product, voucher: [:accounting_entry])
+        .includes(:loan_product, voucher: [ :accounting_entry ])
         .order(application_date: :desc))
       end
     end
@@ -27,7 +27,7 @@ module LoansModule
       @loan_application = LoansModule::LoanApplicationProcessing.new(loan_params)
       if @loan_application.valid?
         @loan_application.process!
-        redirect_to new_loans_module_loan_application_voucher_url(@loan_application.find_loan_application), notice: 'Loan application saved successfully.'
+        redirect_to new_loans_module_loan_application_voucher_url(@loan_application.find_loan_application), notice: "Loan application saved successfully."
       else
         render :new, status: :unprocessable_entity
       end
@@ -40,7 +40,7 @@ module LoansModule
     def destroy
       @loan_application = current_cooperative.loan_applications.find(params[:id])
       ::LoansModule::LoanApplications::Cancellation.new(loan_application: @loan_application).cancel!
-      redirect_to loans_url, notice: 'Loan application cancelled successfully'
+      redirect_to loans_url, notice: "Loan application cancelled successfully"
     end
 
     private

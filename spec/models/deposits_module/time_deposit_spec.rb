@@ -32,7 +32,7 @@ module DepositsModule
     end
 
     describe 'enums' do
-      it { should define_enum_for(:status).with_values([:withdrawn]) }
+      it { should define_enum_for(:status).with_values([ :withdrawn ]) }
     end
   end
 end

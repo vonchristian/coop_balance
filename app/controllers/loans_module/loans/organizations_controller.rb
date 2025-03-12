@@ -11,7 +11,7 @@ module LoansModule
       def update
         @loan = current_cooperative.loans.find(params[:loan_id])
         @loan.update(organization_params)
-        respond_modal_with @loan, location: loan_settings_url(@loan), notice: 'Loan organization updated successfully.'
+        respond_modal_with @loan, location: loan_settings_url(@loan), notice: "Loan organization updated successfully."
       end
 
       private

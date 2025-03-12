@@ -18,9 +18,9 @@ module StoreFrontModule
       @line_item = StoreFrontModule::LineItems::SpoilageOrderLineItemProcessing.new(spoilage_params)
       if @line_item.valid?
         @line_item.process!
-        redirect_to new_store_front_module_spoilage_url, notice: 'Added to cart.'
+        redirect_to new_store_front_module_spoilage_url, notice: "Added to cart."
       else
-        redirect_to new_store_front_module_spoilage_url, alert: 'Exceeded available quantity'
+        redirect_to new_store_front_module_spoilage_url, alert: "Exceeded available quantity"
       end
     end
 
@@ -28,7 +28,7 @@ module StoreFrontModule
       @cart = current_cart
       @spoilage_line_item = StoreFrontModule::LineItems::SpoilageOrderLineItem.find(params[:id])
       @spoilage.destroy
-      redirect_to new_store_front_module_spoilage_url, notice: 'Removed successfully'
+      redirect_to new_store_front_module_spoilage_url, notice: "Removed successfully"
     end
 
     private

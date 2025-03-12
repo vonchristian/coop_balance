@@ -4,9 +4,9 @@ module AccountingModule
       @entry = Vouchers::EntryProcessing.new(entry_params)
       if @entry.valid?
         @entry.disburse!
-        redirect_to accounting_module_entries_url, notice: 'Adjusting entry saved successfully.'
+        redirect_to accounting_module_entries_url, notice: "Adjusting entry saved successfully."
       else
-        redirect_to new_accounting_module_entry_line_item_url, alert: 'Error'
+        redirect_to new_accounting_module_entry_line_item_url, alert: "Error"
       end
     end
 

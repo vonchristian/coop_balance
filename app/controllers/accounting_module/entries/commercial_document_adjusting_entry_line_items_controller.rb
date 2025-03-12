@@ -12,7 +12,7 @@ module AccountingModule
         @line_item = AccountingModule::Entries::VoucherAmountProcessing.new(amount_params)
         if @line_item.valid?
           @line_item.process!
-          redirect_to new_accounting_module_commercial_document_adjusting_entry_line_item_url(commercial_document_id: @commercial_document.id, commercial_document_type: @commercial_document.class.to_s), notice: 'Added successfully'
+          redirect_to new_accounting_module_commercial_document_adjusting_entry_line_item_url(commercial_document_id: @commercial_document.id, commercial_document_type: @commercial_document.class.to_s), notice: "Added successfully"
         else
           render :new, status: :unprocessable_entity
         end
@@ -25,7 +25,7 @@ module AccountingModule
         redirect_to new_accounting_module_commercial_document_adjusting_entry_line_item_url(
           commercial_document_id: @commercial_document.id,
           commercial_document_type: @commercial_document.class.to_s
-        ), notice: 'removed successfully'
+        ), notice: "removed successfully"
       end
 
       private

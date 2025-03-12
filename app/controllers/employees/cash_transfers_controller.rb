@@ -10,7 +10,7 @@ module Employees
       @cash_transfer = Employees::CashTransferProcessing.new(cash_transfer_params)
       if @cash_transfer.valid?
         @cash_transfer.save
-        redirect_to employee_url(@employee), notice: 'Cash transferred successfully.'
+        redirect_to employee_url(@employee), notice: "Cash transferred successfully."
       else
         render :new, status: :unprocessable_entity
       end

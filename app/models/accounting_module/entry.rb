@@ -8,17 +8,17 @@ module AccountingModule
     has_one    :voucher, dependent: :nullify
     belongs_to :recording_agent,       polymorphic: true, optional: true
     belongs_to :commercial_document,   polymorphic: true
-    belongs_to :cancellation_entry,    class_name: 'AccountingModule::Entry', optional: true
-    belongs_to :office,                class_name: 'Cooperatives::Office', optional: true
+    belongs_to :cancellation_entry,    class_name: "AccountingModule::Entry", optional: true
+    belongs_to :office,                class_name: "Cooperatives::Office", optional: true
     belongs_to :cooperative, optional: true
-    belongs_to :cancelled_by,          class_name: 'User', optional: true
-    belongs_to :recorder,              class_name: 'User', optional: true
-    has_many   :credit_amounts,        class_name: 'AccountingModule::CreditAmount', dependent: :destroy
-    has_many   :debit_amounts,         class_name: 'AccountingModule::DebitAmount', dependent: :destroy
-    has_many   :credit_accounts,       class_name: 'AccountingModule::Account', through: :credit_amounts, source: :account
-    has_many   :debit_accounts,        class_name: 'AccountingModule::Account', through: :debit_amounts,  source: :account
-    has_many   :amounts,               class_name: 'AccountingModule::Amount', dependent: :destroy
-    has_many   :accounts,              class_name: 'AccountingModule::Account', through: :amounts
+    belongs_to :cancelled_by,          class_name: "User", optional: true
+    belongs_to :recorder,              class_name: "User", optional: true
+    has_many   :credit_amounts,        class_name: "AccountingModule::CreditAmount", dependent: :destroy
+    has_many   :debit_amounts,         class_name: "AccountingModule::DebitAmount", dependent: :destroy
+    has_many   :credit_accounts,       class_name: "AccountingModule::Account", through: :credit_amounts, source: :account
+    has_many   :debit_accounts,        class_name: "AccountingModule::Account", through: :debit_amounts,  source: :account
+    has_many   :amounts,               class_name: "AccountingModule::Amount", dependent: :destroy
+    has_many   :accounts,              class_name: "AccountingModule::Account", through: :amounts
 
     validates :description, :reference_number, :entry_date, :entry_time, presence: true
 
@@ -90,7 +90,7 @@ module AccountingModule
       to_date   = args[:to_date]
       if from_date && to_date
         date_range = DateRange.new(from_date: from_date, to_date: to_date)
-        where('entry_date' => (date_range.start_date..date_range.end_date))
+        where("entry_date" => (date_range.start_date..date_range.end_date))
       else
         all
       end
@@ -135,14 +135,14 @@ module AccountingModule
     # show on pdf reports
     def cancellation_text
       if cancelled?
-        'CANCELLED'
+        "CANCELLED"
       else
-        ''
+        ""
       end
     end
 
     def self.for_loans
-      joins(:amounts).where('amounts.commercial_document_type' => 'LoansModule::Loan')
+      joins(:amounts).where("amounts.commercial_document_type" => "LoansModule::Loan")
     end
 
     def display_commercial_document
@@ -169,15 +169,15 @@ module AccountingModule
     end
 
     def has_credit_amounts?
-      errors.add(:base, 'Entry must have at least one credit amount') if credit_amounts.blank?
+      errors.add(:base, "Entry must have at least one credit amount") if credit_amounts.blank?
     end
 
     def has_debit_amounts?
-      errors.add(:base, 'Entry must have at least one debit amount') if debit_amounts.blank?
+      errors.add(:base, "Entry must have at least one debit amount") if debit_amounts.blank?
     end
 
     def amounts_cancel?
-      errors.add(:base, 'The credit and debit amounts are not equal') if credit_amounts.balance_for_new_record != debit_amounts.balance_for_new_record
+      errors.add(:base, "The credit and debit amounts are not equal") if credit_amounts.balance_for_new_record != debit_amounts.balance_for_new_record
     end
   end
 end

@@ -5,9 +5,9 @@ module SavingsAccounts
       @merging_line_item = Carts::SavingMergingProcessing.new
       @savings_accounts = if params[:search].present?
                             current_cooperative.savings.text_search(params[:search]).paginate(page: params[:page], per_page: 10)
-                          else
+      else
                             @current_saving.depositor.savings.except(@current_saving)
-                          end
+      end
       @merging = SavingsAccounts::AccountMerging.new
     end
 
@@ -15,7 +15,7 @@ module SavingsAccounts
       @current_saving = current_cooperative.savings.find(params[:savings_account_id])
       @merging_line_item = Carts::SavingMergingProcessing.new(saving_params)
       @merging_line_item.save
-      redirect_to new_savings_account_merging_line_item_url(@current_saving), notice: 'Savings account selected successfully.'
+      redirect_to new_savings_account_merging_line_item_url(@current_saving), notice: "Savings account selected successfully."
     end
 
     def destroy
@@ -23,7 +23,7 @@ module SavingsAccounts
       @saving = current_cooperative.savings.find(params[:saving_id])
       @saving.cart_id = nil
       @saving.save
-      redirect_to new_savings_account_merging_line_item_url(@current_saving), notice: 'Removed successfully.'
+      redirect_to new_savings_account_merging_line_item_url(@current_saving), notice: "Removed successfully."
     end
 
     private

@@ -5,20 +5,20 @@ module DepositsModule
     extend  PercentActive
 
     pg_search_scope :text_search, against: %i[account_number account_owner_name]
-    pg_search_scope :account_number_search, against: [:account_number]
+    pg_search_scope :account_number_search, against: [ :account_number ]
 
     multisearchable against: %i[account_number account_owner_name]
 
-    belongs_to :office, class_name: 'Cooperatives::Office'
+    belongs_to :office, class_name: "Cooperatives::Office"
     belongs_to :cooperative
     belongs_to :subscriber,                   polymorphic: true
-    belongs_to :share_capital_product,        class_name: 'CoopServicesModule::ShareCapitalProduct'
-    belongs_to :barangay,                     class_name: 'Addresses::Barangay', optional: true
+    belongs_to :share_capital_product,        class_name: "CoopServicesModule::ShareCapitalProduct"
+    belongs_to :barangay,                     class_name: "Addresses::Barangay", optional: true
     belongs_to :organization,                 optional: true
-    belongs_to :share_capital_equity_account, class_name: 'AccountingModule::Account', foreign_key: 'equity_account_id'
-    has_many   :amounts,                      through: :accounts, class_name: 'AccountingModule::Amount'
-    has_many   :debit_amounts,                through: :accounts, class_name: 'AccountingModule::DebitAmount'
-    has_many   :credit_amounts, through: :accounts, class_name: 'AccountingModule::CreditAmount'
+    belongs_to :share_capital_equity_account, class_name: "AccountingModule::Account", foreign_key: "equity_account_id"
+    has_many   :amounts,                      through: :accounts, class_name: "AccountingModule::Amount"
+    has_many   :debit_amounts,                through: :accounts, class_name: "AccountingModule::DebitAmount"
+    has_many   :credit_amounts, through: :accounts, class_name: "AccountingModule::CreditAmount"
 
     delegate :name, to: :barangay, prefix: true, allow_nil: true
     delegate :name,
@@ -59,7 +59,7 @@ module DepositsModule
     def self.updated_at(options = {})
       if options[:from_date] && options[:to_date]
         date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
-        joins(:entries).where('entries.entry_date' => (date_range.start_date..date_range.end_date))
+        joins(:entries).where("entries.entry_date" => (date_range.start_date..date_range.end_date))
       else
         all
       end

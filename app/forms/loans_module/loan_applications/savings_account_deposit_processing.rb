@@ -17,7 +17,7 @@ module LoansModule
 
       def create_voucher_amount
         find_loan_application.voucher_amounts.credit.create!(
-          description: 'Savings Deposit',
+          description: "Savings Deposit",
           amount: amount,
           account: find_savings_account.liability_account,
           cooperative: find_loan_application.cooperative

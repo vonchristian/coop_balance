@@ -1,4 +1,4 @@
-require 'will_paginate/array'
+require "will_paginate/array"
 module StoreFrontModule
   class InventoriesController < ApplicationController
     def index
@@ -6,7 +6,7 @@ module StoreFrontModule
     end
 
     def show
-      @line_item = StoreFrontModule::LineItems::PurchaseLineItem.includes([sales: [:unit_of_measurement]]).find(params[:id])
+      @line_item = StoreFrontModule::LineItems::PurchaseLineItem.includes([ sales: [ :unit_of_measurement ] ]).find(params[:id])
     end
   end
 end

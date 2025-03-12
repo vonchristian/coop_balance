@@ -14,7 +14,7 @@ module TimeDeposits
       @renewal.save
       respond_modal_with @renewal,
                          location: time_deposit_settings_url(@time_deposit),
-                         notice: 'Time Deposit term saved successfully.'
+                         notice: "Time Deposit term saved successfully."
     end
 
     private

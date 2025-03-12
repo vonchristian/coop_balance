@@ -20,7 +20,7 @@ module LoansModule
         Vouchers::VoucherAmount.credit.create!(
           cart: loan_application.cart,
           cooperative: loan_application.cooperative,
-          description: 'Interest on Loan',
+          description: "Interest on Loan",
           amount: computed_interest,
           account: loan_application.interest_revenue_account
         )

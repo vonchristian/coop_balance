@@ -11,7 +11,7 @@ module LoansModule
     def destroy
       @loan = current_cooperative.loans.find(params[:id])
       @loan.destroy
-      redirect_to loans_url, alert: 'Loan deleted successfully.'
+      redirect_to loans_url, alert: "Loan deleted successfully."
     end
   end
 end

@@ -1,8 +1,8 @@
 module LoansModule
   class AmortizationType < ApplicationRecord
-    enum calculation_type: { straight_line: 0, declining_balance: 1, ipsmpc_amortizer: 2 }
-    enum repayment_calculation_type: { equal_principal: 0, equal_payment: 1 }
-    enum interest_amortization_scope: { exclude_on_first_year: 0 }
+    enum :calculation_type, { straight_line: 0, declining_balance: 1, ipsmpc_amortizer: 2 }
+    enum :repayment_calculation_type, { equal_principal: 0, equal_payment: 1 }
+    enum :interest_amortization_scope, { exclude_on_first_year: 0 }
     validates :calculation_type, :repayment_calculation_type, presence: true
 
     def amortizer

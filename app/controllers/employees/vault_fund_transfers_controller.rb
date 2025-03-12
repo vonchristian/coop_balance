@@ -10,7 +10,7 @@ module Employees
       @entry = TreasuryModule::VaultFundTransferProcessing.new(remittance_params)
       if @entry.valid?
         @entry.save
-        redirect_to employee_url(@employee), notice: 'Fund transfer saved successfully.'
+        redirect_to employee_url(@employee), notice: "Fund transfer saved successfully."
       else
         render :new, status: :unprocessable_entity
       end

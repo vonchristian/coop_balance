@@ -1,18 +1,18 @@
 module DepositsModule
   class TimeDeposit < ApplicationRecord
-    enum status: { withdrawn: 0 }
+    enum :status, { withdrawn: 0 }
     include PgSearch::Model
     pg_search_scope :text_search, against: %i[account_number depositor_name]
 
     belongs_to :cooperative
     belongs_to :depositor,                polymorphic: true
-    belongs_to :office,                   class_name: 'Cooperatives::Office'
-    belongs_to :time_deposit_product,     class_name: 'CoopServicesModule::TimeDepositProduct'
+    belongs_to :office,                   class_name: "Cooperatives::Office"
+    belongs_to :time_deposit_product,     class_name: "CoopServicesModule::TimeDepositProduct"
     belongs_to :organization,             optional: true
-    belongs_to :barangay,                 optional: true, class_name: 'Addresses::Barangay'
-    belongs_to :liability_account,        class_name: 'AccountingModule::Account'
-    belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
-    belongs_to :break_contract_account,   class_name: 'AccountingModule::Account'
+    belongs_to :barangay,                 optional: true, class_name: "Addresses::Barangay"
+    belongs_to :liability_account,        class_name: "AccountingModule::Account"
+    belongs_to :interest_expense_account, class_name: "AccountingModule::Account"
+    belongs_to :break_contract_account,   class_name: "AccountingModule::Account"
     has_one  :term,                       as: :termable
 
     delegate :name, :interest_rate, :account, :break_contract_fee, to: :time_deposit_product, prefix: true
@@ -50,7 +50,7 @@ module DepositsModule
       to_date    = args[:to_date]
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
 
-      joins(:term).where('terms.effectivity_date' => date_range.start_date..date_range.end_date)
+      joins(:term).where("terms.effectivity_date" => date_range.start_date..date_range.end_date)
     end
 
     def accounts
@@ -63,7 +63,7 @@ module DepositsModule
     end
 
     def entries
-      AccountingModule::Entry.joins(:amounts).where('amounts.account_id' => accounts.ids)
+      AccountingModule::Entry.joins(:amounts).where("amounts.account_id" => accounts.ids)
     end
 
     def can_be_extended?

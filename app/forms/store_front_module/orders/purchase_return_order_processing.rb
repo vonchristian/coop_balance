@@ -30,12 +30,12 @@ module StoreFrontModule
           commercial_document: find_supplier,
           entry_date: order.date,
           description: "Purchase return of stocks to #{find_supplier.business_name}",
-          debit_amounts_attributes: [amount: order.total_cost,
+          debit_amounts_attributes: [ amount: order.total_cost,
                                      account: accounts_payable,
-                                     commercial_document: find_supplier],
-          credit_amounts_attributes: [amount: order.total_cost,
+                                     commercial_document: find_supplier ],
+          credit_amounts_attributes: [ amount: order.total_cost,
                                       account: merchandise_inventory,
-                                      commercial_document: find_supplier]
+                                      commercial_document: find_supplier ]
         )
       end
 

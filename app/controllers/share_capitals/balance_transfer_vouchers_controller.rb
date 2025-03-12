@@ -7,9 +7,9 @@ module ShareCapitals
       if @balance_transfer_voucher.valid?
         @balance_transfer_voucher.process!
         @voucher = current_office.vouchers.find_by(account_number: params[:share_capitals_balance_transfer_voucher][:account_number])
-        redirect_to share_capital_voucher_url(share_capital_id: @share_capital.id, id: @voucher.id), notice: 'Voucher created successfully'
+        redirect_to share_capital_voucher_url(share_capital_id: @share_capital.id, id: @voucher.id), notice: "Voucher created successfully"
       else
-        redirect_to new_share_capital_balance_transfer_url(@share_capital), alert: 'Error'
+        redirect_to new_share_capital_balance_transfer_url(@share_capital), alert: "Error"
       end
     end
 

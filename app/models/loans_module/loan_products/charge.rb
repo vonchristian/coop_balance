@@ -1,11 +1,11 @@
 module LoansModule
   module LoanProducts
     class Charge < ApplicationRecord
-      self.table_name = 'loan_product_charges'
+      self.table_name = "loan_product_charges"
 
-      enum charge_type: { amount_based: 0, percent_based: 1 }
-      belongs_to :loan_product, class_name: 'LoansModule::LoanProduct'
-      belongs_to :account,      class_name: 'AccountingModule::Account'
+      enum :charge_type, { amount_based: 0, percent_based: 1 }
+      belongs_to :loan_product, class_name: "LoansModule::LoanProduct"
+      belongs_to :account,      class_name: "AccountingModule::Account"
       validates :name, :amount, :rate, presence: true
       validates :rate, :amount, numericality: true
 

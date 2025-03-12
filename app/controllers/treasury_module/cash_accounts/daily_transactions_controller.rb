@@ -15,7 +15,7 @@ module TreasuryModule
               view_context: view_context,
               employee: current_user
             )
-            send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Daily Transaction.pdf'
+            send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Daily Transaction.pdf"
             nil
           end
         end

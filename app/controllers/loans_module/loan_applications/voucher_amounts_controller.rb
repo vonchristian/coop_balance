@@ -27,7 +27,7 @@ module LoansModule
         @voucher_amount.update(update_voucher_amount_params)
         if @voucher_amount.valid?
           @voucher_amount.save
-          redirect_to new_loans_module_loan_application_voucher_url(@loan_application), notice: 'Amount updated succesfully.'
+          redirect_to new_loans_module_loan_application_voucher_url(@loan_application), notice: "Amount updated succesfully."
         else
           render :edit, status: :unprocessable_entity
         end
@@ -37,7 +37,7 @@ module LoansModule
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
         @voucher_amount = @loan_application.voucher_amounts.find(params[:id])
         @voucher_amount.destroy
-        redirect_to new_loans_module_loan_application_voucher_url(@loan_application), alert: 'Removed successfully.'
+        redirect_to new_loans_module_loan_application_voucher_url(@loan_application), alert: "Removed successfully."
       end
 
       private

@@ -4,19 +4,19 @@ module LoansModule
     include PgSearch::Model
     pg_search_scope :text_search, associated_against: { voucher: %i[reference_number description] }
 
-    enum mode_of_payment: { daily: 0, weekly: 1, monthly: 2, semi_monthly: 3, quarterly: 4, semi_annually: 5, lumpsum: 6 }
+    enum :mode_of_payment, { daily: 0, weekly: 1, monthly: 2, semi_monthly: 3, quarterly: 4, semi_annually: 5, lumpsum: 6 }
 
-    belongs_to :cart,                     class_name: 'StoreFrontModule::Cart'
+    belongs_to :cart,                     class_name: "StoreFrontModule::Cart"
     belongs_to :borrower,                 polymorphic: true
-    belongs_to :preparer,                 class_name: 'User'
+    belongs_to :preparer,                 class_name: "User"
     belongs_to :cooperative
-    belongs_to :office, class_name: 'Cooperatives::Office'
+    belongs_to :office, class_name: "Cooperatives::Office"
     belongs_to :loan_product
     belongs_to :organization,             optional: true
-    belongs_to :receivable_account,       class_name: 'AccountingModule::Account', dependent: :destroy
-    belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account', dependent: :destroy
+    belongs_to :receivable_account,       class_name: "AccountingModule::Account", dependent: :destroy
+    belongs_to :interest_revenue_account, class_name: "AccountingModule::Account", dependent: :destroy
     belongs_to :voucher,                  dependent: :destroy, optional: true
-    has_one    :loan,                     class_name: 'LoansModule::Loan', dependent: :nullify
+    has_one    :loan,                     class_name: "LoansModule::Loan", dependent: :nullify
     has_many :amortization_schedules,     dependent: :destroy
     has_many :terms, as: :termable,       dependent: :destroy
 
@@ -81,7 +81,7 @@ module LoansModule
       principal_amount = amortization_schedules.principal_for(schedule: schedule)
       balance          = (loan_amount.amount - principal_amount)
 
-      [balance, 0].max
+      [ balance, 0 ].max
     end
 
     def term_is_within_one_year?
@@ -231,17 +231,17 @@ module LoansModule
 
     def status
       if loan.present?
-        'Approved'
+        "Approved"
       else
-        'Pending Approval'
+        "Pending Approval"
       end
     end
 
     def status_color
-      if status == 'Approved'
-        'success'
-      elsif status == 'Pending Approval'
-        'warning'
+      if status == "Approved"
+        "success"
+      elsif status == "Pending Approval"
+        "warning"
       end
     end
 

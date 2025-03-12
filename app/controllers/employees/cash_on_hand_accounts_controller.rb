@@ -8,7 +8,7 @@ module Employees
       @employee = current_cooperative.users.find(params[:employee_id])
       @employee.update(employee_params)
       if @employee.save
-        redirect_to employee_url(@employee), notice: 'Cash on Hand Account saved successfully.'
+        redirect_to employee_url(@employee), notice: "Cash on Hand Account saved successfully."
       else
         render :new, status: :unprocessable_entity
       end

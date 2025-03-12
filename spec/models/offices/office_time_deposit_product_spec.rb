@@ -21,7 +21,7 @@ module Offices
         office_time_deposit_product = build(:office_time_deposit_product, office: office, time_deposit_product: time_deposit_product)
         office_time_deposit_product.save
 
-        expect(office_time_deposit_product.errors[:time_deposit_product_id]).to eq ['has already been taken']
+        expect(office_time_deposit_product.errors[:time_deposit_product_id]).to eq [ 'has already been taken' ]
       end
     end
   end

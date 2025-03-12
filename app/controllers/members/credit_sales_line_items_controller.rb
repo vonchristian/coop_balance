@@ -18,7 +18,7 @@ module Members
       @sales_line_item = StoreFrontModule::LineItems::SalesLineItemProcessing.new(line_item_params)
       if @sales_line_item.valid?
         @sales_line_item.process!
-        redirect_to new_member_credit_sales_line_item_url(@member), notice: 'Added to cart.'
+        redirect_to new_member_credit_sales_line_item_url(@member), notice: "Added to cart."
       else
         render :new, status: :unprocessable_entity
       end

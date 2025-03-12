@@ -1,5 +1,5 @@
 class MembersController < ApplicationController
-  layout 'application'
+  layout "application"
 
   def index
     if params[:search].present?
@@ -22,7 +22,7 @@ class MembersController < ApplicationController
   def update
     @member = current_cooperative.member_memberships.find(params[:id])
     @member.update(member_params)
-    respond_modal_with @member, location: member_url(@member), notice: 'Member updated successfully.'
+    respond_modal_with @member, location: member_url(@member), notice: "Member updated successfully."
   end
 
   def destroy
@@ -31,10 +31,10 @@ class MembersController < ApplicationController
        @member.time_deposits.present? &&
        @member.share_capitals.present? &&
        @member.loans.present?
-      redirect_to member_url(@member), alert: 'Savings, share capitals, time deposits and loans are still present.'
+      redirect_to member_url(@member), alert: "Savings, share capitals, time deposits and loans are still present."
     else
       @member.destroy
-      redirect_to members_url, notice: 'Member account deleted successfully.'
+      redirect_to members_url, notice: "Member account deleted successfully."
     end
   end
 
@@ -46,7 +46,7 @@ class MembersController < ApplicationController
       :first_name, :middle_name, :last_name,
       :sex, :date_of_birth, :avatar,
       :signature_specimen,
-      tin_attributes: [:number]
+      tin_attributes: [ :number ]
     )
   end
 end

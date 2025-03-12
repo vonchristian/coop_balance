@@ -22,7 +22,7 @@ module AccountingModule
       @line_item = AccountingModule::Entries::VoucherAmountProcessing.new(amount_params)
       if @line_item.valid?
         @line_item.process!
-        redirect_to new_accounting_module_entry_line_item_url, notice: 'Amount added successfully'
+        redirect_to new_accounting_module_entry_line_item_url, notice: "Amount added successfully"
       else
         render :new, status: :unprocessable_entity
       end
@@ -31,7 +31,7 @@ module AccountingModule
     def destroy
       @amount = current_cooperative.voucher_amounts.find(params[:id])
       @amount.destroy
-      redirect_to new_accounting_module_entry_line_item_url, notice: 'removed successfully'
+      redirect_to new_accounting_module_entry_line_item_url, notice: "removed successfully"
     end
 
     private

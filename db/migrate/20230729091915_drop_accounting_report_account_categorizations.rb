@@ -3,7 +3,7 @@ class DropAccountingReportAccountCategorizations < ActiveRecord::Migration[6.1]
     drop_table :accounting_report_account_categorizations
   end
 
-  def down 
+  def down
     raise ActiveRecord::IrreversibleMigration
   end
 end

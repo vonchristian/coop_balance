@@ -6,7 +6,7 @@ module StoreFrontModule
         if @registry.valid?
           @registry.save!
           @registry.parse_for_records
-          redirect_to store_front_module_stock_registry_url(@registry), notice: 'Products uploaded successfully.'
+          redirect_to store_front_module_stock_registry_url(@registry), notice: "Products uploaded successfully."
 
         else
           render :new, status: :unprocessable_entity

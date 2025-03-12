@@ -10,7 +10,7 @@ module Employees
       @entry = AccountingModule::RemittanceForm.new(remittance_params)
       if @entry.save
         @entry.save
-        redirect_to employee_url(@employee), notice: 'Entry saved successfully.'
+        redirect_to employee_url(@employee), notice: "Entry saved successfully."
       else
         render :new, status: :unprocessable_entity
       end

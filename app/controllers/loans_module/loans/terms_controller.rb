@@ -13,7 +13,7 @@ module LoansModule
         @term = LoansModule::Loans::TermProcessing.new(term_params)
         if @term.valid?
           @term.process!
-          redirect_to loan_settings_url(@loan), notice: 'Loan term saved successfully.'
+          redirect_to loan_settings_url(@loan), notice: "Loan term saved successfully."
         else
           render :new, status: :unprocessable_entity
         end

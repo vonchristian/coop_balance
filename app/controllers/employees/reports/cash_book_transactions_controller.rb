@@ -13,10 +13,10 @@ module Employees
               employee: @employee,
               from_date: @from_date,
               to_date: @to_date,
-              title: 'Cash Book Report',
+              title: "Cash Book Report",
               view_context: view_context
             )
-            send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Cash Book Report.pdf'
+            send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Cash Book Report.pdf"
           end
         end
       end

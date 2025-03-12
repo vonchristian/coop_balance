@@ -21,7 +21,7 @@ module Offices
         office_loan_product = build(:office_loan_product, office: office, loan_product: loan_product)
         office_loan_product.save
 
-        expect(office_loan_product.errors[:loan_product_id]).to eql ['has already been taken']
+        expect(office_loan_product.errors[:loan_product_id]).to eql [ 'has already been taken' ]
       end
     end
 

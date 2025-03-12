@@ -12,7 +12,7 @@ module LoansModule
       def create
         @loan = current_cooperative.loans.find(params[:loan_id])
         @loan_discount = @loan.loan_discounts.penalty.create(loan_discount_params)
-        respond_modal_with @loan_discount, location: loan_url(@loan), notice: 'Loan penalty discount saved successfully.'
+        respond_modal_with @loan_discount, location: loan_url(@loan), notice: "Loan penalty discount saved successfully."
         # if @loan_discount.valid?
         #   @loan_discount.save
         #   redirect_to loan_url(@loan), notice: "Loan penalty discount saved successfully."
@@ -30,4 +30,3 @@ module LoansModule
     end
   end
 end
-

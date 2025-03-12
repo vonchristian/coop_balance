@@ -1,9 +1,9 @@
 module LoansModule
   class AmortizationSchedule < ApplicationRecord
-    enum payment_status: { full_payment: 0, partial_payment: 1, unpaid: 2 }
+    enum :payment_status, { full_payment: 0, partial_payment: 1, unpaid: 2 }
     belongs_to :loan,             optional: true
     belongs_to :loan_application, optional: true
-    belongs_to :office,           class_name: 'Cooperatives::Office'
+    belongs_to :office,           class_name: "Cooperatives::Office"
     has_many :payment_notices,    as: :notified
     has_many :notes,              as: :noteable
 
@@ -39,11 +39,11 @@ module LoansModule
 
     # for loan payment collection_select
     def date_schedule
-      date.strftime('%B, %Y')
+      date.strftime("%B, %Y")
     end
 
     def self.partial_and_no_payment
-      where.not(payment_status: 'full_payment').or(no_payment)
+      where.not(payment_status: "full_payment").or(no_payment)
     end
 
     def self.no_payment
@@ -112,7 +112,7 @@ module LoansModule
       from_date  = args.fetch(:from_date)
       to_date    = args.fetch(:to_date)
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
-      where('date' => date_range.range)
+      where("date" => date_range.range)
     end
 
     def total_amortization

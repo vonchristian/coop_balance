@@ -2,9 +2,9 @@ module LoansModule
   module LoanProducts
     class InterestConfig < ApplicationRecord
       extend Totalable
-      enum calculation_type: { add_on: 0, prededucted: 1 }
+      enum :calculation_type, { add_on: 0, prededucted: 1 }
 
-      belongs_to :loan_product,  class_name: 'LoansModule::LoanProduct'
+      belongs_to :loan_product,  class_name: "LoansModule::LoanProduct"
 
       validates :rate, presence: true, numericality: true
 

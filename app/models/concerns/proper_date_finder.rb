@@ -7,11 +7,11 @@ class ProperDateFinder
   end
 
   def proper_date
-    return date if date.strftime('%A').in?(operating_days)
+    return date if date.strftime("%A").in?(operating_days)
 
-    if date.next_day.strftime('%A').in?(operating_days)
+    if date.next_day.strftime("%A").in?(operating_days)
       date.next_day
-    elsif date.next_day.next_day.strftime('%A').in?(operating_days)
+    elsif date.next_day.next_day.strftime("%A").in?(operating_days)
       date.next_day.next_day
     end
   end

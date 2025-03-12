@@ -1,10 +1,10 @@
-require 'will_paginate/array'
+require "will_paginate/array"
 class ShareCapitalsController < ApplicationController
   def index
     if params[:search].present?
-      @pagy, @share_capitals = pagy(current_office.share_capitals.includes(:share_capital_product, :share_capital_equity_account, subscriber: [avatar_attachment: [:blob]]).text_search(params[:search]))
+      @pagy, @share_capitals = pagy(current_office.share_capitals.includes(:share_capital_product, :share_capital_equity_account, subscriber: [ avatar_attachment: [ :blob ] ]).text_search(params[:search]))
     else
-      @pagy, @share_capitals = pagy(current_office.share_capitals.includes(:share_capital_product, :share_capital_equity_account, subscriber: [avatar_attachment: [:blob]]))
+      @pagy, @share_capitals = pagy(current_office.share_capitals.includes(:share_capital_product, :share_capital_equity_account, subscriber: [ avatar_attachment: [ :blob ] ]))
     end
     @offices = current_cooperative.offices
   end
@@ -23,7 +23,7 @@ class ShareCapitalsController < ApplicationController
           share_capital: @share_capital,
           view_context: view_context
         )
-        send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Statement of Account.pdf'
+        send_data pdf.render, type: "application/pdf", disposition: "inline", file_name: "Statement of Account.pdf"
       end
     end
   end

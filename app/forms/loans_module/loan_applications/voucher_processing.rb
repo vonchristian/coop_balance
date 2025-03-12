@@ -52,9 +52,9 @@ module LoansModule
         Vouchers::VoucherAmount.create!(
           cooperative: find_cooperative,
           voucher: voucher,
-          amount_type: 'debit',
+          amount_type: "debit",
           amount: find_loan_application.loan_amount,
-          description: 'Loan Amount',
+          description: "Loan Amount",
           account: find_loan_application.receivable_account
         )
       end
@@ -63,9 +63,9 @@ module LoansModule
         Vouchers::VoucherAmount.create!(
           cooperative: find_cooperative,
           voucher: voucher,
-          amount_type: 'credit',
+          amount_type: "credit",
           amount: find_loan_application.net_proceed,
-          description: 'Net Proceed',
+          description: "Net Proceed",
           account_id: cash_account_id
         )
       end

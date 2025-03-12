@@ -13,7 +13,7 @@ module LoansModule
         @disbursement = LoansModule::LoanApplications::Disbursement.new(disbursement_params)
         if @disbursement.valid?
           @disbursement.disburse!
-          redirect_to loan_url(@loan_application.loan), notice: 'Loan disbursed successfully.'
+          redirect_to loan_url(@loan_application.loan), notice: "Loan disbursed successfully."
         else
           render :new, status: :unprocessable_entity
         end

@@ -17,7 +17,7 @@ module Loans
     def create
       @loan = current_cooperative.loans.find(params[:loan_id])
       @note = @loan.notes.create(note_params)
-      respond_modal_with @note, location: loan_notes_url(@loan), notice: 'Note saved successfully.'
+      respond_modal_with @note, location: loan_notes_url(@loan), notice: "Note saved successfully."
     end
 
     private

@@ -48,7 +48,7 @@ module Cooperatives
     end
 
     it '.types' do
-      expect(described_class.types).to eql ['Cooperatives::Offices::MainOffice', 'Cooperatives::Offices::SatelliteOffice', 'Cooperatives::Offices::BranchOffice']
+      expect(described_class.types).to eql [ 'Cooperatives::Offices::MainOffice', 'Cooperatives::Offices::SatelliteOffice', 'Cooperatives::Offices::BranchOffice' ]
     end
   end
 end

@@ -13,7 +13,7 @@ module LoansModule
         @loan = current_cooperative.loans.find(params[:loan_id])
         @interest_posting = LoansModule::Loans::InterestPosting.new(interest_params)
         @interest_posting.post!
-        respond_modal_with @interest_posting, location: loans_module_loan_interests_url(@loan), notice: 'Interest receivable posted successfully.'
+        respond_modal_with @interest_posting, location: loans_module_loan_interests_url(@loan), notice: "Interest receivable posted successfully."
       end
 
       private

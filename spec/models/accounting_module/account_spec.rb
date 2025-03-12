@@ -57,11 +57,11 @@ module AccountingModule
     end
 
     it '.types' do
-      expect(described_class.types).to eql ['AccountingModule::Asset',
+      expect(described_class.types).to eql [ 'AccountingModule::Asset',
                                             'AccountingModule::Equity',
                                             'AccountingModule::Liability',
                                             'AccountingModule::Expense',
-                                            'AccountingModule::Revenue']
+                                            'AccountingModule::Revenue' ]
     end
 
     it '#account_name' do
@@ -124,11 +124,11 @@ module AccountingModule
           da4 = build(:debit_amount, account: contra_equity, amount_cents: 2)
           da5 = build(:debit_amount, account: contra_revenue, amount_cents: 333)
 
-          create(:entry, credit_amounts: [ca1], debit_amounts: [da1], cooperative: cooperative)
-          create(:entry, credit_amounts: [ca2], debit_amounts: [da2], cooperative: cooperative)
-          create(:entry, credit_amounts: [ca3], debit_amounts: [da3], cooperative: cooperative)
-          create(:entry, credit_amounts: [ca4], debit_amounts: [da4], cooperative: cooperative)
-          create(:entry, credit_amounts: [ca5], debit_amounts: [da5], cooperative: cooperative)
+          create(:entry, credit_amounts: [ ca1 ], debit_amounts: [ da1 ], cooperative: cooperative)
+          create(:entry, credit_amounts: [ ca2 ], debit_amounts: [ da2 ], cooperative: cooperative)
+          create(:entry, credit_amounts: [ ca3 ], debit_amounts: [ da3 ], cooperative: cooperative)
+          create(:entry, credit_amounts: [ ca4 ], debit_amounts: [ da4 ], cooperative: cooperative)
+          create(:entry, credit_amounts: [ ca5 ], debit_amounts: [ da5 ], cooperative: cooperative)
         }
 
         it { should be 0.0 }

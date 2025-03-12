@@ -9,7 +9,7 @@ module LoansModule
     def self.for(from_date, to_date)
       return unless from_date && to_date
 
-      where('date' => from_date..to_date)
+      where("date" => from_date..to_date)
     end
   end
 end

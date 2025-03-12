@@ -1,6 +1,6 @@
 class NullIncomeSource
   def designation
-    'No Designation'
+    "No Designation"
   end
 
   def monthly_income
