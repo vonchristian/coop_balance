@@ -1,5 +1,11 @@
 module Cooperatives
   class Office < ApplicationRecord
+    enum office_type: {
+      main_office: 'main_office',
+      branch_office: 'branch_office',
+      satellite_office: 'satellite_office'
+    }
+
     belongs_to :cooperative
     has_many :employees,                        class_name: 'User'
     has_many :loans,                            class_name: 'LoansModule::Loan'
