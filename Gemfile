@@ -50,7 +50,6 @@ gem "stimulus-rails"
 gem "trix"
 gem "whenever", require: false
 gem "will_paginate"
-gem "propshaft"
 gem "importmap-rails"
 gem "solid_cache"
 gem "solid_queue"
@@ -108,3 +107,4 @@ gem "thruster", require: false
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
+gem "sprockets-rails"
