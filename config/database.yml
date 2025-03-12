@@ -81,12 +81,6 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  database: coopledger_production
-  username: deploy
-  password: <%= ENV["POSTGRES_PASSWORD"] %>
-
-production:
   primary: &primary_production
     <<: *default
     database: coopledger_production
@@ -94,13 +88,13 @@ production:
     password: <%= ENV["POSTGRES_PASSWORD"] %>
   cache:
     <<: *primary_production
-    database: new_app_production_cache
+    database: coopledger_production_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    database: new_app_production_queue
+    database: coopledger_production_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: new_app_production_cable
+    database: coopledger_production_cable
     migrations_paths: db/cable_migrate
