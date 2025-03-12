@@ -4,11 +4,10 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 import "@hotwired/turbo-rails"
-import "controllers"
+import "./controllers"
 import './add_jquery'
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-import 'preline';
 require("@rails/activestorage").start()
 
 import "chartkick/chart.js"
