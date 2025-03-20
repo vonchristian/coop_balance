@@ -593,7 +593,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_12_001254) do
   end
 
   create_table "ledger_running_balances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "entry_id"
+  t.uuid "entry_id"
     t.uuid "ledger_id", null: false
     t.date "entry_date", null: false
     t.datetime "entry_time", precision: nil, null: false
