@@ -14,7 +14,7 @@ class TimeDepositApplicationProcessing
   end
 
   def find_voucher
-    Voucher.find_by(account_number: voucher_account_number)
+    TreasuryModule::Voucher.find_by(account_number: voucher_account_number)
   end
 
   def find_time_deposit_application
@@ -45,7 +45,7 @@ class TimeDepositApplicationProcessing
   end
 
   def create_voucher(time_deposit_application)
-    voucher = Voucher.new(
+    voucher = TreasuryModule::Voucher.new(
       account_number: voucher_account_number,
       payee_id: depositor_id,
       payee_type: depositor_type,

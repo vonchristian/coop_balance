@@ -19,7 +19,7 @@ module LoansModule
           loan_id: LoansModule::Loan.last.id,
           account_number: account_number
         ).process!
-        voucher = Voucher.find_by(account_number: account_number)
+        voucher = TreasuryModule::Voucher.find_by(account_number: account_number)
         expect(voucher.voucher_amounts.pluck(:amount_cents)).to include(150_000)
         expect(voucher.voucher_amounts.pluck(:amount_cents)).to include(40_000)
         expect(voucher.voucher_amounts.pluck(:amount_cents)).to include(10_000)

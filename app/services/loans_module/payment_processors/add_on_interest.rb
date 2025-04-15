@@ -25,7 +25,7 @@ module LoansModule
       end
 
       def find_voucher
-        Voucher.find_by(account_number: account_number)
+        TreasuryModule.find_by(account_number: account_number)
       end
 
       def find_loan
@@ -43,7 +43,7 @@ module LoansModule
       end
 
       def create_voucher!
-        voucher = Voucher.new(
+        voucher =  TreasuryModule::Voucher.new(
           account_number: account_number,
           office: find_employee.office,
           cooperative: find_employee.cooperative,

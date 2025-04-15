@@ -21,7 +21,7 @@ module LoansModule
     has_one    :term,                     as: :termable
     belongs_to :loan_aging_group,         class_name: "LoansModule::LoanAgingGroup"
     belongs_to :loan_application,         class_name: "LoansModule::LoanApplication", optional: true
-    belongs_to :disbursement_voucher,     class_name: "Voucher", optional: true
+    belongs_to :disbursement_voucher,     class_name: "TreasuryModule::Voucher", optional: true
     belongs_to :cooperative
     belongs_to :office,                   class_name: "Cooperatives::Office"
     belongs_to :archived_by,              class_name: "User", optional: true
@@ -300,14 +300,14 @@ module LoansModule
     end
 
     def self.disbursed
-      joins(:disbursement_voucher).merge(Voucher.disbursed)
+      joins(:disbursement_voucher).merge(TreasuryModule::Voucher.disbursed)
     end
 
     def self.disbursed_on(args = {})
       from_date = args[:from_date]
       to_date   = args[:to_date]
       range     = DateRange.new(from_date: from_date, to_date: to_date)
-      disbursed.merge(Voucher.disbursed).where("vouchers.date" => range.start_date..range.end_date)
+      disbursed.merge(TreasuryModule::Voucher.disbursed).where("vouchers.date" => range.start_date..range.end_date)
     end
 
     def self.disbursed_by(args = {})

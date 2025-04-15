@@ -10,7 +10,7 @@ module StoreFrontModule
     has_many :entries,                class_name: "AccountingModule::Entry",
                                       as: :commercial_document
     has_many :stock_registries,       class_name: "StockRegistry"
-    has_many :vouchers,               as: :payee
+    has_many :vouchers,   class_name: "TreasuryModule::Voucher",              as: :payee
     has_many :voucher_amounts,        class_name: "Vouchers::VoucherAmount",
                                       as: :commercial_document
     has_many :purchase_orders,        class_name: "StoreFrontModule::Orders::PurchaseOrder",

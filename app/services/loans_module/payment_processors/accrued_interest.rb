@@ -45,7 +45,7 @@ module LoansModule
       private
 
       def create_voucher
-        voucher = Voucher.new(
+        voucher =  TreasuryModule::Voucher.new(
           account_number: account_number,
           office: find_employee.office,
           cooperative: find_employee.cooperative,

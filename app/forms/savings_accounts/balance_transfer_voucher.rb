@@ -15,13 +15,13 @@ module SavingsAccounts
     end
 
     def find_voucher
-      Voucher.find_by(account_number: account_number)
+      TreasuryModule::Voucher.find_by(account_number: account_number)
     end
 
     private
 
     def create_balance_transfer
-      voucher = Voucher.new(
+      voucher =  TreasuryModule::Voucher.new(
         payee: find_origin_saving.depositor,
         office: find_office,
         cooperative: find_employee.cooperative,

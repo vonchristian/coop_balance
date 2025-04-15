@@ -13,13 +13,13 @@ module Vouchers
     end
 
     def find_voucher
-      Voucher.find_by(account_number: account_number)
+      TreasuryModule::Voucher.find_by(account_number: account_number)
     end
 
     private
 
     def create_voucher
-      voucher = Voucher.create!(
+      voucher =  TreasuryModule::Voucher.create!(
         payee: find_payee,
         cooperative_service_id: cooperative_service_id,
         office: find_employee.office,

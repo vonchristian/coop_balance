@@ -28,7 +28,7 @@ module StoreFrontModule
           description: description,
           preparer: find_employee,
           account_number: account_number,
-          number: Voucher.generate_number
+          number:  TreasuryModule::Voucher.generate_number
         )
         voucher.voucher_amounts << find_supplier.voucher_amounts
       end

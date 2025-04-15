@@ -13,7 +13,7 @@ class SavingsAccountApplicationProcessing
   end
 
   def find_voucher
-    Voucher.find_by(account_number: voucher_account_number)
+    TreasuryModule::Voucher.find_by(account_number: voucher_account_number)
   end
 
   def find_savings_account_application
@@ -44,7 +44,7 @@ class SavingsAccountApplicationProcessing
   end
 
   def create_voucher(savings_account_application)
-    voucher = Voucher.new(
+    voucher = TreasuryModule::Voucher.new(
       account_number: voucher_account_number,
       payee_id: depositor_id,
       payee_type: depositor_type,

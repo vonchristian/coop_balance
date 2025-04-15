@@ -13,7 +13,7 @@ module TimeDeposits
     end
 
     def find_voucher
-      Voucher.find_by(account_number: account_number)
+      TreasuryModule::Voucher.find_by(account_number: account_number)
     end
 
     def find_time_deposit
@@ -27,7 +27,7 @@ module TimeDeposits
     private
 
     def create_voucher
-      voucher = Voucher.new(
+      voucher =  TreasuryModule::Voucher.new(
         payee: find_time_deposit.depositor,
         office: find_employee.office,
         cooperative: find_employee.cooperative,

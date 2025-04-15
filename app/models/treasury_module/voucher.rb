@@ -1,4 +1,4 @@
-class Voucher < ApplicationRecord
+class TreasuryModule::Voucher < ApplicationRecord
   include PgSearch::Model
 
   has_secure_token

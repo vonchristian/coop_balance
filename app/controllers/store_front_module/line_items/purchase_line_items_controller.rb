@@ -8,7 +8,7 @@ module StoreFrontModule
         @purchase_line_item = StoreFrontModule::LineItems::PurchaseLineItemProcessing.new
         @purchase_order = StoreFrontModule::Orders::PurchaseOrderProcessing.new
         @purchase_line_items = @cart.purchase_line_items.includes(:unit_of_measurement, :product).order(created_at: :desc)
-        @vouchers = Voucher.includes(entry: [ :debit_amounts ]).unused
+        @vouchers = TreasuryModule::Voucher.includes(entry: [ :debit_amounts ]).unused
         @suppliers = current_cooperative.suppliers
       end
 

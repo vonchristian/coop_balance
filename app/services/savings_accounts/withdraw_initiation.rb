@@ -26,7 +26,7 @@ class SavingsAccounts::WithdrawInitiation < ActiveInteraction::Base
   private
 
   def build_voucher
-    Voucher.new(
+    TreasuryModule::Voucher.new(
       payee: savings_account.depositor,
       office: employee.office,
       cooperative: employee.cooperative,

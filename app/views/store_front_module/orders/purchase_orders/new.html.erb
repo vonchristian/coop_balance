@@ -80,7 +80,7 @@
           <%= simple_form_for @purchase_order, url: :store_front_module_purchase_order_processings do |f| %>
             <%= f.input :supplier_id, collection: Supplier.all.map{|a| [ a.name, a.id] } %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-            <%= f.input :voucher_id, collection: Voucher.unused.map{|a| [a.number, a.id] } %>
+            <%= f.input :voucher_id, collection: TreasuryModule::Voucher.unused.map{|a| [a.number, a.id] } %>
             <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
         <%=f.submit "Save Purchase", class: "btn btn-success btn-block btn-lg", :accesskey => "C" %>

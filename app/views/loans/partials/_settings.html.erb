@@ -95,7 +95,7 @@
           Enter reference number to distinguish loans during payments
         </p>
         <% if !@loan.forwarded_loan? && @loan.disbursement_voucher.present? %>
-          <h4 class="card-title"><%= "##{Voucher.find_by(id: @loan.disbursement_voucher_id).try(:reference_number)}" %></h4>
+          <h4 class="card-title"><%= "##{TreasuryModule::Voucher.find_by(id: @loan.disbursement_voucher_id).try(:reference_number)}" %></h4>
         <% end %>
       </div>
       <div class="col-md-3">

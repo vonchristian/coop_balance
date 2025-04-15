@@ -11,7 +11,7 @@ module StoreFrontModule
       end
 
       def create_voucher
-        voucher = Voucher.new(
+        voucher =  TreasuryModule.new(
           cooperative: order.cooperative,
           payee: order.supplier,
           office: employee.office,

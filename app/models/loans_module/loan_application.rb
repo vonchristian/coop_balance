@@ -15,7 +15,7 @@ module LoansModule
     belongs_to :organization,             optional: true
     belongs_to :receivable_account,       class_name: "AccountingModule::Account", dependent: :destroy
     belongs_to :interest_revenue_account, class_name: "AccountingModule::Account", dependent: :destroy
-    belongs_to :voucher,                  dependent: :destroy, optional: true
+    belongs_to :voucher,   class_name: "TreasuryModule::Voucher", dependent: :destroy, optional: true
     has_one    :loan,                     class_name: "LoansModule::Loan", dependent: :nullify
     has_many :amortization_schedules,     dependent: :destroy
     has_many :terms, as: :termable,       dependent: :destroy

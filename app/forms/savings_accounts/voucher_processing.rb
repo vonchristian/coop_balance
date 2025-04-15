@@ -47,7 +47,7 @@ module SavingsAccounts
     end
 
     def find_voucher
-      Voucher.find(voucher_id)
+      TreasuryModule::Voucher.find(voucher_id)
     end
   end
 end

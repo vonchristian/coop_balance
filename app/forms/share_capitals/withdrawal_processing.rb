@@ -15,7 +15,7 @@ module ShareCapitals
     private
 
     def create_voucher
-      voucher = Voucher.new(
+      voucher =  TreasuryModule::Voucher.new(
         cooperative: find_employee.cooperative,
         account_number: account_number,
         office: find_employee.office,

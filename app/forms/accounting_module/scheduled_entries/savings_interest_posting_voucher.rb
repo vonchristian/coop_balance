@@ -17,7 +17,7 @@ module AccountingModule
       private
 
       def create_voucher
-        voucher = Voucher.new(
+        voucher = TreasuryModule::Voucher.new(
           account_number: account_number,
           payee: find_employee,
           preparer: find_employee,

@@ -2,7 +2,7 @@ module TimeDeposits
   class WithdrawalVouchersController < ApplicationController
     def show
       @time_deposit = current_office.time_deposits.find(params[:time_deposit_id])
-      @voucher = Voucher.find(params[:id])
+      @voucher = TreasuryModule::Voucher.find(params[:id])
       respond_to do |format|
         format.html
         format.pdf do

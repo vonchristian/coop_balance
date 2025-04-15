@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe Voucher do
+RSpec.describe TreasuryModule::Voucher do
   describe 'associations' do
     it { should belong_to(:commercial_document).optional }
-    it { should belong_to :cooperative }
+    it { should belong_to(:cooperative).optional }
     it { should belong_to(:cooperative_service).optional }
-    it { should belong_to :office }
+    it { should belong_to(:office).optional }
     it { should belong_to(:accounting_entry).optional }
     it { should belong_to :payee }
-    it { should belong_to :preparer }
+    it { should belong_to(:preparer).optional }
     it { should belong_to(:disburser).optional }
     it { should have_many :voucher_amounts }
   end

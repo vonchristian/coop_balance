@@ -2,7 +2,7 @@
   <div class="card-body">
 <h3 class="card-title">Loan Payments</h3>
 <% year_dates = [] %>
-<% start_date = Voucher.loan_disbursement_vouchers.disbursed.order(date: :desc).first.date %>
+<% start_date = TreasuryModule::Voucher.loan_disbursement_vouchers.disbursed.order(date: :desc).first.date %>
 <% (start_date.to_date..Date.today).each do |date| %>
 
   <% year_dates << date.end_of_year%>

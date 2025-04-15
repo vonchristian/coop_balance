@@ -10,7 +10,7 @@ module ShareCapitals
       @withdrawal    = ShareCapitals::WithdrawalProcessing.new(withdrawal_params)
       if @withdrawal.valid?
         @withdrawal.process!
-        @voucher = Voucher.find_by(account_number: params[:share_capitals_withdrawal_processing][:account_number])
+        @voucher = TreasuryModule::Voucher.find_by(account_number: params[:share_capitals_withdrawal_processing][:account_number])
 
         redirect_to share_capital_withdrawal_voucher_path(share_capital_id: @share_capital.id, id: @voucher.id), notice: "Withdrawal voucher created successfully."
       else

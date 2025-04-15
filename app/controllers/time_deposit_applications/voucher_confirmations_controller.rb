@@ -2,7 +2,7 @@ module TimeDepositApplications
   class VoucherConfirmationsController < ApplicationController
     def create
       @time_deposit_application = current_cooperative.time_deposit_applications.find(params[:time_deposit_application_id])
-      @voucher = Voucher.find(params[:voucher_id])
+      @voucher = TreasuryModule::Voucher.find(params[:voucher_id])
       ActiveRecord::Base.transaction do
         TimeDeposits::Opening.new(time_deposit_application: @time_deposit_application, employee: current_user, voucher: @voucher).process!
         Vouchers::EntryProcessing.new(voucher: @voucher, employee: current_user).process!

@@ -20,7 +20,7 @@ class ShareCapitalApplicationProcessing
   end
 
   def find_voucher
-    Voucher.find_by(account_number: voucher_account_number)
+    TreasuryModule::Voucher.find_by(account_number: voucher_account_number)
   end
 
   private
@@ -47,7 +47,7 @@ class ShareCapitalApplicationProcessing
   end
 
   def create_voucher(share_capital_application)
-    voucher = Voucher.new(
+    voucher = TreasuryModule::Voucher.new(
       account_number: voucher_account_number,
       payee_id: subscriber_id,
       payee_type: subscriber_type,

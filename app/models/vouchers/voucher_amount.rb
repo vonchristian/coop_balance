@@ -6,7 +6,7 @@ module Vouchers
     belongs_to :temp_cart, polymorphic: true, optional: true
     belongs_to :cart,                class_name: "StoreFrontModule::Cart", optional: true
     belongs_to :account,             class_name: "AccountingModule::Account"
-    belongs_to :voucher,             optional: true
+    belongs_to :voucher, class_name: "TreasuryModule::Voucher",            optional: true
     belongs_to :cooperative,         optional: true
     belongs_to :loan_application,    class_name: "LoansModule::LoanApplication", optional: true
     belongs_to :recorder,            class_name: "User", optional: true

@@ -9,7 +9,7 @@ module StoreFrontModule
     belongs_to :commercial_document,      polymorphic: true
     belongs_to :store_front
     belongs_to :cooperative
-    belongs_to :voucher
+    belongs_to :voucher, class_name: "TreasuryModule::Voucher"
 
     has_many :line_items,                 class_name: "StoreFrontModule::LineItem", dependent: :destroy
     has_many :products,                   class_name: "StoreFrontModule::Product", through: :line_items
@@ -22,7 +22,7 @@ module StoreFrontModule
     before_save :set_default_date, :set_commercial_document_name
 
     def self.processed
-      joins(:voucher).merge(Voucher.disbursed)
+      joins(:voucher).merge(TreasuryModule::Voucher.disbursed)
     end
 
     def self.ordered_on(options = {})

@@ -7,7 +7,7 @@
                 <br>
               <% else %>
                 <span class="text-muted" data-toggle="tooltip" title="Reference Number">
-                  <%= "##{Voucher.find_by(id: loan.disbursement_voucher_id).try(:reference_number)}" %>
+                  <%= "##{TreasuryModule::Voucher.find_by(id: loan.disbursement_voucher_id).try(:reference_number)}" %>
                 </span>
               <% end %>
     </span>
@@ -27,7 +27,7 @@
               </small>
             </div>
             <div class="col-md-4 col-sm-4">
-              
+
             </div>
           </div>
         </div>

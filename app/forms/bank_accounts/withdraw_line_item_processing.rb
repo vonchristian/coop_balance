@@ -14,7 +14,7 @@ module BankAccounts
     end
 
     def find_voucher
-      Voucher.find_by(account_number: account_number)
+      TreasuryModule::Voucher.find_by(account_number: account_number)
     end
 
     def find_bank_account
@@ -28,7 +28,7 @@ module BankAccounts
     private
 
     def create_voucher
-      voucher = Voucher.new(
+      voucher = TreasuryModule::Voucher.new(
         payee: find_payee,
         office: find_employee.office,
         cooperative: find_employee.cooperative,

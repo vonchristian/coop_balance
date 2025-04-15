@@ -16,8 +16,8 @@ class Cooperative < ApplicationRecord
   has_many :debit_amounts,                  class_name: "AccountingModule::DebitAmount", through: :entries
   has_many :credit_amounts,                 class_name: "AccountingModule::CreditAmount", through: :entries
   has_many :organizations
-  has_many :vouchers
-  has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount"
+  has_many :vouchers,                       class_name: "TreasuryModule::Voucher"
+  has_many :voucher_amounts,                class_name: "Vouchers::VoucherAmount"
   has_many :users
   has_many :saving_products,                class_name: "SavingsModule::SavingProduct"
   has_many :loan_products,                  class_name: "LoansModule::LoanProduct"

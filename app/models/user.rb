@@ -49,7 +49,7 @@ class User < ApplicationRecord
   has_many :sales_return_orders,      class_name: "StoreFrontModule::Orders::SalesReturnOrder", as: :commercial_document
   has_many :entries,                  class_name: "AccountingModule::Entry", foreign_key: "recorder_id"
   has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", foreign_key: "recorder_id" # for adding amounts on voucher
-  has_many :vouchers,                 as: :payee
+  has_many :vouchers,   class_name: "TreasuryModule::Voucher",              as: :payee
   has_many :prepared_vouchers,        class_name: "Voucher", foreign_key: "preparer_id"
   has_many :disbursed_vouchers,       class_name: "Voucher", foreign_key: "disburser_id"
 

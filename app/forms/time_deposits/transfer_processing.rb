@@ -16,7 +16,7 @@ module TimeDeposits
     private
 
     def create_voucher
-      voucher = Voucher.new(
+      voucher =  TreasuryModule::Voucher.new(
         account_number: account_number,
         payee: find_time_deposit.depositor,
         preparer: find_employee,

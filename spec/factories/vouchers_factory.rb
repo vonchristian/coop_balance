@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :voucher do
+  factory :voucher, class: TreasuryModule::Voucher do
     office
     cooperative
     commercial_document factory: %i[member]

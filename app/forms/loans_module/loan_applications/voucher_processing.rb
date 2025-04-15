@@ -17,13 +17,13 @@ module LoansModule
       end
 
       def find_voucher
-        Voucher.find_by(account_number: voucher_account_number)
+        TreasuryModule::Voucher.find_by(account_number: voucher_account_number)
       end
 
       private
 
       def create_voucher
-        voucher = Voucher.new(
+        voucher = TreasuryModule::Voucher.new(
           account_number: voucher_account_number,
           payee_id: borrower_id,
           payee_type: borrower_type,

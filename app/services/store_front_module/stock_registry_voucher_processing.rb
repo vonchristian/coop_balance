@@ -7,7 +7,7 @@ module StoreFrontModule
     end
 
     def create_voucher
-      voucher = Voucher.new(
+      voucher =  TreasuryModule::Voucher.new(
         account_number: voucher_account_number,
         payee: find_employee,
         commercial_document: registry,

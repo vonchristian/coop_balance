@@ -3,7 +3,7 @@ module Loans
     class ConfirmationsController < ApplicationController
       def create
         @loan     = current_office.loans.find(params[:loan_id])
-        @voucher  = Voucher.find(params[:payment_voucher_id])
+        @voucher  = TreasuryModule::Voucher.find(params[:payment_voucher_id])
         @schedule = LoansModule::AmortizationSchedule.find(params[:schedule_id]) if params[:schedule_id]
         ApplicationRecord.transaction do
           Vouchers::EntryProcessing.new(

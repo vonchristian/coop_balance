@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :voucher_amount, class: 'Vouchers::VoucherAmount' do
-    amount { Faker::Number.number(12) }
+    amount { Faker::Number.number(digits: 12) }
     account factory: %i[asset]
 
     factory :credit_voucher_amount, class: 'Vouchers::VoucherAmount' do

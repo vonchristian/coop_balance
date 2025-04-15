@@ -18,7 +18,7 @@ module SavingsAccounts
     end
 
     def find_voucher
-      Voucher.find_by(account_number: account_number)
+      TreasuryModule::Voucher.find_by(account_number: account_number)
     end
 
     private
@@ -28,7 +28,7 @@ module SavingsAccounts
     end
 
     def create_voucher
-      voucher = Voucher.new(
+      voucher =  TreasuryModule::Voucher.new(
         office: find_employee.office,
         cooperative: find_employee.cooperative,
         preparer: find_employee,

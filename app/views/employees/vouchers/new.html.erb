@@ -86,7 +86,7 @@
           <%= f.input :payee_type, input_html: { value: @employee.class }, as: :hidden %>
             <%= f.input :voucherable_id, input_html: { value: @employee.id }, as: :hidden %>
           <%= f.input :voucherable_type, input_html: { value: @employee.class }, as: :hidden %>
-          <%= f.input :number, input_html: { value: Voucher.generate_number_for(@voucher) } %>
+          <%= f.input :number, input_html: { value:  TreasuryModule::Voucher.generate_number_for(@voucher) } %>
           <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
           <div class="box-footer">
             <%= f.submit "Create Voucher", class: "btn btn-primary pull-right" %>
