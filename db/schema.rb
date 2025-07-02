@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_12_001254) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_02_124648) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -23,9 +23,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_12_001254) do
     t.bigint "amount_cents"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "posted_at"
     t.index ["account_id", "entry_id"], name: "index_account_running_balances_on_account_id_and_entry_id", unique: true
     t.index ["account_id"], name: "index_account_running_balances_on_account_id"
     t.index ["entry_id"], name: "index_account_running_balances_on_entry_id"
+    t.index ["posted_at"], name: "index_account_running_balances_on_posted_at"
   end
 
   create_table "accountable_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -593,7 +595,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_12_001254) do
   end
 
   create_table "ledger_running_balances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-  t.uuid "entry_id"
+    t.uuid "entry_id"
     t.uuid "ledger_id", null: false
     t.date "entry_date", null: false
     t.datetime "entry_time", precision: nil, null: false
