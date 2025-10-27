@@ -43,12 +43,12 @@ module Portfolios
       Enumerator.new do |yielder|
         yielder << CSV.generate_line([ "#{current_office.name} - #{@loan_product.name} Loans Portfolio" ])
         yielder << CSV.generate_line([ "Borrower", "Loan Product" "Loan Purpose", "Principal Balance", "Interests", "Penalties", "Disbursement Date", "Maturity Date" ])
-        @loans.each do |loan|
+        @loans.includes(:receivable_account).each do |loan|
           yielder << CSV.generate_line([
                                          loan.borrower_full_name,
                                          loan.loan_product_name,
                                          loan.purpose,
-
+                                         loan.receivable_account.balance,
                                          loan.loan_interests_balance,
                                          loan.loan_penalties_balance,
                                          loan.disbursement_date.try(:strftime, "%B %e, %Y"),
